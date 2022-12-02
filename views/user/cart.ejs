@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <%- include ('../partials/head.ejs') %>
+
+<body>
+    <%- include ('../partials/userNav.ejs') %>
+
+
+    <!-- Header Start -->
+    <div class="jumbotron jumbotron-fluid page-header" style="margin-bottom: 90px;">
+        <div class="container text-center py-5">
+            <h1 class="text-white display-3 mt-lg-5">Cart</h1>
+            <div class="d-inline-flex align-items-center text-white">
+                <p class="m-0"><a class="text-white" href="">Home</a></p>
+                <i class="fa fa-circle px-3"></i>
+                <p class="m-0">Cart</p>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+    <section class="h-100 gradient-custom">
+        <div class="container py-5">
+          <% if (productData.length !=0 ){%>
+          <div class="row d-flex justify-content-center my-4">
+            <div class="col-md-8">
+              
+              <div class="card mb-4">
+                
+               <% productData.forEach((productData)=>{%>
+                <div class="card-body">
+                  <!-- Single item -->
+                  <div class="row">
+                    <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                      <!-- Image -->
+                      <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                        <img src="/public/productIMG/<%=productData.productDetail._id%>.jpg"
+                          class="w-100" alt="Blue Jeans Jacket" />
+                        <a href="#!">
+                          <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                        </a>
+                      </div>
+                      <!-- Image -->
+                    </div>
+      
+                    <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                      <!-- Data -->
+                      <p><strong><%= productData.productDetail.productName %></strong></p>
+                      <p><%=productData.productDetail.Category%></p>
+                      
+                      
+                      <button class="btn btn-white " onclick="removeProduct('<%= productData._id %>','<%= productData.productDetail._id %>')"> 
+                        <i class='fa fa-trash ' style='color:rgba(0, 0, 0, 0.623)'  title="remove from cart"></i>
+
+                      </button>
+                      
+                      
+                        <a href="" >
+                  
+                            <i class='fa fa-heart ml-4' style='color: red'  title="move to favorite"></i>
+                        </a>
+                      
+                      <!-- Data -->
+                    </div>
+      
+                    <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                      <!-- Quantity -->
+                      <div class="d-flex mb-4" style="max-width: 300px">
+                        <button class="btn  btn-white px-3 me-2" 
+
+                        <% if(productData.productQuantity === 1){ %> 
+                          style="pointer-events: none;"
+                            <% } %>"
+
+                          onclick="changeQuantity('<%= productData._id %>','<%= productData.productDetail._id %>',-1)">
+                          <i class="fas fa-minus"></i>
+                        </button>
+      
+                        <div class="form-outline">
+                          <input id="quantity" min="0" name="quantity" disabled value="<%=productData.productQuantity%>" type="number" class="form-control" />
+                          <label class="form-label ml-3" for="form1">Quantity</label>
+                        </div>
+      
+                        <button class="btn btn-white px-3 ms-2"
+                          onclick="changeQuantity('<%= productData._id %>','<%= productData.productDetail._id %>',1)">
+                          <i class="fas fa-plus"></i>
+                        </button>
+                      </div>
+                      <!-- Quantity -->
+      
+                      <!-- Price -->
+                      <p class="text-start text-md-center">
+                        <strong><span class="fa fa-indian-rupee-sign"></span><%=productData.productDetail.price%></strong>
+                      </p>
+                      <!-- Price -->
+                    </div>
+                  </div>
+                  <!-- Single item -->
+      
+                  <hr class="my-4" />
+      
+                  <!-- Single item -->
+                  
+                  <% })%>
+                 
+                </div>
+               
+              </div>
+             
+              </div>
+              <div class="card mb-4 mb-lg-0">
+                <div class="card-body">
+                  <p><strong>We accept</strong></p>
+                  <img class="me-2" width="45px"
+                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+                    alt="Visa" />
+                  <img class="me-2" width="45px"
+                    src="https://images.news18.com/ibnlive/uploads/2020/02/UPI.jpg?impolicy=website&width=510&height=356"
+                    alt="UPI acceptance mark" />
+                  <img class="me-2" width="45px"
+                    src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+                    alt="Mastercard" />
+                  <img class="me-2" width="40px"
+                    src="https://bl-i.thgim.com/public/money-and-banking/nz7hvk/article24801784.ece/alternates/FREE_1200/google-paya"
+                    alt="G-pay acceptance mark" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mb-4">
+                <div class="card-header py-3">
+                  <h5 class="mb-0">Summary</h5>
+                </div>
+                <%if(productData){%>
+                <% productData.forEach((productData)=>{ %>
+                <div class="card-body">
+                  <ul class="list-group list-group-flush">
+                    <li
+                      class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                      <%= productData.productDetail.productName %>
+                      
+                        <strong class="text-muted"><span class="fa fa-indian-rupee-sign"></span><%=productData.productPrice%></strong>
+                      
+                    </li>
+                    <% }) %>
+                    <%}%>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                      Delivery
+                      <span>Free</span>
+                    </li>
+                    <li
+                      class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                      <div>
+                        <strong>Total amount</strong>
+                        <strong>
+                          <p class="mb-0">(including VAT)</p>
+                        </strong>
+                      </div>
+                      <span><strong><span class="fa fa-indian-rupee-sign"></span><%= sum %></strong></span>
+                    </li>
+                  </ul>
+                   <div class="d-flex justify-content-center">
+                    <button type="button " class="btn btn-primary btn-lg btn-block " style="width: 80%;">
+                        Go to checkout
+                      </button>
+                   </div>
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+          <%}else{%>
+            <div class="container-fluid  mt-100">
+              <div class="row">
+              
+               <div class="col-md-12">
+               
+                   <div class="card">
+                 
+                 <div class="card-body cart">
+                     <div class="col-sm-12 empty-cart-cls text-center">
+                       <img src="https://careerindex.co.in/assets/images/emptycart.png"  class="img-fluid mb-4 mr-3">
+                       
+                       <h4>Add something to make me happy :)</h4>
+                       <a href="/product" class="btn btn-primary cart-btn-transform m-3" data-abc="true">continue shopping</a>
+                       
+                     
+                     </div>
+                 </div>
+             </div>
+                 
+               
+               </div>
+              
+              </div>
+             
+             </div>
+            <%}%>
+        </div>
+      </section>
+
+   
+
+
+    <%- include ('../partials/userFooter.ejs') %>
+    <%- include ('../partials/footerLink.ejs') %>
+
+</body>
+
+</html>

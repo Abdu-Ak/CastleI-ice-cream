@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <%- include ('../partials/head.ejs') %> <%- include ('../partials/adminNav.ejs') %>
+
+    <div class="wrapper d-flex align-item-center">
+      <nav id="sidebar" class="bg-primary vh-100 justify-content-start">
+        <div class="p-4">
+          <ul class="list-unstyled components mt-5">
+            <li class="active">
+              <a href="#" class="text-white"
+                ><i class="fa fa-dashboard mr-2"></i> Dashboard</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="#" class="text-white"
+                ><i class="fa fa-list mr-2"></i>Orders</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/category" class="text-white"
+                ><i class="fa fa-list mr-2"></i>Category</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/products" class="text-white"
+                ><span class="fa fa-cart-shopping mr-2"></span> products</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/getAddproduct" class="text-white"
+                ><span class="fa fa-cart-plus mr-2"></span> Add Product</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/getusers" class="text-white"
+                ><span class="fa fa-user mr-2"></span> Users</a
+              >
+              <hr />
+            </li>
+
+            <li>
+              <a href="/admin/adminlogout" class="text-white"
+                ><span class="fa fa-right-from-bracket mr-2"></span> Logout</a
+              >
+              <hr />
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <%- include ('../partials/footerLink.ejs') %>
+  </body>
+</html>

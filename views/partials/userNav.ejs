@@ -1,0 +1,107 @@
+ <!-- Topbar Start -->
+ <div class="container-fluid bg-primary py-3"></div>
+ <!-- Topbar End -->
+
+ <!-- Navbar Start -->
+ <div class="container-fluid position-relative nav-bar p-0">
+   <div
+     class="container-lg position-relative p-0 px-lg-3"
+     style="z-index: 9"
+   >
+     <nav
+       class="navbar navbar-expand-lg bg-white navbar-light shadow p-lg-0"
+     >
+       <button
+         type="button"
+         class="navbar-toggler"
+         data-toggle="collapse"
+         data-target="#navbarCollapse"
+       >
+         <span class="navbar-toggler-icon"></span>
+       </button>
+       <div
+         class="collapse navbar-collapse justify-content-between"
+         id="navbarCollapse"
+       >
+         <div class="navbar-nav ml-auto py-0">
+           <a href="/" class="nav-item nav-link active">Home</a>
+           
+           <a href="/product" class="nav-item nav-link">Product</a>
+         </div>
+         <a href="/" class="navbar-brand mx-5">
+           <img
+             class="logo mb-3"
+             src="../../public/img/Black_Ice_Cream_Cone_Logo__2_-removebg-preview.png"
+             height="50"
+             alt="castle logo"
+           />
+           <img
+             class="logo"
+             src="../../public/img/Black_Ice_Cream_Cone_Logo__1_-removebg-preview.png"
+             height="50"
+             alt="castle logo"
+           />
+         </a>
+         
+         <%if (user){%>
+         
+         <div class="navbar-nav mr-auto py-0">
+           <input
+             class="form-control mt-4 col-lg-6"
+             type="search"
+             placeholder="Search"
+             aria-label="Search"
+           />
+       
+           <a href="/favorite" class="nav-item nav-link"
+             >
+             <span class="position-absolute mb-3 ml-4 translate-middle badge rounded-pill bg-danger" id="favCount">
+              <%= favCount %>
+            </span>
+             
+             <i class="fa fa-heart" aria-hidden="true"></i
+           ></a>
+           <div>
+            <a href="/cart" class="nav-item nav-link"
+              >
+            
+              <span class="position-absolute mb-3 ml-4 translate-middle badge rounded-pill bg-danger" id="cartCount">
+                <%= cartCount %>
+              </span>
+              
+              <i class="fa fa-shopping-cart" aria-hidden="true"></i
+           ></a>
+           </div>
+           <a href="/profile" class="nav-item nav-link"
+             ><i class="fa fa-user" aria-hidden="true"></i
+           ></a>
+
+             <a href="/logout"> <button class="btn btn-secondary h-50 mt-3 ml-2">Logout</button></a>
+
+
+            <%}else{%>
+            
+
+            
+
+
+             <div class="navbar-nav mt-2 py-0">
+               <input
+                 class="form-control  col-lg-6"
+                 type="search"
+                 placeholder="Search"
+                 aria-label="Search"
+               />
+           
+              
+
+               <a href="/login"> <button class="btn btn-secondary mb-1 align-items-center ml-4" style="height:80% ;">Login</button></a>
+
+               <%}%>
+
+         </div>
+       </div>
+     </nav>
+   </div>
+ </div>
+ <!-- Navbar End -->

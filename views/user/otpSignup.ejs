@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include ('../partials/head.ejs') %>
+  <body>
+    <%- include ('../partials/loginNav.ejs') %>
+    <section class="vh-100">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card shadow-2-strong" style="border-radius: 1rem">
+              <div class="card-body p-5 text-center">
+                <h3 class="mb-5">OTP-Sign Up</h3>
+               
+
+                <form action="/submitOtp" method="post" role="form">
+                 
+
+                 
+                  
+                 
+                    <input
+                      type="number"
+                      id="typeEmailX-2"
+                      name="otp"
+                      class="form-control form-control-lg text-center"
+                      placeholder="OTP"
+                    />
+                  </div>
+
+                  <div class="Signup">
+                    <a href="/" class="d-flex justify-content-center mb-5"
+                      ><button
+                        class="btn btn-primary btn-lg btn-block w-50"
+                        type="submit"
+                      >
+                        Sign Up
+                      </button></a
+                    >
+                  </div>
+                </form>
+
+               
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <%- include ('../partials/footerLink.ejs') %>
+  </body>
+</html>

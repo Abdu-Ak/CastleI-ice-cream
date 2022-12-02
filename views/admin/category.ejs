@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <%- include ('../partials/head.ejs') %> <%- include ('../partials/adminNav.ejs') %>
+
+    <div class="wrapper d-flex ">
+      <nav id="sidebar" class="bg-primary vh-100 justify-content-start">
+        <div class="p-4">
+          <ul class="list-unstyled components mt-5">
+            <li class="active">
+              <a href="#" class="text-white"
+                ><i class="fa fa-dashboard mr-2"></i> Dashboard</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="#" class="text-white"
+                ><i class="fa fa-list mr-2"></i>Orders</a
+              >
+              <hr />
+            </li>
+            <li>
+                <a href="/admin/category" class="text-white"
+                  ><i class="fa fa-list mr-2"></i>Category</a
+                >
+                <hr />
+              </li>
+            <li>
+              <a href="/admin/products" class="text-white"
+                ><span class="fa fa-cart-shopping mr-2"></span> products</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/getAddproduct" class="text-white"
+                ><span class="fa fa-cart-plus mr-2"></span> Add Product</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/getusers" class="text-white"
+                ><span class="fa fa-user mr-2"></span> Users</a
+              >
+              <hr />
+            </li>
+
+            <li>
+              <a href="/admin/adminlogout" class="text-white"
+                ><span class="fa fa-right-from-bracket mr-2"></span> Logout</a
+              >
+              <hr />
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <section class="mt-5 pt-5 pl-5 ml-5  "> 
+       <div class="d-flex justify-content-end">
+        <button
+        type="button"
+        class="btn btn-success mt-5 "
+        data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop"
+      >
+        Add Categories
+      </button>
+       </div>
+      
+        <table id="table" class="table mt-5 table-hover ml-5 table-light">
+            <thead>
+              <tr>
+                
+                <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">
+                 SI NO
+                </th>
+                <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">
+                    CATEGORY ID
+                   </th>
+                <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">
+                    CATEGORY
+                </th>
+                <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">
+                 OPTIONS
+                </th>
+              
+              </tr>
+            </thead>
+            <tbody>
+              <% allCategory.forEach((allCategory,index)=>{ %>
+              <tr>
+               
+                <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    <%= index + 1 %>
+                </td>
+                <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    <%= allCategory._id %>
+                </td>
+                <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                    <%= allCategory.Category %>
+                </td>
+                
+               
+                <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center    ">
+                    <!-- edit modal -->
+                <div class="d-flex ml-5">
+                    <button
+                    type="button"
+                    class="btn btn-primary d-flex"
+                    data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop-<%= allCategory._id %>  "
+                    style="background-color: blue;"
+                  >
+                  <span class="fa fa-pen-to-square mt-1 mr-1"></span>Edit
+                  </button>
+                  <div
+                    class="modal fade"
+                    id="staticBackdrop-<%= allCategory._id %>"
+                    data-bs-backdrop="static"
+                    data-bs-keyboard="false"
+                    tabindex="-1"
+                    aria-labelledby="staticBackdropLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <form
+                          action="/admin/editCategory/<%= allCategory._id %>"
+                          method="post"
+                        >
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">
+                              Edit Category
+                            </h5>
+                          </div>
+                          <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label"
+                              >Category</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="category"
+                              name="category"
+                              aria-describedby="emailHelp"
+                              value="<%= allCategory.Category  %>"
+                            />
+                          </div>
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-secondary"
+                              data-bs-dismiss="modal"
+                              style="background-color: rgba(0, 0, 0, 0.696);"
+                            >
+                              Close
+                            </button>
+                            <button
+                              type="submit"
+                              value="submit"
+                              class="btn btn-primary"
+                              style="background-color: blue;"
+                            >
+                              Confirm
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- edit moda end -->
+                       <!-- delete modal -->
+                       <button type="button" class="btn btn-danger d-flex  ml-3" data-bs-toggle="modal"
+                       data-bs-target="#exampleModal-<%= allCategory._id %>">
+                        <span class="fa fa-trash mt-1 mr-1"></span>Delete
+                      </button>
+
+                      <div
+                      class="modal fade"
+                      id="exampleModal-<%= allCategory._id %>"
+                      tabindex="-1"
+                      aria-labelledby="exampleModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">
+                              CONFIRMATION
+                            </h1>
+                            <button
+                              type="button"
+                              class="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+                          <div class="modal-dialog">
+                            Are you confirm ?
+                          </div>
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-secondary"
+                              data-bs-dismiss="modal"
+                              style="background-color: rgba(0, 0, 0, 0.696);"
+                            >
+                              Close
+                            </button>
+                            <a href="/admin/deleteCategory/<%= allCategory._id %>"
+                              ><button type="button" class="btn btn-danger">
+                                Delete
+                              </button></a
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                
+                  <!-- delete modal end -->
+                </div>
+                 
+                </td>
+
+                
+               
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        
+      </div>
+      <!-- add modal -->
+      <div
+        class="modal fade"
+        id="staticBackdrop"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">
+                Add Category
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <form action="/admin/addCategory" method="post">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label"
+                    >Category</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="category"
+                    name="category"
+                    aria-describedby="emailHelp"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                  style="background-color: rgba(0, 0, 0, 0.696);"
+                >
+                  Close
+                </button>
+                <button
+                  type="submit"
+                  value="submit"
+                  class="btn btn-success"
+                >
+                  submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- add modal end -->
+
+      </section>
+    </div>
+    <%- include ('../partials/footerLink.ejs') %>
+  </body>
+</html>

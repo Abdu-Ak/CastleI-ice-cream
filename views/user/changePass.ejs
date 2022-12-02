@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include ('../partials/head.ejs') %>
+  <body>
+    <%- include ('../partials/userNav.ejs') %>
+    <section>
+      <div class="container py-5 d-flex justify-content-center">
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="h4" style="width: 20rem;">
+                    <strong> CHANGE YOUR PASSWORD </strong>
+                  </p>
+                </div>
+              </div>
+              <hr />
+              <form action="/changePass" method="post">
+                <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0 mt-1">Current Password</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <div>
+                            <input
+                              type="text"
+                              class="form-control input-lg ml-2"
+                              name="currentpassword"
+                              
+                            />
+                          </div>
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0 mt-1">New Password</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <div>
+                            <input
+                              type="text"
+                              class="form-control input-lg ml-2"
+                              name="newpassword"
+                              
+                            />
+                          </div>
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0 mt-1" style="width: 10rem;">Confirm Password</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <div>
+                            <input
+                              type="text"
+                              class="form-control input-lg ml-2"
+                              name="confirmpassword"
+                              
+                            />
+                          </div>
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="d-flex justify-content-center">
+                    <button type="submit" value="submit" class="btn btn-success">
+                      Submit
+                    </button>
+                  </div>
+              </form>
+              <% if(locals.err_msg) { %>
+                <p class="text-danger"><%= err_msg %></p>
+                <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <%- include ('../partials/footerLink.ejs') %>
+  </body>
+</html>

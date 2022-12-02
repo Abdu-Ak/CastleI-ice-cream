@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <%- include ('../partials/head.ejs') %> <%- include ('../partials/adminNav.ejs') %>
+
+
+    <div class="wrapper d-flex justify-content-between">
+      <nav id="sidebar" class="bg-primary vh-100 justify-content-start">
+        <div class="p-4">
+          <ul class="list-unstyled components mt-5">
+            <li class="active">
+              <a href="#" class="text-white"
+                ><i class="fa fa-dashboard mr-2"></i> Dashboard</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="#" class="text-white"
+                ><i class="fa fa-list mr-2"></i>Orders</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/category" class="text-white"
+                ><i class="fa fa-list mr-2"></i>Category</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/products" class="text-white"
+                ><span class="fa fa-cart-shopping mr-2"></span> products</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/getAddproduct" class="text-white"
+                ><span class="fa fa-cart-plus mr-2"></span> Add Product</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/getusers" class="text-white"
+                ><span class="fa fa-user mr-2"></span> Users</a
+              >
+              <hr />
+            </li>
+
+            <li>
+              <a href="/admin/adminlogout" class="text-white"
+                ><span class="fa fa-right-from-bracket mr-2"></span> Logout</a
+              >
+              <hr />
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <section class="mt-5 pt-5 pr-5 ml-5 mr-5 justify-content-between">
+        <table id="table" class="table mt-5 table-hover ml-5 table-light">
+            <thead>
+              <tr>
+                
+                <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">
+                 PRODUCTS
+                </th>
+                <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">
+                  PRICE 
+                </th>
+                <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">
+                  CATEGORY
+                </th>
+                <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">
+                  DETAILS
+                </th>
+                <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">
+                  STOCK
+                </th>
+                <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">
+                  IMAGE
+                </th>
+                <th class="col-3 col-md-3 col-lg-3 col-xl-1 text-center">
+                  OPTION
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% products.forEach((products)=>{ %>
+              <tr>
+               
+                <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                  <%= products.productName %>
+                </td>
+                <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                  <%= products.price %>
+                </td>
+                <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                  <%= products.Category %>
+                </td>
+                <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                  <%= products.details %>
+                </td>
+                <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                  <%= products.stock %>
+                </td>
+                <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                  <img
+                    src="/public/productIMG/<%=products._id%>.jpg"
+                    alt="product image"
+                    style="width: 5rem;"
+                  />
+                </td>
+                <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center  ">
+                  <button type="button" class="btn btn-danger d-flex " data-bs-toggle="modal"
+                  data-bs-target="#exampleModal-<%= products._id %>">
+                   <span class="fa fa-trash mt-1 mr-1"></span>Delete
+                 </button>
+                 <a href="/admin/editProduct/<%=products._id%>"> <button class="btn btn-primary  align-items-center mt-3"
+                   style="height:80% ; background-color: blue ;"><span class="fa fa-pen-to-square"></span>  Edit</button></a>
+                </td>
+
+                <div
+                class="modal fade"
+                id="exampleModal-<%= products._id %>"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">
+                        CONFIRMATION
+                      </h1>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-dialog">
+                      Are you confirm ?
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                        style="background-color: rgba(0, 0, 0, 0.696);"
+                      >
+                        Close
+                      </button>
+                      <a href="/admin/deleteProduct/<%= products._id %>"
+                        ><button type="button" class="btn btn-danger">
+                          Delete
+                        </button></a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+               
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        
+      </div>
+
+      </section>
+    </div>
+    <%- include ('../partials/footerLink.ejs') %>
+  </body>
+</html>

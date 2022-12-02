@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include ('../partials/head.ejs') %>
+
+  <body>
+    <%- include ('../partials/userNav.ejs') %>
+
+    <!-- Header Start -->
+    <div
+      class="jumbotron jumbotron-fluid page-header"
+      style="margin-bottom: 90px;"
+    >
+      <div class="container text-center py-5">
+        <h1 class="text-white display-3 mt-lg-5">Favorite</h1>
+        <div class="d-inline-flex align-items-center text-white">
+          <p class="m-0"><a class="text-white" href="">Home</a></p>
+          <i class="fa fa-circle px-3"></i>
+          <p class="m-0">Favorite</p>
+        </div>
+      </div>
+    </div>
+    <!-- Header End -->
+    <% if (productData.length !=0 ){%>
+    <div class="container-fluid py-5">
+
+      <div class="container">
+
+        <div class="row">
+          <div class="col-lg-3 col-md-6 mb-4 pb-2 ">
+            
+            <% productData.forEach((productData)=>{ %>
+            <div class="card">
+
+              <div class="card-body d-flex flex-row">
+                <!-- <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" class="rounded-circle me-3" height="50px"
+                  width="50px" alt="avatar" /> -->
+                <div>
+                  <h5 class="card-title font-weight-bold mb-2">
+                    <%= productData.productDetail.productName%>
+                  </h5>
+                </div>
+              </div>
+              <div
+                class="bg-image hover-overlay ripple rounded-0"
+                data-mdb-ripple-color="light"
+              >
+                <img
+                  class="img-fluid w-100"
+                  src="/public/productIMG/<%=productData.productDetail._id%>.jpg"
+                  alt="Card image cap"
+                />
+                <a href="#!">
+                  <div
+                    class="mask"
+                    style="background-color: rgba(251, 251, 251, 0.15);"
+                  ></div>
+                </a>
+              </div>
+              <div class="card-body">
+                <div class="d-flex">
+                  <button class="btn btn-white " onclick="addCart('<%= productData.productDetail._id %>')" > 
+                    <i class='fa fa-shopping-cart ' style='color:rgba(63, 63, 222, 0.905)'  title="Add to cart"></i>
+
+                  </button>
+                  <div >
+                    <button class="btn btn-white " onclick="removeFavorite('<%= productData._id %>','<%= productData.productDetail._id %>')"> 
+                      <i class='fa fa-trash ' style='color:rgba(0, 0, 0, 0.623)'  title="remove from cart"></i>
+
+                    </button>
+      
+                     
+                  
+                  </div>
+                </div>
+              </div>
+            </div>
+            <%})%>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+    <%}else{%>
+      <div class="container-fluid  mt-100">
+        <div class="row">
+        
+         <div class="col-md-12">
+         
+             <div class="card">
+           
+           <div class="card-body cart">
+               <div class="col-sm-12 empty-cart-cls text-center">
+                 <img src="https://i.pinimg.com/originals/f6/e4/64/f6e464230662e7fa4c6a4afb92631aed.png"  class="img-fluid mb-4 mr-3">
+                 
+                 <h4>Add something to make me happy :)</h4>
+                 <a href="/product" class="btn btn-primary cart-btn-transform m-3" data-abc="true">continue shopping</a>
+                 
+               
+               </div>
+           </div>
+       </div>
+           
+         
+         </div>
+        
+        </div>
+       
+       </div>
+      <%}%>
+
+    <%- include ('../partials/userFooter.ejs') %> <%- include
+    ('../partials/footerLink.ejs') %>
+  </body>
+</html>

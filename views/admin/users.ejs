@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <%- include ('../partials/head.ejs') %> <%- include ('../partials/adminNav.ejs') %>
+
+
+    <div class="wrapper d-flex justify-content-between">
+      <nav id="sidebar" class="bg-primary vh-100 justify-content-start">
+        <div class="p-4">
+          <ul class="list-unstyled components mt-5">
+            <li class="active">
+              <a href="#" class="text-white"
+                ><i class="fa fa-dashboard mr-2"></i> Dashboard</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="#" class="text-white"
+                ><i class="fa fa-list mr-2"></i>Orders</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/category" class="text-white"
+                ><i class="fa fa-list mr-2"></i>Category</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/products" class="text-white"
+                ><span class="fa fa-cart-shopping mr-2"></span> products</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/getAddproduct" class="text-white"
+                ><span class="fa fa-cart-plus mr-2"></span> Add Product</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/getusers" class="text-white"
+                ><span class="fa fa-user mr-2"></span> Users</a
+              >
+              <hr />
+            </li>
+
+            <li>
+              <a href="/admin/adminlogout" class="text-white"
+                ><span class="fa fa-right-from-bracket mr-2"></span> Logout</a
+              >
+              <hr />
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <section class="mt-5 pt-5 pr-5 mr-5">
+        <table
+          id="Table"
+          class="table table-secondary table-hover mr-5 table-bordered border-dark"
+        >
+          <thead>
+            <tr>
+              <th scope="col">USER ID</th>
+              <th scope="col">USER NAME</th>
+              <th scope="col">E-MAIL</th>
+              <th scope="col">PHONE NUMBER</th>
+              <th scope="col">OPTION</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% user.forEach((user)=>{ %>
+            <tr>
+              <td>
+                <%= user._id %>
+              </td>
+              <td>
+                <%= user.username %>
+              </td>
+              <td>
+                <%= user.email %>
+              </td>
+              <td>
+                <%= user.phonenumber %>
+              </td>
+              <td style="width: 20%;">
+                <div class="d-flex">
+                  <% if (user.Status == true){%>
+
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                     data-bs-target="#exampleModal-<%= user._id %>">
+                     <span class="fa fa-lock m-1"></span>  Block
+                    </button>
+                    
+
+                  
+                  
+                  <% }%>
+
+                          <!-- Modal -->
+         <div
+         class="modal fade"
+         id="exampleModal-<%= user._id %>"
+         tabindex="-1"
+         aria-labelledby="exampleModalLabel"
+         aria-hidden="true"
+       >
+         <div class="modal-dialog">
+           <div class="modal-content">
+             <div class="modal-header">
+               <h1 class="modal-title fs-5" id="exampleModalLabel">
+                 CONFIRMATION
+               </h1>
+               <button
+                 type="button"
+                 class="btn-close"
+                 data-bs-dismiss="modal"
+                 aria-label="Close"
+               ></button>
+             </div>
+             <div class="modal-dialog">
+               Are you confirm ?
+             </div>
+             <div class="modal-footer">
+               <button
+                 type="button"
+                 class="btn btn-secondary"
+                 data-bs-dismiss="modal"
+                 style="background-color: rgba(0, 0, 0, 0.696);"
+               >
+                 Close
+               </button>
+               <a href="/admin/blockUser/<%= user._id %>"
+                 ><button type="button" class="btn btn-danger">
+                   block
+                 </button></a
+               >
+             </div>
+           </div>
+         </div>
+       </div>
+                  
+                  
+                  
+                  <% if (user.Status == false){%>
+                  <a href="/admin/unblockUser/<%= user._id %>"
+                    ><button
+                      class="btn btn-primary m-3 d-flex"
+                      style="background-color: rgba(0, 0, 0, 0.696);"
+                      type="submit"
+                    >
+                      <span class="fa fa-lock-open m-1"></span>unblock
+                    </button></a
+                  >
+
+           
+
+                  <% }%>
+
+                  
+
+                  <% }) %>
+                <div>
+               
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <script>
+          $(document).ready(function () {
+            $("#Table").DataTable();
+          });
+        </script>
+      </div>
+
+      </section>
+    </div>
+    <%- include ('../partials/footerLink.ejs') %>
+  </body>
+</html>

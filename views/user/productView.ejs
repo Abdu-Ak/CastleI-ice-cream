@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <%- include ('../partials/head.ejs') %>
+
+<body>
+  <%- include ('../partials/userNav.ejs') %>
+
+
+  
+
+    <!-- product detail Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+         
+          <div class="row justify-content-center">
+            <div class="col-lg-7">
+              <h1 class="section-title position-relative text-center mb-5">
+                <%= product.productName %>
+              </h1>
+            </div>
+          </div>
+          <div class="row">
+            
+            <div class="col-lg-4" style="min-height: 400px">
+              
+              <div class="position-relative h-100 rounded overflow-hidden">
+                <img
+                  class="position-absolute w-100 h-100"
+                  src="/public/productIMG/<%=product._id%>.jpg"
+                  style="object-fit: cover"
+                />
+              </div>
+            </div>
+            <div class="col-lg-4 py-5 ml-5">
+              <h4 class="font-weight-bold mb-3"> Features</h4>
+              
+              
+             <h5  class="text-muted mb-3">
+              <%= product.details %>
+             </h5>
+                
+              
+              <h5 class="text-muted mb-3">
+                    Delicious  <%= product.Category %> ice cream
+              </h5>
+              <div class="h5 mb-3 text-info  ">
+                Prize : <span class="fa fa-indian-rupee-sign"></span>   <%= product.price %>
+              </div>
+                
+              
+              
+             
+              <button class="btn btn-primary mt-2" id="favbtn" style="border-radius: 10px;" onclick="addCart('<%=product._id%>')"><span class="fa fa-cart-shopping mr-1">
+
+              </span>Add to cart</button> 
+              <button class="btn btn-primary mt-2" style="border-radius: 10px;" onclick="addFavorite('<%=product._id%>')"><span class="fa  fa-heart  mr-1" >
+
+              </span></button>
+
+
+              
+
+              </button>
+            </div>
+          </div>
+        
+        </div>
+      </div>
+    <!-- About End -->
+    
+    
+
+   
+
+      <%- include ('../partials/userFooter.ejs') %> 
+      <%- include ('../partials/footerLink.ejs') %>
+</body>
+
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <script>
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            $("#addproduct")
+              .attr("src", e.target.result)
+              .width(150)
+              .height(200);
+          };
+
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+    </script>
+
+<%- include ('../partials/head.ejs') %> <%- include ('../partials/adminNav.ejs') %>
+
+
+    <div class="wrapper h-100 d-flex align-item-center">
+      <nav id="sidebar" class="bg-primary vh-100 justify-content-start">
+        <div class="p-4">
+          <ul class="list-unstyled components mt-5">
+            <li class="active">
+              <a href="#" class="text-white"
+                ><i class="fa fa-dashboard mr-2"></i> Dashboard</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="#" class="text-white"
+                ><i class="fa fa-list mr-2"></i>Orders</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/category" class="text-white"
+                ><i class="fa fa-list mr-2"></i>Category</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/products" class="text-white"
+                ><span class="fa fa-cart-shopping mr-2"></span> products</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/getAddproduct" class="text-white"
+                ><span class="fa fa-cart-plus mr-2"></span> Add Product</a
+              >
+              <hr />
+            </li>
+            <li>
+              <a href="/admin/getusers" class="text-white"
+                ><span class="fa fa-user mr-2"></span> Users</a
+              >
+              <hr />
+            </li>
+
+            <li>
+              <a href="/admin/adminlogout" class="text-white"
+                ><span class="fa fa-right-from-bracket mr-2"></span> Logout</a
+              >
+              <hr />
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <section class="vh-100" style="width: 80% !important;">
+        <div class="container py-5 h-100 mt-5">
+          <div
+            class="row d-flex justify-content-center mr-5 align-items-center h-100"
+          >
+            <div class="col-12 col-md-8 col-lg-8 col-xl-5 mr-5">
+              <div
+                class="card shadow-2-strong"
+                style="border-radius: 1rem; width: 40rem;"
+              >
+                <div class="card-body p-5 text-center">
+                  <h3 class="mb-5">Edit Product</h3>
+
+                  <form
+                    action="/admin/doEditproduct/<%= productData._id%>"
+                    method="post"
+                    role="form"
+                    enctype="multipart/form-data"
+                  >
+                    <div class="form-outline mb-4 d-flex">
+                      <input
+                        type="text"
+                        name="productname"
+                        value="<%= productData.productName %>"
+                        class="form-control form-control-lg text-center mr-2"
+                        placeholder="Product Name"
+                      />
+                      <select class="form-select  form-select-lg mb-3 text-muted rounded-pill" aria-label=".form-select-lg example " name="category">
+                        <option  disabled selected> <%= productData.Category %></option>
+                        <% category.forEach((category)=>{ %>
+                        <option ><%= category.Category %></option>
+                        
+                      
+                        <% }) %>
+                      </select>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <textarea
+                        name="details"
+            
+                        placeholder="Details"
+                        class="form-control form-control-lg text-center"
+                        cols="10"
+                        rows="3"
+                      ><%= productData.details %></textarea>
+                    </div>
+
+                    <div class="form-outline mb-4 d-flex">
+                      <input
+                      value="<%= productData.stock %>"
+                        type="number"
+                        name="stock"
+                        class="form-control form-control-lg mr-2 text-center"
+                        placeholder="Stock"
+                      />
+                      <input
+                        type="number"
+                        value="<%= productData.price %>"
+                        name="price"
+                        class="form-control form-control-lg text-center"
+                        placeholder="Price"
+                      />
+                    </div>
+
+                    <div class="d-flex">
+                      <div class="justify-content-center">
+                        <div class="btn btn-primary btn-rounded">
+                          <label
+                            class="form-label text-white m-1"
+                            for="customFile1"
+                            >Choose file</label
+                          >
+                          <input
+                            type="file"
+                            class="form-control d-none"
+                        
+                            name="image"
+                            id="customFile1"
+                            onchange="readURL(this);"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="mb-4 justify-content-center">
+                        <img
+                          src="/public/productIMG/<%=productData._id%>.jpg"
+                          id="addproduct"
+                          class="ml-5"
+                          alt=""
+                          style="background-image: url(); width: 10rem;"
+                        />
+                       
+                        
+                       
+                      </div>
+                    </div>
+
+                    <hr />
+                    <div class="add product">
+                      <a href="/" class="d-flex justify-content-center mt-3"
+                        ><button
+                          class="btn btn-primary btn-lg btn-block w-50"
+                          type="submit"
+                        >
+                          Edit product
+                        </button></a
+                      >
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <%- include ('../partials/footerLink.ejs') %>
+  </body>
+</html>

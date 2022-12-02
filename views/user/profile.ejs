@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include ('../partials/head.ejs') %>
+  <body>
+    <%- include ('../partials/userNav.ejs') %>
+
+    <section>
+      <div class="container py-5">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="card mb-4">
+              <div class="card-body text-center">
+                <img
+                  src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                  alt="avatar"
+                  class="rounded-circle img-fluid"
+                  style="width: 150px;"
+                />
+                <h5 class="my-3"><%= userData.username %></h5>
+
+                <div class="d-flex justify-content-center mb-2">
+                  <button type="button" class="btn btn-outline-primary ms-1">
+                    Change profile
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card mb-4 mb-lg-0">
+              <div class="card-body d-flex p-0">
+                <ul class="list-group list-group-flush rounded-3">
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-center p-3"
+                  >
+                    <button type="button" class="btn btn-outline-primary ms-1">
+                      <span class="fa fa-list mr-1"></span> Orders
+                    </button>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-center p-3"
+                  >
+                    <button type="button" class="btn btn-outline-primary ms-1">
+                      <span class="fa fa-gift mr-1"></span>Gift card
+                    </button>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-center p-3"
+                  >
+                   <a href="/changePassword">
+                    <button type="button" class="btn btn-outline-primary ms-1">
+                      <span class="fa fa-key mr-1"></span>Change Password
+                    </button>
+                   </a>
+                  </li>
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-center p-3"
+                  >
+                  <% if  (userData.primaryaddress.fullname){%>
+                  <button
+                  type="button"
+                  class="btn btn-outline-primary ms-1"
+                  data-toggle="modal"
+                  data-target="#changeAddress"
+                >
+                <span class="fa fa-location-dot mr-1"></span>Change
+                Address
+                </button> 
+                  <%}else{%>
+                  <button
+                  type="button"
+                  class="btn btn-outline-primary ms-1"
+                  data-toggle="modal"
+                  data-target="#ModalAddress"
+                >
+                <span class="fa fa-location-dot mr-1"></span>Add
+                Address
+                </button> 
+                     <%}%>
+                      
+                    
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8">
+          
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="row justify-content-center">
+                  <div class="col-sm-3">
+                    <p class="mb-0"><strong>YOUR ADDRESS</strong></p>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">User Name</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <p class="text-muted mb-0"><%= userData.username%></p>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Phone Number</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <p class="text-muted mb-0"><%= userData.phonenumber %></p>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Email</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <p class="text-muted mb-0"><%= userData.email %></p>
+                  </div>
+                </div>
+                <hr />
+               
+                
+                <div class="row">
+                  <div class="col-sm-3">
+                    <p class="mb-0">Address</p>
+                  </div>
+                  <div class="col-sm-9">
+                    <p class="text-muted mb-0">
+                      <% if  (userData.primaryaddress){%>
+
+                        <%=userData.primaryaddress.fullname  %>
+                        <br>
+                        <%=userData.primaryaddress.address %>
+                        <br>
+                        <%=userData.primaryaddress.locality %>
+                        <br>
+                        <%=userData.primaryaddress.pincode %>
+                        <br>
+                        <%=userData.primaryaddress.district %>
+                        <br>
+                        <%=userData.primaryaddress.state %>
+                        <br>
+                        <%=userData.primaryaddress.landmark %>
+                        <br>
+                        <%}%>
+                    </p>
+                  </div>
+                </div>
+                <hr />
+                
+               
+               
+              </div>
+            </div>
+        
+            <div class="row d-flex">
+              <div class="col-md-6">
+                <div class="card mb-4 mb-md-0">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-3 d-flex ml-5">
+                        <p class="mb-0"><strong>NOTIFICATION:</strong></p>
+                      </div>
+                      <div class="col-sm-9 ml-5 d-flex">
+                        <p class="text-danger Damb-0">
+                          Delivery within <strong>ONE HOUR</strong> ...!
+                        </p>
+                      </div>
+                    </div>
+
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% if  (userData.primaryaddress){%>
+        <!--- Add modal-->
+        <!-- Modal HTML Markup -->
+        <div id="ModalAddress" class="modal fade">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title">Add Address</h1>
+              </div>
+              <div class="modal-body">
+                <form role="form" method="POST" action="/submitAddress">
+                  <div class="form-group d-flex">
+                    <label class="control-label m-2 ml-4">Full Name</label>
+                    <div>
+                      <input
+                        type="text"
+                        class="form-control input-lg"
+                        name="fullname"
+                        value=""
+                      />
+                    </div>
+                    <label class="control-label m-2 ml-4">Pincode</label>
+                    <div>
+                      <input
+                        type="number"
+                        class="form-control input-lg"
+                        name="pincode"
+                      />
+                    </div>
+                  </div>
+
+                 
+                  <div class="form-group d-flex">
+                    <label class="control-label m-2 ml-5">Address</label>
+                    <div>
+                      <textarea
+                        name="address"
+                        id=""
+                        class="form-control input-lg ml-2"
+                        cols="65"
+                        rows="5"
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group d-flex">
+                    <label class="control-label m-2 ml-5">Locality</label>
+                    <div>
+                      <input
+                        type="text"
+                        class="form-control input-lg ml-2"
+                        name="locality"
+                        value=""
+                      />
+                    </div>
+                    <label class="control-label m-2 ml-5">District</label>
+                    <div>
+                      <input
+                        type="text"
+                        class="form-control input-lg ml-3"
+                        name="district"
+                      />
+                    </div>
+                    
+                  </div>
+                  <div class="form-group d-flex">
+                    <label class="control-label m-2 ml-5">State</label>
+                    <div>
+                      <input
+                        type="text"
+                        class="form-control input-lg ml-2"
+                        name="state"
+                        value=""
+                      />
+                    </div>
+                    <label class="control-label m-2 ml-5">Landmark</label>
+                    <div>
+                      <input
+                        type="text"
+                        class="form-control input-lg ml-3"
+                        name="landmark"
+                      />
+                    </div>
+                    
+                  </div>
+                  <hr>
+                  <div class="d-flex justify-content-center">
+                    <button
+                    type="submit"
+                    value="submit"
+                    class="btn btn-success"
+                    
+                  >
+                    Submit
+                  </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        <!--change modal-->
+         <!-- Modal HTML Markup -->
+         <div id="changeAddress" class="modal fade">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title">Change Address</h1>
+              </div>
+              <div class="modal-body">
+                <form role="form" method="POST" action="/changeAddress">
+                  <div class="form-group d-flex">
+                    <label class="control-label m-2 ml-4">Full Name</label>
+                    <div>
+                      <input
+                        type="text"
+                        class="form-control input-lg"
+                        name="fullname"
+                        value=" <%=userData.primaryaddress.fullname  %>"
+                      />
+                    </div>
+                    <label class="control-label m-2 ml-4">Pincode</label>
+                    <div>
+                      <input
+                      type="number"
+                      class="form-control input-lg"
+                      name="pincode"
+                      value="<%=userData.primaryaddress.pincode %>"
+                    />
+                    </div>
+                    
+                  </div>
+
+                 
+                  <div class="form-group d-flex">
+                    <label class="control-label m-2 ml-5">Address</label>
+                    <div>
+                      <textarea
+                        name="address"
+                        
+                        class="form-control input-lg ml-2"
+                        cols="65"
+                        rows="5"
+                      >  <%=userData.primaryaddress.address %></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group d-flex">
+                    <label class="control-label m-2 ml-5">Locality</label>
+                    <div>
+                      <input
+                        type="text"
+                        class="form-control input-lg ml-2"
+                        name="locality"
+                        value="<%=userData.primaryaddress.locality %>"
+                      />
+                    </div>
+                    <label class="control-label m-2 ml-5">District</label>
+                    <div>
+                      <input
+                        type="text"
+                        class="form-control input-lg ml-3"
+                        name="district"
+                        value="<%=userData.primaryaddress.district %>"
+                      />
+                    </div>
+                    
+                  </div>
+                  <div class="form-group d-flex">
+                    <label class="control-label m-2 ml-5">State</label>
+                    <div>
+                      <input
+                        type="text"
+                        class="form-control input-lg ml-2"
+                        name="state"
+                        value=" <%=userData.primaryaddress.state %>"
+                      />
+                    </div>
+                    <label class="control-label m-2 ml-5">Landmark</label>
+                    <div>
+                      <input
+                        type="text"
+                        class="form-control input-lg ml-3"
+                        name="landmark"
+                        value=" <%=userData.primaryaddress.landmark %>"
+                      />
+                    </div>
+                    
+                  </div>
+                  <hr>
+                  <div class="d-flex justify-content-center">
+                    <button
+                    type="submit"
+                    value="submit"
+                    class="btn btn-success"
+                    
+                  >
+                    Submit
+                  </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <%}%>
+
+
+        <%- include ('../partials/userFooter.ejs') %> <%- include
+        ('../partials/footerLink.ejs') %>
+      </div>
+    </section>
+  </body>
+</html>
