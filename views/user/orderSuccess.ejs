@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <%- include ('../partials/head.ejs') %>
+    
+      
+    <link href="../../public/css/ordersuccess.css" rel="stylesheet">
+  </head>
+    <style>
+    
+    </style>
+    <body>
+        <%- include ('../partials/userNav.ejs') %>
+      <section>
+       <div class="container">
+        <div class="box"> 
+            <div class="success alert  " style="height:25rem ; width:20rem ;" >
+              <div class="alert-body">
+                <h4>
+                     ORDER SUCCEFULLY PLACED !
+                </h4>
+                <div class="mt-5">
+                   <a href="/orderList"> <button class="btn  btn-outline-info mt-5"><span class="fa fa-truck-fast"></span> Track Order</button></a>
+                   </div>
+               </div>
+            </div>
+           
+              <!-- <div class="error alert">
+                <div class="alert-body">
+                  Error !
+                </div>
+            </div> -->
+          </div>
+       </div>
+      </section>
+      <%- include ('../partials/userFooter.ejs') %> <%- include
+      ('../partials/footerLink.ejs') %>
+    </body>
+</html>

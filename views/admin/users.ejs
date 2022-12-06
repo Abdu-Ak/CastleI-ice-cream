@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <body>
-    <%- include ('../partials/head.ejs') %> <%- include ('../partials/adminNav.ejs') %>
-
+    <%- include ('../partials/head.ejs') %> <%- include
+    ('../partials/adminNav.ejs') %>
 
     <div class="wrapper d-flex justify-content-between">
       <nav id="sidebar" class="bg-primary vh-100 justify-content-start">
@@ -89,61 +89,60 @@
                 <div class="d-flex">
                   <% if (user.Status == true){%>
 
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                     data-bs-target="#exampleModal-<%= user._id %>">
-                     <span class="fa fa-lock m-1"></span>  Block
-                    </button>
-                    
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal-<%= user._id %>"
+                  >
+                    <span class="fa fa-lock m-1"></span> Block
+                  </button>
 
-                  
-                  
                   <% }%>
 
-                          <!-- Modal -->
-         <div
-         class="modal fade"
-         id="exampleModal-<%= user._id %>"
-         tabindex="-1"
-         aria-labelledby="exampleModalLabel"
-         aria-hidden="true"
-       >
-         <div class="modal-dialog">
-           <div class="modal-content">
-             <div class="modal-header">
-               <h1 class="modal-title fs-5" id="exampleModalLabel">
-                 CONFIRMATION
-               </h1>
-               <button
-                 type="button"
-                 class="btn-close"
-                 data-bs-dismiss="modal"
-                 aria-label="Close"
-               ></button>
-             </div>
-             <div class="modal-dialog">
-               Are you confirm ?
-             </div>
-             <div class="modal-footer">
-               <button
-                 type="button"
-                 class="btn btn-secondary"
-                 data-bs-dismiss="modal"
-                 style="background-color: rgba(0, 0, 0, 0.696);"
-               >
-                 Close
-               </button>
-               <a href="/admin/blockUser/<%= user._id %>"
-                 ><button type="button" class="btn btn-danger">
-                   block
-                 </button></a
-               >
-             </div>
-           </div>
-         </div>
-       </div>
-                  
-                  
-                  
+                  <!-- Modal -->
+                  <div
+                    class="modal fade"
+                    id="exampleModal-<%= user._id %>"
+                    tabindex="-1"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">
+                            CONFIRMATION
+                          </h1>
+                          <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div class="modal-dialog">
+                          Are you confirm ?
+                        </div>
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                            style="background-color: rgba(0, 0, 0, 0.696);"
+                          >
+                            Close
+                          </button>
+                          <a href="/admin/blockUser/<%= user._id %>"
+                            ><button type="button" class="btn btn-danger">
+                              block
+                            </button></a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <% if (user.Status == false){%>
                   <a href="/admin/unblockUser/<%= user._id %>"
                     ><button
@@ -155,29 +154,20 @@
                     </button></a
                   >
 
-           
-
-                  <% }%>
-
-                  
-
-                  <% }) %>
-                <div>
-               
+                  <% }%> <% }) %>
+                  <div></div>
+                </div>
               </td>
             </tr>
           </tbody>
         </table>
-        
-        <script>
-          $(document).ready(function () {
-            $("#Table").DataTable();
-          });
-        </script>
-      </div>
-
       </section>
     </div>
     <%- include ('../partials/footerLink.ejs') %>
+    <script>
+      $(document).ready(function () {
+    $('#Table').DataTable();
+     });
+    </script>
   </body>
 </html>

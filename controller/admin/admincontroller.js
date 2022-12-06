@@ -2,7 +2,7 @@ const admindetails = require("../../model/adminLogin");
 const productdetails = require("../../model/product");
 const userdetails = require("../../model/signUp");
 const category = require("../../model/category");
-const path = require("path");
+
 
 
 module.exports = {
@@ -80,6 +80,7 @@ module.exports = {
   },
 
   addProduct: async (req, res) => {
+   try {
     const image = req.files.image;
     const Product = new productdetails({
       productName: req.body.productname,
@@ -106,6 +107,9 @@ module.exports = {
         console.error();
       }
     });
+   } catch (error) {
+    console.error();
+   }
   },
 
   getproducts: async (req, res) => {
@@ -175,7 +179,7 @@ module.exports = {
    try {
        category.find().then((allCategory)=>{
       if(allCategory){
-        console.log(allCategory);
+        
         res.render('admin/category',{ allCategory })
 
       }else{
@@ -189,17 +193,27 @@ module.exports = {
    }
   },
 
-  addCategory : (req,res)=>{
+  addCategory :  async (req,res)=>{
     try {
+     newCategory = req.body.category
+    let  allCategory  = await category.find();
+      category.find({ Category : newCategory}).then((result)=>{
+        if (result.length) {
+          res.render('admin/category',{
+            err_msg : 'Category already existed...!', allCategory
+          })
+        } else {
+          const newcategory = new category({ 
+            Category : req.body.category,
     
-      const newCategory = new category({ 
-        Category : req.body.category,
-
+          })
+          newcategory.save().then((result)=>{
+           
+            res.redirect('/admin/category');
+          })
+        }
       })
-      newCategory.save().then((result)=>{
-        console.log(result);
-        res.redirect('/admin/category');
-      })
+      
       
     } catch (error) {
       console.log(error);
@@ -220,20 +234,46 @@ module.exports = {
     }
   },
 
-  editCategory : (req,res)=>{
+  editCategory : async (req,res)=>{
     try {
       const id =req.params.id;
-
-      category.updateOne(
-        {_id :id},
-        {
-          $set: {
-            Category : req.body.category,
-          },
+      newCategory = req.body.category
+      let  allCategory  = await category.find();
+      let oldCat = await category.find({_id  : id })
+    
+      category.find({ Category : newCategory }).then((result)=>{
+        if (result.length) {
+          res.render('admin/category',{
+            err_msg : 'Category already existed...!', allCategory
+          })
+        } else {
+          category.updateOne(
+            {_id :id},
+            {
+              $set: {
+                Category : newCategory,
+              },
+            }
+          ).then(()=>{
+            
+            productdetails.updateMany(
+              {Category : oldCat[0].Category},
+              {
+                $set: {
+                  Category : newCategory,
+                }
+              }
+              ).then(()=>{
+                
+                res.redirect('/admin/category')
+              })
+           
+          })
         }
-      ).then(()=>{
-        res.redirect('/admin/category')
       })
+        
+
+     
     } catch (error) {
       console.log(error);
     }

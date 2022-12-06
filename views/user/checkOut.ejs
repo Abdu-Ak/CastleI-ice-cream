@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include ('../partials/head.ejs') %>
+
+  <body>
+    <%- include ('../partials/userNav.ejs') %>
+
+    <!-- Header Start -->
+    <div
+      class="jumbotron jumbotron-fluid page-header"
+      style="margin-bottom: 90px;"
+    >
+      <div class="container text-center py-5">
+        <h1 class="text-white display-3 mt-lg-5">Check Out</h1>
+        <div class="d-inline-flex align-items-center text-white">
+          <p class="m-0"><a class="text-white" href="">Home</a></p>
+          <i class="fa fa-circle px-3"></i>
+          <p class="m-0">Check Out</p>
+        </div>
+      </div>
+    </div>
+    <!-- head end -->
+    <div class="container mt-4 p-0">
+      <div class="row px-md-4 px-2 pt-4">
+        <div class="col-lg-8">
+          <p class="pb-2 fw-bold">Order</p>
+          <form id="checkout" action="/checkout" method="post">
+          <% productData.forEach((productData)=>{%>
+          <div class="card">
+            <div>
+              <div class="table-responsive px-md-4 px-2 pt-3">
+                <table class="table table-borderless">
+                  <tbody>
+                    <tr class="border-bottom">
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div>
+                            <img
+                              class="pic"
+                              src="/public/productIMG/<%=productData.productDetail._id%>.jpg"
+                              alt=""
+                            />
+                          </div>
+                          <div class="ps-3 d-flex flex-column justify-content">
+                            <p class="fw-bold">
+                              <%=productData.productDetail.productName%>
+                            </p>
+
+                            <small class="">
+                              <span class="text-muted"
+                                ><%=productData.productDetail.Category%></span
+                              >
+                            </small>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="d-flex">
+                          <p class="pe-3">
+                            <span class="red fa fa-indian-rupee-sign"
+                              ><span>
+                                <%=productData.productPrice%>
+                              </span></span
+                            >
+                          </p>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <span class="pe-3 text-muted">Quantity</span>
+                          <span class="pe-3">
+                            <input
+                              class="ps-2"
+                              type="number"
+                              disabled
+                              value="<%=productData.productQuantity%>"
+                          /></span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <% })%>
+       
+        </div>
+        <div class="col-lg-4 payment-summary">
+          <p class="fw-bold pt-lg-0 pt-4 pb-2">Payment Summary</p>
+          <div class="card px-md-3 px-2 pt-4">
+           
+            <!-- <div class="d-flex justify-content-between b-bottom">
+              <input type="text" class="ps-2" placeholder="COUPON CODE" />
+              <div class="btn btn-primary">Apply</div>
+            </div> -->
+            <div class="d-flex flex-column b-bottom">
+              <div class="d-flex justify-content-between py-3">
+                <small class="text-muted">Order Summary</small>
+                <p><span class="fa fa-indian-rupee-sign"></span> <%= sum %> </p>
+              </div>
+              <div class="d-flex justify-content-between pb-3">
+                <small class="text-muted">Delivery</small>
+                <p>Free</p>
+              </div>
+              <div class="d-flex justify-content-between">
+                <small class="text-muted">Total Amount</small>
+                <p><span class="fa fa-indian-rupee-sign"></span><strong><%= sum %></strong></p>
+              </div>
+              <hr>
+              <div class="d-flex justify-content-between">
+                <div>
+                    <strong>Total amount</strong>
+                <strong>
+                  <p class="mb-0">(including GST)</p>
+                </strong>
+                </div>
+              <span> <i class="fa fa-indian-rupee-sign"></i><strong><%= sum %></strong></span>  
+              </div>
+              <hr>
+             <div class="d-flex justify-content-center ">
+                <button class="btn btn-success">Place Order</button>
+             </div>
+            </div>
+            
+          </div>
+        </div>
+        <div class="col-lg-8 delivery px-md-3 px-1">
+          <p class="pt-4 fw-bold pb-3 ps-2">Address</p>
+          <div class="card  p-3 mb-2 " id="adcard" >
+            <div class="d-flex align-items-center justify-content-between">
+
+              <div id="address " >
+              
+                <p class="fw-bold "><%= userData.primaryaddress.fullname%></p>
+                <small class="text-muted ">
+                  <%=userData.primaryaddress.address %>
+                  <br />
+                  <%=userData.primaryaddress.locality %>
+                  <br />
+                  <%=userData.primaryaddress.pincode %>
+                  <br />
+                  <%=userData.primaryaddress.district %>
+                  <br />
+                  <%=userData.primaryaddress.state %>
+                  <br />
+                  <%=userData.primaryaddress.landmark %>
+                  <br />
+                  <%=userData.phonenumber %>
+                </small>
+            
+              </div>
+    
+              <div class="d-flex align-items-center">
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    name="address"
+                    type="checkbox"
+                    id="SwitchCheck"
+                    value="primaryaddress"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        <% if (!userData.shippingAddress.fullname){%>
+          <button
+            class="btn btn-outline-success"
+            style="border-radius: 10px;"
+            data-toggle="modal"
+            data-target="#ModalAddress"
+          >
+            Add<span class="ml-1 fa fa-plus"></span>
+          </button>
+          <%}%>
+        </div>
+       
+        <div class="col-lg-4">
+          <p class="pt-4 fw-bold pb-3">Payment Method</p>
+          <div class="flex-column align-items-center pb-4">
+            <div class="size d-flex ps-4" id="paymentMethod">
+              <label class="option d-flex align-items-center">
+                <input type="radio"   />
+                <div class="card">
+                  <div class="d-flex align-items-center">
+                    <div
+                      class="d-flex align-items-center justify-content-center"
+                    >
+                      <img
+                        class="del ml-2"
+                        src="https://images.news18.com/ibnlive/uploads/2020/02/UPI.jpg?impolicy=website&width=510&height=356"
+                        alt=""
+                      />
+                    </div>
+                    <div class="d-flex flex-column px-3">
+                      <p class="fw-bold pb-1">UPI OR NETBANK</p>
+                    </div>
+                  </div>
+                </div>
+                <span class="checkmark"></span>
+              </label>
+            </div>
+            <div class="size d-flex ps-4">
+              <label class="option d-flex align-items-center">
+                <input type="radio" name="paymentMethod" id="paymentMethod" value="COD" />
+                <div class="card">
+                  <div class="d-flex align-items-center">
+                    <div
+                      class="d-flex align-items-center justify-content-center"
+                    >
+                      <img
+                        class="del ml-2"
+                        src="https://thumbs.dreamstime.com/b/fedex-express-logo-editorial-vector-illustration-fedex-logo-editorial-vector-illustration-fed-ex-express-136584531.jpg"
+                        alt=""
+                      />
+                    </div>
+                    <div class="d-flex flex-column px-3">
+                      <p class="fw-bold pb-1">COD</p>
+                    </div>
+                  </div>
+                </div>
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+     
+            <% if (userData.shippingAddress.fullname){%>
+            <div class="col-lg-8 delivery px-md-3 px-1">
+                
+                <div class="card p-3 mb-2" id="shippingAd">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                      <p class="fw-bold"><%= userData.shippingAddress.fullname%></p>
+                      <small class="text-muted">
+                        <%=userData.shippingAddress.address %>
+                        <br />
+                        <%=userData.shippingAddress.locality %>
+                        <br />
+                        <%=userData.shippingAddress.pincode %>
+                        <br />
+                        <%=userData.shippingAddress.district %>
+                        <br />
+                        <%=userData.shippingAddress.state %>
+                        <br />
+                        <%=userData.shippingAddress.landmark %>
+                        <br />
+                        <%=userData.phonenumber %>
+                      </small>
+                    </div>
+      
+                    <div class="d-flex align-items-center">
+                      <div class="form-check form-switch">
+                        <input
+                          name="address"
+                          class="form-check-input"
+                          type="checkbox"
+                          id="SwitchCheck"
+                          value="shippingAddress"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+               
+              </div>
+              <% }%>
+      </div>
+      
+    </div>
+    
+  </form>
+    <!-- Modal HTML Markup -->
+    <div id="ModalAddress" class="modal fade">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title">Add Address</h1>
+          </div>
+          <div class="modal-body">
+            <form role="form" method="POST" action="/secAddress">
+              <div class="form-group d-flex">
+                <label class="control-label m-2 ml-5">Full Name</label>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control input-lg"
+                    name="fullname"
+                    value=""
+                  />
+                </div>
+                <label class="control-label m-2 ml-5">Pincode</label>
+                <div>
+                  <input
+                    type="number"
+                    class="form-control input-lg"
+                    name="pincode"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group d-flex">
+                <label class="control-label m-2 ml-5">Address</label>
+                <div>
+                  <textarea
+                    name="address"
+                    id=""
+                    class="form-control input-lg ml-2"
+                    cols="65"
+                    rows="5"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="form-group d-flex">
+                <label class="control-label m-2 ml-5">Locality</label>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control input-lg ml-2"
+                    name="locality"
+                    value=""
+                  />
+                </div>
+                <label class="control-label m-2 ml-5">District</label>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control input-lg ml-3"
+                    name="district"
+                  />
+                </div>
+              </div>
+              <div class="form-group d-flex">
+                <label class="control-label m-2 ml-5">State</label>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control input-lg ml-2"
+                    name="state"
+                    value=""
+                  />
+                </div>
+                <label class="control-label m-2 ml-5 pl-3">Landmark</label>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control input-lg ml-3"
+                    name="landmark"
+                  />
+                </div>
+              </div>
+              <div class="form-group d-flex ">
+                <label class="control-label m-2 ml-5">Phone Number</label>
+                <div>
+                  <input
+                    type="number"
+                    class="form-control input-lg ml-2"
+                    name="phonenumber"
+                    value=""
+                  />
+                </div>
+                
+              </div>
+              <hr />
+              <div class="d-flex justify-content-center">
+                <button type="submit" value="submit" class="btn btn-success">
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <%- include ('../partials/userFooter.ejs') %> <%- include
+    ('../partials/footerLink.ejs') %>
+  </body>
+</html>

@@ -25,36 +25,56 @@ const signupSchema = new schema(
       type: Boolean,
       default: true,
     },
-   primaryaddress: {
+    primaryaddress: {
       fullname: {
         type: String,
-        
       },
 
       pincode: {
         type: Number,
-      
       },
       locality: {
         type: String,
-        
       },
       address: {
         type: String,
-        
       },
       district: {
         type: String,
-        
       },
       state: {
         type: String,
-    
       },
       landmark: {
         type: String,
-        
       },
+    },
+    shippingAddress: {
+      fullname: {
+        type: String,
+      },
+
+      pincode: {
+        type: Number,
+      },
+      locality: {
+        type: String,
+      },
+      address: {
+        type: String,
+      },
+      district: {
+        type: String,
+      },
+      state: {
+        type: String,
+      },
+      landmark: {
+        type: String,
+      },
+      phonenumber :{
+        type : Number,
+      }
     },
   },
   { timestamps: true }

@@ -56,7 +56,7 @@
       </nav>
 
       <section class="mt-5 pt-5 pr-5 ml-5 mr-5 justify-content-between">
-        <table id="table" class="table mt-5 table-hover ml-5 table-light">
+        <table id="Table" class="table mt-5 table-hover ml-5 table-light">
             <thead>
               <tr>
                 
@@ -170,5 +170,10 @@
       </section>
     </div>
     <%- include ('../partials/footerLink.ejs') %>
+    <script>
+      $(document).ready(function () {
+    $('#Table').DataTable();
+     });
+    </script>
   </body>
 </html>

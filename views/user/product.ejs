@@ -33,9 +33,9 @@
                 <div class="col-12 text-center">
                     <ul class="list-inline mb-4 pb-2" id="portfolio-flters">
                         <li class="btn btn-sm btn-outline-primary m-1 active"  data-filter="*">All</li>
-                        <li class="btn btn-sm btn-outline-primary m-1" data-filter=".first">Cone</li>
-                        <li class="btn btn-sm btn-outline-primary m-1" data-filter=".second">Vanilla</li>
-                        <li class="btn btn-sm btn-outline-primary m-1" data-filter=".third">Chocolate</li>
+                        <% categories.forEach((categories)=>{%>
+                        <a href="/filter/<%= categories._id %>"><li class="btn btn-sm btn-outline-primary m-1" data-filter=".second"><%= categories.Category %></li></a>
+                        <%})%>
                     </ul>
                 </div>
             </div>
@@ -50,7 +50,11 @@
                             <img class="rounded-circle w-100 h-100" src="/public/productIMG/<%=products._id%>.jpg" style="object-fit: cover;">
                         </div>
                         <h5 class="font-weight-bold mb-4"> <%= products.productName %></h5>
+                        <% if (user){%>
                         <a href="/productView/<%= products._id %>" class="btn btn-sm btn-secondary">Order Now</a>
+                        <%}else{%>
+                            <a href="/login" class="btn btn-sm btn-secondary">Order Now</a>
+                            <%}%>
                     </div>
                 </div>
                 <% })%>

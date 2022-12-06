@@ -7,6 +7,7 @@ const categorySchema = new schema(
         Category: {
             type: String,
             require: true,
+            unique : true
           },
     },
     { timestamps: true }

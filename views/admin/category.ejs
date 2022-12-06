@@ -58,15 +58,19 @@
        <div class="d-flex justify-content-end">
         <button
         type="button"
-        class="btn btn-success mt-5 "
+        class="btn btn-success mt-5 mb-5"
         data-bs-toggle="modal"
         data-bs-target="#staticBackdrop"
       >
         Add Categories
       </button>
        </div>
-      
-        <table id="table" class="table mt-5 table-hover ml-5 table-light">
+      <div class="d-flex justify-content-center">
+        <% if(locals.err_msg) { %>
+          <p class="text-danger"><strong><%= err_msg %></strong></p>
+          <% } %>
+      </div>
+        <table id="Table" class="table mt-5 table-hover ml-5 table-light">
             <thead>
               <tr>
                 
@@ -296,5 +300,10 @@
       </section>
     </div>
     <%- include ('../partials/footerLink.ejs') %>
+     <script>
+      $(document).ready(function () {
+    $('#Table').DataTable();
+     });
+    </script>
   </body>
 </html>

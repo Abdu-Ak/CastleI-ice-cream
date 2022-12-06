@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <%- include ('../partials/head.ejs') %> 
+    <link rel="stylesheet" href="../../public/css/orderlist.css">
+  </head>
+    <body>
+        <%- include ('../partials/userNav.ejs') %>
+       <!-- Header Start -->
+    <div
+    class="jumbotron jumbotron-fluid page-header"
+    style="margin-bottom: 90px;"
+  >
+    <div class="container text-center py-5">
+      <h1 class="text-white display-3 mt-lg-5">Check Out</h1>
+      <div class="d-inline-flex align-items-center text-white">
+        <p class="m-0"><a class="text-white" href="">Home</a></p>
+        <i class="fa fa-circle px-3"></i>
+        <p class="m-0">Check Out</p>
+      </div>
+    </div>
+  </div>
+  <!-- head end -->
+<section>
+    <div class="container">
+       
+        <article class="card">
+           
+            <div class="card-body">
+               
+                <h6>Order ID:  <%= orderData._id%> </h6>
+                
+                <article class="card">
+                    <div class="card-body row">
+                         <% orderData.forEach((orderData)=>{ %>
+                        <div class="col"> <strong>Estimated Delivery time:</strong> <br>29 nov 2019 </div>
+                        <div class="col"> <strong>Shipping BY:</strong> <br> BLUEDART, | <i class="fa fa-phone"></i> +1598675986 </div>
+                        <div class="col"> <strong>Status:</strong> <br> Picked by the courier </div>
+                        <div class="col"> <strong>Tracking #:</strong> <br> BD045903594059 </div>
+                        <%})%>
+                    </div>
+                </article>
+               
+                <hr>
+                <ul class="row">
+                    <li class="col-md-4">
+                        <figure class="itemside mb-3">
+                            <div class="aside"><img src="https://i.imgur.com/iDwDQ4o.png" class="img-sm border"></div>
+                            <figcaption class="info align-self-center">
+                                <p class="title">Dell Laptop with 500GB HDD <br> 8GB RAM</p> <span class="text-muted">$950 </span>
+                            </figcaption>
+                        </figure>
+                    </li>
+                    
+                   
+                </ul>
+                <hr>
+                <a href="#" class="btn btn-outline-info" data-abc="true"  style="border-radius:10px ;"> <i class="fa fa-file-invoice mr-1"></i>Details</a>
+               
+            </div>
+         
+        </article>
+        
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+      <%- include ('../partials/userFooter.ejs') %> <%- include
+      ('../partials/footerLink.ejs') %>
+    </body>
+</html>
+
+
+
+

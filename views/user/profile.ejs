@@ -31,9 +31,11 @@
                   <li
                     class="list-group-item d-flex justify-content-between align-items-center p-3"
                   >
-                    <button type="button" class="btn btn-outline-primary ms-1">
-                      <span class="fa fa-list mr-1"></span> Orders
-                    </button>
+                    <a href="/orderList">
+                      <button type="button" class="btn btn-outline-primary ms-1">
+                        <span class="fa fa-list mr-1"></span> Orders
+                      </button>
+                    </a>
                   </li>
                   <li
                     class="list-group-item d-flex justify-content-between align-items-center p-3"
@@ -188,7 +190,7 @@
               <div class="modal-body">
                 <form role="form" method="POST" action="/submitAddress">
                   <div class="form-group d-flex">
-                    <label class="control-label m-2 ml-4">Full Name</label>
+                    <label class="control-label m-2 ml-5">Full Name</label>
                     <div>
                       <input
                         type="text"
@@ -197,7 +199,7 @@
                         value=""
                       />
                     </div>
-                    <label class="control-label m-2 ml-4">Pincode</label>
+                    <label class="control-label m-2 ml-5">Pincode</label>
                     <div>
                       <input
                         type="number"
@@ -250,7 +252,7 @@
                         value=""
                       />
                     </div>
-                    <label class="control-label m-2 ml-5">Landmark</label>
+                    <label class="control-label m-2 ml-5 pl-3">Landmark</label>
                     <div>
                       <input
                         type="text"
@@ -291,7 +293,7 @@
               <div class="modal-body">
                 <form role="form" method="POST" action="/changeAddress">
                   <div class="form-group d-flex">
-                    <label class="control-label m-2 ml-4">Full Name</label>
+                    <label class="control-label m-2 ml-5">Full Name</label>
                     <div>
                       <input
                         type="text"
@@ -300,7 +302,7 @@
                         value=" <%=userData.primaryaddress.fullname  %>"
                       />
                     </div>
-                    <label class="control-label m-2 ml-4">Pincode</label>
+                    <label class="control-label m-2 ml-5">Pincode</label>
                     <div>
                       <input
                       type="number"
@@ -356,7 +358,7 @@
                         value=" <%=userData.primaryaddress.state %>"
                       />
                     </div>
-                    <label class="control-label m-2 ml-5">Landmark</label>
+                    <label class="control-label m-2 ml-5 pl-3">Landmark</label>
                     <div>
                       <input
                         type="text"
@@ -389,9 +391,10 @@
         <%}%>
 
 
-        <%- include ('../partials/userFooter.ejs') %> <%- include
-        ('../partials/footerLink.ejs') %>
       </div>
     </section>
+    
+    <%- include ('../partials/userFooter.ejs') %> <%- include
+    ('../partials/footerLink.ejs') %>
   </body>
 </html>

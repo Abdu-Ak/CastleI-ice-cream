@@ -90,7 +90,7 @@
       
                       <!-- Price -->
                       <p class="text-start text-md-center">
-                        <strong><span class="fa fa-indian-rupee-sign"></span><%=productData.productDetail.price%></strong>
+                        <strong><span class="fa fa-indian-rupee-sign"></span><%=productData.productPrice%></strong>
                       </p>
                       <!-- Price -->
                     </div>
@@ -153,16 +153,18 @@
                       <div>
                         <strong>Total amount</strong>
                         <strong>
-                          <p class="mb-0">(including VAT)</p>
+                          <p class="mb-0">(including GST)</p>
                         </strong>
                       </div>
                       <span><strong><span class="fa fa-indian-rupee-sign"></span><%= sum %></strong></span>
                     </li>
-                  </ul>
-                   <div class="d-flex justify-content-center">
+                  </ul> 
+                   <div class="d-flex ">
+                   <a href="/checkOut" class="w-100  ">
                     <button type="button " class="btn btn-primary btn-lg btn-block " style="width: 80%;">
-                        Go to checkout
-                      </button>
+                      Go to checkout
+                    </button>
+                   </a>
                    </div>
                  
                 </div>

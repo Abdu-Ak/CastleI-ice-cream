@@ -89,15 +89,18 @@
                     method="post"
                     role="form"
                     enctype="multipart/form-data"
+                    onsubmit="return validatingForm(this);"
                   >
                     <div class="form-outline mb-4 d-flex">
                       <input
                         type="text"
                         name="productname"
+                        id="productname"
                         class="form-control form-control-lg text-center mr-2"
                         placeholder="Product Name"
                       />
-                      <select class="form-select  form-select-lg mb-3 text-muted rounded-pill" aria-label=".form-select-lg example " name="category">
+                      <select class="form-select  form-select-lg mb-3 text-muted rounded-pill" aria-label=".form-select-lg example " 
+                      name="category" id="category">
                         <option  disabled selected>Category</option>
                         <% category.forEach((category)=>{ %>
                         <option ><%= category.Category %></option>
@@ -122,12 +125,14 @@
                       <input
                         type="number"
                         name="stock"
+                        id="stock"
                         class="form-control form-control-lg mr-2 text-center"
                         placeholder="Stock"
                       />
                       <input
                         type="number"
                         name="price"
+                        id="price"
                         class="form-control form-control-lg text-center"
                         placeholder="Price"
                       />
@@ -163,6 +168,7 @@
                     </div>
 
                     <hr />
+                    <p id="Error" class="text-danger mt-3"></p>
                     <div class="add product">
                       <a href="/" class="d-flex justify-content-center mt-3"
                         ><button
