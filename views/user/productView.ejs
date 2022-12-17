@@ -2,11 +2,11 @@
 <html lang="en">
 
   <%- include ('../partials/head.ejs') %>
-
+ <link rel="stylesheet" href="../../public/css/productView.css">
 <body>
   <%- include ('../partials/userNav.ejs') %>
 
-
+  
   
 
     <!-- product detail Start -->
@@ -23,14 +23,20 @@
           <div class="row">
             
             <div class="col-lg-4" style="min-height: 400px">
-              
-              <div class="position-relative h-100 rounded overflow-hidden">
-                <img
-                  class="position-absolute w-100 h-100"
-                  src="/public/productIMG/<%=product._id%>.jpg"
-                  style="object-fit: cover"
-                />
-              </div>
+              <div class="images p-3">
+								<div class="text-center p-4">
+									<figure id="zoomer" class="zoom" onmousemove="zoom(event)" style="background-image: url(<%=product.image[0].url%>);width: 350px; height: 300px; border-radius: 10px;">
+									 <img id="main-image" style="width: 350px;height: 300px;" src="<%=product.image[0].url %>" /> 
+									</figure>
+								</div>
+								<div class="thumbnail text-center"> 
+									<% if(product.image.length>1){ for(let i=0;i<product.image.length;i++) {%> 
+									<img  onclick="change_image(this)"src="<%=product.image[i].url%>"   style="width: 70px; height: 60px; border-radius: 5px ; " 
+                  width="70"> 
+									<%}}%>
+								</div>
+								
+							</div>
             </div>
             <div class="col-lg-4 py-5 ml-5">
               <h4 class="font-weight-bold mb-3"> Features</h4>
@@ -77,4 +83,26 @@
       <%- include ('../partials/footerLink.ejs') %>
 </body>
 
+<script>
+  function change_image(image){
+  let container = document.getElementById("main-image");
+  let zoomer = document.getElementById("zoomer");
+  container.src = image.src;
+  zoomer.style.backgroundImage = "url("+image.src+")"
+}
+document.addEventListener("DOMContentLoaded", function(event) {
+});
+function offZoom(e) {
+  img.style.transformOrigin = `center center`;
+  img.style.transform = "scale(1)";
+}
+function zoom(e){
+var zoomer = e.currentTarget;
+e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX
+e.offsetY ? offsetY = e.offsetY : offsetX = e.touches[0].pageX
+x = offsetX/zoomer.offsetWidth*100
+y = offsetY/zoomer.offsetHeight*100
+zoomer.style.backgroundPosition = x + '% ' + y + '%';
+}
+</script>
 </html>

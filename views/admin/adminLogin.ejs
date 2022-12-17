@@ -49,12 +49,14 @@
                 <div class="card-body p-5 text-center">
       
                   <h3 class="mb-5">Admin Log In</h3>
-
-                  <hr>
-                   
+                 
                   <% if(locals.err_msg) { %>
                     <p class="text-danger"> <%= err_msg %></p>
                     <% } %>
+
+                  <hr>
+                   
+                
 
 
                  <form action="/admin/adminlogin" method="post" id="form" role="form"  >

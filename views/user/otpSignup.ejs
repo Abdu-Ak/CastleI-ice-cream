@@ -9,26 +9,81 @@
           <div class="col-12 col-md-8 col-lg-6 col-xl-5">
             <div class="card shadow-2-strong" style="border-radius: 1rem">
               <div class="card-body p-5 text-center">
-                <h3 class="mb-5">OTP-Sign Up</h3>
-               
+                <h3 class="mb-5">Sign Up</h3>
+                <% if(locals.err_msg) { %>
+                <p class="text-danger"><%= err_msg %></p>
+                <% } %>
 
                 <form action="/submitOtp" method="post" role="form">
-                 
-
-                 
-                  
-                 
+                  <div class="form-outline mb-4">
                     <input
-                      type="number"
-                      id="typeEmailX-2"
-                      name="otp"
+                      type="text"
+                      id="username"
+                      name="username"
                       class="form-control form-control-lg text-center"
-                      placeholder="OTP"
+                      
+                      readonly
+                      value="<%=data.username%>"
                     />
                   </div>
 
+                  <p id="userNameError" class="text-danger mt-3"></p>
+
+                  <div class="form-outline mb-4">
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      class="form-control form-control-lg text-center"
+                     
+                      readonly
+                      value="<%=data.email%>"
+                    />
+                  </div>
+
+                  <p id="emailError" class="text-danger mt-3"></p>
+
+                  <div class="form-outline mb-4">
+                    <input
+                      type="number"
+                      id="phonenumber"
+                      name="phonenumber"
+                      class="form-control form-control-lg text-center"
+                    
+                      readonly
+                      value="<%=data.phonenumber%>"
+                    />
+                  </div>
+
+                  <p id="phoneNumberError" class="text-danger mt-3"></p>
+
+                  <div class="form-outline mb-4">
+                    <input
+                      type="password"
+                      id="password"
+                      name="password"
+                      class="form-control form-control-lg text-center"
+                      
+                      readonly
+                      value="<%=data.password%>"
+                    />
+                  </div>
+                   
+                  <p id="passwordError" class="text-danger mt-3"></p>
+
+
+                  <div class="form-outline mb-4">
+                    <input
+                    type="number"
+                    id="typeEmailX-2"
+                    name="otp"
+                    class="form-control form-control-lg text-center"
+                    placeholder="OTP"
+                  />
+                  </div>
+
                   <div class="Signup">
-                    <a href="/" class="d-flex justify-content-center mb-5"
+                    <a href="/" class="d-flex justify-content-center"
                       ><button
                         class="btn btn-primary btn-lg btn-block w-50"
                         type="submit"

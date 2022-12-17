@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include ('../partials/head.ejs') %>
+  <body>
+    <%- include ('../partials/loginNav.ejs') %>
+    <section>
+      <div class="container py-5 d-flex justify-content-center">
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="h4" style="width: 20rem;">
+                    <strong> RESET YOUR PASSWORD </strong>
+                  </p>
+                </div>
+              </div>
+              <hr />
+              <form action="/resetpass" method="post" id="form" role="form">
+                <div class="form-outline mb-4">
+                 <label for="details">New Password</label>
+                  <input
+                    type="password"
+                    id="newpassword"
+                    name="newpassword"
+                    class="form-control form-control-lg text-center"
+            
+                  />
+                </div>
+                <input
+                    type="hidden"
+                    id="details"
+                    name="details"
+                    class="form-control form-control-lg text-center"
+                    value="<%=data.details%>"
+                  />
+
+                <div class="form-outline mb-4">
+                    <label for="details">Confirm Password</label>
+                  <input
+                    type="password"
+                    id="typePasswordX-2"
+                    name="confirmpassword"
+                    class="form-control form-control-lg text-center"
+                
+                  />
+
+                </div>
+                <% if(locals.err_msg) { %>
+                  <p class="text-danger mb-2"><%= err_msg %></p>
+                  <% } %>
+                <div class="login d-flex justify-content-center">
+                  <button
+                    class="btn btn-success btn-lg btn-block "
+                    type="submit"
+                    style="width: 30%;"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <%- include ('../partials/footerLink.ejs') %>
+  </body>
+</html>

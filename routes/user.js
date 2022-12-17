@@ -1,14 +1,17 @@
 const express = require("express");
+const multer = require("multer");
 const usercontroller = require("../controller/user/usercontroller");
 const router = express.Router();
 const userController = require("../controller/user/usercontroller");
-const session = require("../middleware/session")
+const { verifyUser } = require("../middleware/session");
+const { storage , cloudinary } = require('../middleware/cloudinary');
+const upload = multer({storage});
 
 
 
 router.get("/", userController.landing);
 
-router.get("/home",session.verifyUser,userController.home);
+router.get("/home",verifyUser,userController.home);
 
 router.get("/login", userController.getLogin);
 
@@ -24,42 +27,60 @@ router.post("/submitOtp", userController.otpsignup);
 
 router.get("/product",userController.product)
 
-router.get("/productview/:id",session.verifyUser,userController.productView)
+router.get('/forgotPass',userController.forgotPass)
 
-router.get("/addFavorite/:id",session.verifyUser,usercontroller.addFavorite)
+router.post('/postForgotpass',userController.postForgotpass)
 
-router.get("/favorite",session.verifyUser,userController.getFavorite)
+router.post('/forgotpassOtp',userController.forgotpassOtp)
 
-router.get("/cart",session.verifyUser,userController.getCart)
+router.post('/resetPass',userController.resetPass)
 
-router.get("/addcart/:id",session.verifyUser,userController.addTocart)
+router.get("/productview/:id",verifyUser,userController.productView)
 
-router.post("/changeQuantity",session.verifyUser,userController.changeQuantity)
+router.get("/addFavorite/:id",verifyUser,usercontroller.addFavorite)
 
-router.post("/removeProduct",session.verifyUser,userController.removeProduct)
+router.get("/favorite",verifyUser,userController.getFavorite)
 
-router.get("/profile",session.verifyUser,userController.profile)
+router.get("/cart",verifyUser,userController.getCart)
 
-router.post("/submitAddress",session.verifyUser,userController.submitAddress)
+router.get("/addcart/:id",verifyUser,userController.addTocart)
+
+router.post("/changeQuantity",verifyUser,userController.changeQuantity)
+
+router.post("/removeProduct",verifyUser,userController.removeProduct)
+
+router.get("/profile",verifyUser,userController.profile)
+
+router.post("/submitAddress",verifyUser,userController.submitAddress)
  
-router.post("/changeAddress",session.verifyUser,usercontroller.changeAddress)
+router.post("/changeAddress",verifyUser,usercontroller.changeAddress)
 
-router.get('/changePassword',session.verifyUser,userController.getChangepass)
+router.get('/changePassword',verifyUser,userController.getChangepass)
 
-router.post('/changePass',session.verifyUser,userController.postChangepass)
+router.post('/changePass',verifyUser,userController.postChangepass)
 
-router.post("/removeFavorite",session.verifyUser,userController.removeFavorite)
+router.post("/removeFavorite",verifyUser,userController.removeFavorite)
 
-router.get("/filter/:id",session.verifyUser,userController.filterPro);
+router.get("/filter/:id",verifyUser,userController.filterPro);
 
-router.get("/checkOut",session.verifyUser,userController.getCheckout)
+router.get("/checkOut",verifyUser,userController.getCheckout)
 
-router.post("/secAddress",session.verifyUser,usercontroller.postSecAddress);
+router.post("/secAddress",verifyUser,usercontroller.postSecAddress);
 
-router.post("/checkout",session.verifyUser,userController.postCheckout)
+router.post("/checkout",verifyUser,userController.postCheckout);
 
-router.get("/orderSuccess",session.verifyUser,userController.getSuccess)
+router.get("/orderSuccess",verifyUser,userController.getSuccess);
 
-router.get("/orderList",session.verifyUser,usercontroller.getOrderlist)
+router.get("/orderList",verifyUser,usercontroller.getOrderlist);
+
+router.post("/verifyPayment",verifyUser,usercontroller.verifyPayment)
+
+router.get("/paymentFail",verifyUser, userController.paymentFail)
+
+router.get("/cancelOrder/:id",verifyUser,userController.cancelOrder)
+
+router.post('/submitDp',verifyUser,upload.single('image'),usercontroller.addDp)
+
+
 
 module.exports = router;

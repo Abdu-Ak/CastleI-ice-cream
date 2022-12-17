@@ -5,7 +5,7 @@ module.exports={
      mailTransporter : nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: process.env.GAMIL,
+          user: process.env.GMAIL,
           pass: process.env.PASS ,
         },
       }),

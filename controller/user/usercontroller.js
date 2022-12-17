@@ -3,29 +3,40 @@ const userdetails = require("../../model/signUp");
 const productdetails = require("../../model/product");
 const { default: mongoose } = require("mongoose");
 const cart = require("../../model/cart");
-const mailer = require("../../middleware/otp")
+const mail = require ('../../middleware/otp')
 const { count } = require("../../model/signUp");
 const { response } = require("../../app");
 const favorite = require("../../model/favorite");
 const  category  = require("../../model/category");
 const order = require("../../model/order")
 const moment = require("moment");
-require("dotenv").config();
+const { instance } = require("../../middleware/razorPay");
+const crypto = require("crypto");
+const otp = require("../../model/otp");
+const { invalid } = require("moment");
+
 
 var favCount;
 var cartCount;
 var totalAmount;
-let data;
+
 
 module.exports = {
   landing: async (req, res) => {
-     user = req.session.user;
+     try {
+      user = req.session.user;
     let products = await productdetails.find();
+    
     res.render("user/index", { user, products , cartCount , favCount});
+     } catch (error) {
+      console.log(error);
+      res.render('500')
+     }
   },
 
   home: async (req, res) => {
-    let user = req.session.user;
+    try {
+      let user = req.session.user;
     let products = await productdetails.find();
     if (user) {
       let userData = await userdetails.findOne({  $or: [{ username: user }, { email: user }, { phonenumber: user }], })
@@ -39,27 +50,35 @@ module.exports = {
           cartCount=0;
          
       }
-      let favData = await favorite.findOne({userId : userData._id })
+      let favData = await favorite.find({userId : userData._id })
+      
       if (favData.length) {
         favCount = favData[0].product.length
-        
-      }else{
-
-        favCount=0;
-
+      } else {
+        favCount =0;
       }
+      
       res.render("user/index", { user, products , cartCount , favCount });
     } else {
       res.render("user/userLogin");
     }
+    } catch (error) {
+      console.log(error);
+      res.render('500');
+    }
   },
 
   getLogin: (req, res) => {
+   try {
     if (req.session.user) {
       res.redirect("/home");
     } else {
       res.render("user/userLogin");
     }
+   } catch (error) {
+    console.log(error);
+    res.render('500');
+   }
   },
 
   doLogin: async (req, res) => {
@@ -96,30 +115,37 @@ module.exports = {
       
     } catch (error) {
       console.log(error);
+      res.render('500');
     }
   },
 
   getSignUp: (req, res) => {
+   try {
     if (req.session.user) {
       res.redirect("/home");
     } else {
       res.render("user/Signup");
     }
+   } catch (error) {
+    console.log(error);
+    res.render('500');
+   }
   },
 
   postSignup: async (req, res) => {
 
     try {
-       data =req.body;
+     let   data =req.body;
+    
       let mailDetails = {
         from: process.env.GMAIL,
         to: data.email,
         subject: "CASTLE ICE CREAMS VERIFICATION",
-        html: `<p>YOUR OTP FOR REGISTERING IN CASTLE  IS <h1> ${mailer.OTP} <h1> </p>`,
+        html: `<p>YOUR OTP FOR REGISTERING IN CASTLE  IS <h1> ${mail.OTP} <h1> </p>`,
       }; 
       if (req.body.password === req.body.confirmpassword) {
         userdetails
-          .find({ username: data.username, email: data.email, phonenumber: data.phonenumber })
+          .find({  $or: [{ username: data.username }, { email: data.email }, { phonenumber: data.phonenumber }], })
           .then((result) => {
             if (result.length) {
               res.render("user/signup", {
@@ -127,14 +153,20 @@ module.exports = {
               });
             } else {
             
-                mailer.mailTransporter.sendMail(mailDetails,(err,data)=>{
+               mail.mailTransporter.sendMail(mailDetails,(err,Data)=>{
                   if (err) {
                     console.log('error occurs');
                     
                   } else {
-                   console.log(data);
-                    res.render('user/otpSignup' )
-
+                    const newOtp = new otp({
+                      otp: mail.OTP,
+                    });
+                    newOtp.save().then(()=>{
+                     
+                      res.render('user/otpSignup' , {data})
+                    
+                    })
+                   
                   }
                 })
 
@@ -147,56 +179,203 @@ module.exports = {
       }
     } catch (error) {
       console.log(error);
+      res.render('500');
 
     }
 
   },
-  otpsignup : (req,res)=>{
+  otpsignup : async (req,res)=>{
     try {
-      let otp = req.body.otp;
-      console.log(otp);
-      console.log(mailer.OTP);
-      if (mailer.OTP == otp ) {
-        
-       bcrypt.hash(data.password, 10).then((password)=>{
-      
-        const newUser = new userdetails({
-          username : data.username,
-          email : data.email,
-          phonenumber : data.phonenumber,
-          password : password,
-        });
-        
-        newUser.save().then(()=>{
-          req.session.user = data.email;
-          res.redirect("/home");
+      const data = req.body;
+      console.log(data);
+     if (data.otp) {
+      const verify = await otp.find({ otp: data.otp });
+      if (verify) {
+        otp.deleteMany({otp : data.otp}).then(()=>{
+          bcrypt.hash(data.password, 10).then((password)=>{
+       
+            const newUser = new userdetails({
+              username : data.username,
+              email : data.email,
+              phonenumber : data.phonenumber,
+              password : password,
+            });
+            
+            newUser.save().then(()=>{
+              req.session.user = data.email;
+              res.redirect("/home");
+            })
+    
+           })
+            
         })
-
-       })
         
-      } else {
-        console.log('error');
-      }
-      
+       } else {
+         res.render("user/otpSignup", {
+         
+           data,
+           err_msg: "invalid otp..!",
+         });
+       }
+       
+     } else {
+      res.render("user/otpSignup", {
+         
+        data,
+        err_msg: "Enter your  otp ..!",
+      });
+     } 
+     
     } catch (error) {
       console.log(error);
+      res.render('500');
     }
+  },
+    
+ forgotPass :  (req,res)=>{
+   try {
+    res.render('user/forgotPass')
+   } catch (error) {
+    console.log(error);
+    res.render('500');
+   }
+ },
+   postForgotpass : async (req,res)=>{
+   try {
+    let data = req.body;
+     
+
+   let userData = await userdetails
+         .findOne({  $or: [{ username: data.details }, { email: data.details }, { phonenumber: data.details }], })
+         if (userData) {
+          console.log(userData);
+          let mailDetails = {
+            from:process.env.GMAIL,
+            to: userData.email,
+            subject: "CASTLE ICE CREAMS VERIFICATION",
+            html: `<p>YOUR OTP FOR RESET PASSWORD IS <h1> ${mail.OTP} <h1> </p>`,
+            
+          };
+         mail.mailTransporter.sendMail(mailDetails,(err,Data)=>{
+          
+            if (err) {
+              console.log('error occurs');
+              
+            } else {
+              const newOtp = new otp({
+                otp: mail.OTP,
+              });
+              newOtp.save().then(()=>{
+                
+                res.render('user/forgotPassOtp' , {data})
+              
+              })
+             
+            }
+          })
+         } else {
+          res.render('user/forgotPass',{
+            err_msg : 'invalid username or email...!'
+          })
+         }
+   } catch (error) {
+    console.log(error);
+    res.render('500');
+   }
+   },
+
+  forgotpassOtp : (req,res)=>{
+     try {
+       let data = req.body;
+        
+       if (data.otp) {
+        otp.find({otp : data.otp}).then((result)=>{
+          if (result) {
+            otp.deleteMany({otp : data.otp}).then(()=>{
+              res.render('user/resetPass',{data})
+            })
+            
+          } else {
+            res.render('user/forgotPassOtp' , {
+              data,
+              err_msg : "invalid OTP..!"
+            })
+          }
+         })
+
+       } else {
+         res.render('user/forgotPassOtp' , {
+               data,
+              err_msg : "Enter your  OTP..!"
+            })
+       }
+
+     } catch (error) {
+      console.log(error);
+      res.render('500');
+     }
+
+
+  },   
+  resetPass : async (req,res)=>{
+   try {
+    let data= req.body;
+    if (data.newpassword && data.confirmpassword ) {
+      if (data.newpassword === data.confirmpassword) {
+        let newPassword = await bcrypt.hash(data.newpassword, 10)
+        
+        userdetails.updateOne( {  $or: [{ username: data.details }, { email: data.details }, { phonenumber: data.details }], },
+          {
+            $set:{
+              password:newPassword
+            }
+          }
+          ).then(()=>{
+            res.redirect('/login')
+          })
+        
+      } else {
+        res.render('user/resetPass',{data,
+          err_msg : "  Password must be same..!"
+        })
+      }
+      
+    } else {
+      res.render('user/resetPass',{data,
+        err_msg : " You must enter Password..!"
+      })
+    }
+   } catch (error) {
+    console.log(error);
+    res.render('500');
+   }
+    
   },
 
   productView: async (req, res) => {
+   try {
     let user = req.session.user;
     const id = req.params.id;
     let product = await productdetails.findOne({ _id: id });
     
     res.render("user/productView", { user, product ,cartCount , favCount});
+   } catch (error) {
+    console.log(error);
+    res.render('500');
+   }
   },
 
   product: async (req, res) => {
+   try {
     let user = req.session.user;
     let products = await productdetails.find();
     let categories = await category.find()
     
     res.render("user/product", { user, products , cartCount ,favCount ,categories });
+   } catch (error) {
+    console.log(error);
+    res.render('500');
+   }
   },
 
   getFavorite: async (req, res) => {
@@ -237,12 +416,13 @@ module.exports = {
       ])
       .exec();
       favCount = productData.length
-      console.log(productData);
+      
       res.render("user/favorite", { user , productData , cartCount , favCount })
 
 
     } catch (error) {
-      
+      console.log(error);
+      res.render('500');
     }
   },
   addTocart: async (req, res) => {
@@ -269,22 +449,31 @@ module.exports = {
         console.log(productEx);
         if (productEx != -1) {
         
-          await cart.aggregate([
-            {
-              $unwind : "$product"
-            },
-          ]);
+          // await cart.aggregate([
+          //   {
+          //     $unwind : "$product"
+          //   },
+          // ]);
           
-          await cart.updateOne(
-            {userId : userData._id, "product.productId": objId},
-            {$inc : {"product.$.quantity" : 1 }}
-          )
-          
+          // await cart.updateOne(
+          //   {userId : userData._id, "product.productId": objId},
+          //   {$inc : {"product.$.quantity" : 1 }}
+          // )
+          res.json({productEx : true})
           
         }else{
-          cart.updateOne({userId : userData._id},{$push : {product : productOb }}).then(()=>{
-            res.json({ status: true });
-          })
+         
+          
+           
+                cart.updateOne({userId : userData._id},{$push : {product : productOb }}).then(()=>{
+                  favorite.updateOne({userId : userData._id}, { $pull: { product: { productId: objId } } }).then(()=>{
+                    res.json({ status: true });
+                  })
+                 
+                })
+             
+           
+        
         }
       } else {
         const newCart = new cart({
@@ -300,7 +489,10 @@ module.exports = {
            res.json({ status: true });
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      res.render('500');
+    }
   },
 
   getCart: async (req, res) => {
@@ -309,7 +501,7 @@ module.exports = {
       const userData = await userdetails.findOne({
         $or: [{ username: user }, { email: user }, { phonenumber: user }],
       });
-
+    
       const productData = await cart
         .aggregate([
           {
@@ -348,7 +540,7 @@ module.exports = {
           },
         ])
         .exec();
-    
+        console.log(productData);
         const sum = productData.reduce((accumulator, object) => {
           return accumulator + object.productPrice;
         }, 0);
@@ -358,10 +550,11 @@ module.exports = {
       console.log(cartCount);
     } catch (error) {
       console.log(error);
+      res.render('500');
     }
   },
-
   changeQuantity : async (req,res)=>{
+   try {
     const data = req.body;
     
     const objId = mongoose.Types.ObjectId(data.product);
@@ -379,10 +572,15 @@ module.exports = {
       res.json({status : true})
       
     })
+   } catch (error) {
+    console.log(error);
+      res.render('500');
+   }
 
   },
   removeProduct : async (req,res)=>{
-    const data = req.body;
+    try {
+      const data = req.body;
     
     const objId = mongoose.Types.ObjectId(data.product);
      await cart.aggregate([
@@ -398,16 +596,26 @@ module.exports = {
     .then(() => {
       res.json({ status: true });
     });
+    } catch (error) {
+      console.log(error);
+      res.render('500');
+    }
   },
  
   profile : async (req,res)=>{
+   try {
     let user =req.session.user
     let userData = await userdetails.findOne({$or: [{ username: user }, { email: user }, { phonenumber: user }]})
-    
+    console.log(userData);
     res.render('user/profile',{ user , cartCount,userData , favCount} )
+   } catch (error) {
+    console.log(error);
+    res.render('500');
+   }
   },
 
   submitAddress : (req,res)=>{
+   try {
     let user = req.session.user;
     data = req.body;
      addressObj = { 
@@ -428,6 +636,10 @@ module.exports = {
     
       res.redirect('/profile')
      })
+   } catch (error) {
+    console.log(error);
+    res.render('500');
+   }
   },
   
   changeAddress :async (req,res)=>{
@@ -460,12 +672,18 @@ module.exports = {
     res.redirect('/profile')
     
    } catch (error) {
-    console.error();
+    console.log(error);
+    res.render('500');
    }
   },
  getChangepass : (req,res)=>{
- let user = req.session.user
+ try {
+  let user = req.session.user
   res.render('user/changePass',{user,cartCount , favCount})
+ } catch (error) {
+  console.log(error);
+    res.render('500');
+ }
 
  },
  postChangepass :async (req,res)=>{
@@ -509,7 +727,8 @@ module.exports = {
     
    
   } catch (error) {
-    console.error();
+    console.log(error);
+    res.render('500');
   }
  },
 
@@ -535,10 +754,9 @@ module.exports = {
       );
       if (productEx != -1) {
          
-        favorite.updateOne({userId : userData._id},{$pull : { product: { productId: objId } }}).then(()=>{
+       
           res.json({ result: false });
-        })
-
+        
 
       }else{
         favorite.updateOne({userId : userData._id},{$push : {product : productOb }}).then(()=>{
@@ -561,7 +779,8 @@ module.exports = {
       })
     }
   } catch (error) {
-    
+    console.log(error);
+    res.render('500');
   }
  },
 
@@ -585,7 +804,8 @@ module.exports = {
   });
 
   } catch (error) {
-    
+    console.log(error);
+    res.render('500');
   }
  },
 
@@ -598,7 +818,8 @@ module.exports = {
     let products = await productdetails.find({ Category : catData.Category });
     res.render("user/product", { user, products , cartCount ,favCount ,categories });
   } catch (error) {
-    console.error();
+    console.log(error);
+    res.render('500');
   }
       
  },
@@ -653,13 +874,15 @@ module.exports = {
     return accumulator + object.productPrice;
   },0);
   if(productData.length){
+    
     res.render("user/checkOut",{user , favCount , cartCount , productData , userData , sum})
   }else{
     res.redirect('/cart')
   }
       
   } catch (error) {
-    console.error();
+    console.log(error);
+    res.render('500');
   }
  },
 
@@ -687,123 +910,41 @@ module.exports = {
    })
 
  } catch (error) {
-   console.error()
+  console.log(error);
+  res.render('500');
  }
  },
  
-  postCheckout : async (req,res)=>{
-      let data = req.body
-      let user = req.session.user;
-      let userData = await userdetails.findOne({ $or: [{ username: user }, { email: user }, { phonenumber: user }]});
-      let cartData = await cart.findOne({userId : userData._id});
-      let status = data.paymentMethod === "COD" ? "placed" : "pending"
-      let address;
-      
-      if(data.address === "primaryaddress"){
-        address = userData.primaryaddress;
-      
-      }else{
-        address = userData.shippingAddress;
-        
-      }
-      if(cartData){
-        const productData = await cart
-        .aggregate([
-          {
-            $match: { userId: userData.id },
-          },
-          {
-            $unwind: "$product",
-          },
-          {
-            $project: {
-              productItem: "$product.productId",
-              productQuantity: "$product.quantity",
-            },
-          },
-          {
-            $lookup: {
-              from: "productdetails",
-              localField: "productItem",
-              foreignField: "_id",
-              as: "productDetail",
-            },
-          },
-          {
-            $project: {
-              productItem: 1,
-              productQuantity: 1,
-              productDetail: { $arrayElemAt: ["$productDetail", 0] },
-            },
-          },
-          {
-            $addFields: {
-              productPrice: {
-                $multiply: ["$productQuantity", "$productDetail.price"],
-              },
-            },
-          },
-        ])
-        .exec();
-      
-        const sum = productData.reduce((accumulator, object) => {
-          return accumulator + object.productPrice;
-        }, 0);
-        
-        cartCount = productData.length;
-       
-        const orderData = await order.create({
-          userId : userData._id,
-          address : address,
-          mobileNumber : userData.phonenumber,
-          orderItem : cartData.product,
-          totalAmount : sum,
-          orderStatus : status,
-          paymentMethod : data.paymentMethod,
-          orderdate: moment().format("MMM Do YY"),
-        });
-        await cart.deleteOne({ userId: userData._id });
-        if(data.paymentMethod === "COD"){
-            res.json({status : true});
-            console.log('woow');
-        }else{
-         console.log('fuck u...');
-        }
+ postCheckout : async (req,res)=>{
+ try {
+  let data = req.body
 
-      }else{
-        res.redirect("/cart")
-      }
+  let user = req.session.user;
+  let userData = await userdetails.findOne({ $or: [{ username: user }, { email: user }, { phonenumber: user }]});
+  let cartData = await cart.findOne({userId : userData._id});
+  
+  let address;
+  
+  if(data.address === "primaryaddress"){
+    address = userData.primaryaddress;
+  
+  }else{
+    address = userData.shippingAddress;
     
-      
-  },
-
-  getSuccess : (req,res)=>{
-    let user= req.session.user;
-     res.render('user/orderSuccess',{ favCount , cartCount , user })
-  },
-
-  getOrderlist :async (req,res)=>{
-    let user= req.session.user;
-    const userData = await userdetails.findOne({ $or: [{ username: user }, { email: user }, { phonenumber: user }]}); 
-    const orderData = await order.aggregate([
+  }
+  if(cartData){
+    const productData = await cart
+    .aggregate([
       {
-        $match: { userId: userData._id },
+        $match: { userId: userData.id },
       },
       {
-        $unwind: "$orderItem",
+        $unwind: "$product",
       },
       {
         $project: {
-          userId: "$userId",
-          
-          mobileNumber: "$mobileNumber",
-          address: "$address",
-          totalAmount: "$totalAmount",
-          paymentMethod: "$paymentMethod",
-          orderStatus: "$orderStatus",
-          orderDate: "$orderdate",
-          productItem: "$orderItem.productId",
-          productQuantity: "$orderItem.quantity",
+          productItem: "$product.productId",
+          productQuantity: "$product.quantity",
         },
       },
       {
@@ -816,14 +957,6 @@ module.exports = {
       },
       {
         $project: {
-          userId: 1,
-      
-          mobileNumber: 1,
-          address: 1,
-          totalAmount: 1,
-          paymentMethod: 1,
-          orderStatus: 1,
-          orderDate: 1,
           productItem: 1,
           productQuantity: 1,
           productDetail: { $arrayElemAt: ["$productDetail", 0] },
@@ -836,12 +969,178 @@ module.exports = {
           },
         },
       },
-    ]);
+    ])
+    .exec();
+  
+    const sum = productData.reduce((accumulator, object) => {
+      return accumulator + object.productPrice;
+    }, 0);
+    
+    cartCount = productData.length;
+   
+    const orderData = await order.create({
+      userId : userData._id,
+      address : address,
+      mobileNumber : userData.phonenumber,
+      orderItem : cartData.product,
+      totalAmount : sum,
+      orderStatus : "placed",
+      paymentMethod : data.paymentMethod,
+      paymentStatus : "Not paid",
+      orderdate: moment().format("MMM Do YY"),
+    });
+    const amount = orderData.totalAmount * 100;
+    const _id = orderData._id;
+    await cart.deleteOne({ userId: userData._id });
+    if(data.paymentMethod === "COD"){
+    
+        res.json({success : true});
+        
+    }else if(data.paymentMethod === "online"){
+      let options = {
+        amount: amount,
+        currency: "INR",
+        receipt: "" + _id,
+      };
+      instance.orders.create(options,(err,order)=>{
+      
+        if (err) {
+          console.log(err);
+        } else {
+          res.json(order);
+        
+          
+        }
+      });
+    }
 
-    console.log(orderData);
-    res.render('user/orderList',{ favCount , cartCount , user , orderData })
+  }else{
+    res.redirect("/cart")
+  }
+
+ } catch (error) {
+  console.log(error);
+  res.render('500');
+ }
+  
+},
+
+verifyPayment :(req,res)=>{
+  try {
+    const details = req.body;
+  
+    let hmac = crypto.createHmac("sha256", process.env.KEY_SECRET);
+    hmac.update(
+     details.payment.razorpay_order_id +
+       "|" +
+       details.payment.razorpay_payment_id
+   );
+   hmac = hmac.digest("hex");
+   if (hmac == details.payment.razorpay_signature) {
+     const objId = mongoose.Types.ObjectId(details.order.receipt);
+     console.log(objId);
+     order
+       .updateOne({ _id: objId }, { $set: { paymentStatus: "paid" } })
+       .then(() => {
+         res.json({ success: true });
+         
+       })
+       .catch((err) => {
+         console.log(err);
+         res.json({ status: false });
+       });
+   } else {
+     res.json({ status: false });
+   }
+  } catch (error) {
+    console.log(error);
+    res.render('500');
+  }
+},
+paymentFail : (req,res)=>{
+  try {
+    let user= req.session.user;
+  res.render('user/paymentFail',{ favCount , cartCount , user })
+  } catch (error) {
+    console.log(error);
+    res.render('500');
+  }
+},
+  getSuccess : (req,res)=>{
+   try {
+    let user= req.session.user;
+    res.render('user/orderSuccess',{ favCount , cartCount , user })
+   } catch (error) {
+    console.log(error);
+    res.render('500');
+   }
+  },
+
+  getOrderlist :async (req,res)=>{
+   try {
+    let user= req.session.user;
+    const userData = await userdetails.findOne({ $or: [{ username: user }, { email: user }, { phonenumber: user }]}); 
+    const orderData = await order.aggregate([
+      {
+        $match : { userId : userData._id},
+      },
+      {
+        $lookup : {
+          from : "productdetails",
+          localField : "orderItem.productId",
+          foreignField : "_id",
+          as : "productDetail",
+        },
+      },
+      
+
+    ])
+ 
+   console.log(orderData);
+    
+    res.render('user/orderList',{ favCount , cartCount , user , orderData, userData })
+   } catch (error) {
+    console.log(error);
+    res.render('500');
+   }
+  },
+
+  cancelOrder : (req,res) => {
+    try {
+      const id = req.params.id;
+      order.updateOne({_id : id},{$set : {orderStatus: 'Cancelled'}}).then(()=>{
+       res.redirect('/orderList')
+      })
+    } catch (error) {
+      console.log(error);
+    res.render('500');
+    }
+     
   },
   
+  addDp : async (req,res)=>{
+        try {
+          let user = req.session.user;
+          const image = {
+            url :req.file.path,
+            filename : req.file.filename
+          }
+         
+          let userdata = await userdetails.findOne({ $or: [{ username: user }, { email: user }, { phonenumber: user }]});
+          userdetails.updateOne({_id : userdata.id},{$set : {image : image }}).then(()=>{
+
+           res.redirect("/profile")
+            
+          })
+        } catch (error) {
+          console.log(error);
+          res.render('500');
+        }
+  },
+
+
+
+
   logout: (req, res) => {
     req.session.destroy();
     res.redirect("/");

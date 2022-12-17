@@ -1,82 +1,334 @@
 <html>
   <head>
-    <%- include ('../partials/head.ejs') %> 
-    <link rel="stylesheet" href="../../public/css/orderlist.css">
+    <%- include ('../partials/head.ejs') %>
+    <link rel="stylesheet" href="../../public/css/orderlist.css" />
   </head>
-    <body>
-        <%- include ('../partials/userNav.ejs') %>
-       <!-- Header Start -->
-    <div
-    class="jumbotron jumbotron-fluid page-header"
-    style="margin-bottom: 90px;"
-  >
-    <div class="container text-center py-5">
-      <h1 class="text-white display-3 mt-lg-5">Check Out</h1>
-      <div class="d-inline-flex align-items-center text-white">
-        <p class="m-0"><a class="text-white" href="">Home</a></p>
-        <i class="fa fa-circle px-3"></i>
-        <p class="m-0">Check Out</p>
-      </div>
-    </div>
-  </div>
-  <!-- head end -->
-<section>
-    <div class="container">
-       
-        <article class="card">
+  <body>
+    <%- include ('../partials/userNav.ejs') %>
+
+    <section>
+      <div class="container">
+        <% if (orderData.length !=0 ){%> <% orderData.forEach((orderData)=>{ %>
+        <article class="card mt-1">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <h6>
+                Order ID:
+                <strong class="text-mute ml-1"> <%= orderData._id%> </strong>
+              </h6>
+            
+              <button class="btn btn-outline-danger mb-2"  data-bs-toggle="modal" 
+              data-bs-target="#exampleModal-<%=orderData._id %>">
+                <span class="fa fa-times mr-1"></span>Cancel
+              </button>
            
-            <div class="card-body">
-               
-                <h6>Order ID:  <%= orderData._id%> </h6>
-                
-                <article class="card">
-                    <div class="card-body row">
-                         <% orderData.forEach((orderData)=>{ %>
-                        <div class="col"> <strong>Estimated Delivery time:</strong> <br>29 nov 2019 </div>
-                        <div class="col"> <strong>Shipping BY:</strong> <br> BLUEDART, | <i class="fa fa-phone"></i> +1598675986 </div>
-                        <div class="col"> <strong>Status:</strong> <br> Picked by the courier </div>
-                        <div class="col"> <strong>Tracking #:</strong> <br> BD045903594059 </div>
-                        <%})%>
+             <!--confirm modal -->
+             <div
+                class="modal fade"
+                id="exampleModal-<%=orderData._id %>"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+                >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">
+                        CONFIRMATION
+                      </h1>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
                     </div>
-                </article>
-               
-                <hr>
-                <ul class="row">
-                    <li class="col-md-4">
-                        <figure class="itemside mb-3">
-                            <div class="aside"><img src="https://i.imgur.com/iDwDQ4o.png" class="img-sm border"></div>
-                            <figcaption class="info align-self-center">
-                                <p class="title">Dell Laptop with 500GB HDD <br> 8GB RAM</p> <span class="text-muted">$950 </span>
-                            </figcaption>
-                        </figure>
-                    </li>
-                    
-                   
-                </ul>
-                <hr>
-                <a href="#" class="btn btn-outline-info" data-abc="true"  style="border-radius:10px ;"> <i class="fa fa-file-invoice mr-1"></i>Details</a>
-               
+                    <div class="modal-dialog">
+                      Are you confirm ?
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                        style="background-color: rgba(0, 0, 0, 0.696);"
+                      >
+                        Close
+                      </button>
+                      <a href="/cancelOrder/<%=orderData._id %>"
+                        ><button type="button" class="btn btn-danger">
+                          Cancel
+                        </button></a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-         
+            <article class="card">
+              <div class="card-body row">
+                <div class="col">
+                  <strong>Ordered date:</strong><br />
+                  <p class="text-muted mt-1">
+                    <strong><%= orderData.orderdate%></strong>
+                  </p>
+                </div>
+                <div class="col">
+                  <strong>Order Status</strong><br />
+                  <%if(orderData.orderStatus == "placed"){%>
+                  <p class="text-info mt-1">
+                    <strong><%= orderData.orderStatus%> </strong>
+                  </p>
+                  <%}%>
+                  <%if(orderData.orderStatus == "Cancelled"){%>
+                    <p class="text-danger mt-1">
+                      <strong><%= orderData.orderStatus%> </strong>
+                    </p>
+                    <%}%>
+                    <%if(orderData.orderStatus == "delivered"){%>
+                      <p class="text-success mt-1">
+                        <strong><%= orderData.orderStatus%> </strong>
+                      </p>
+                      <%}%>
+                      <%if(orderData.orderStatus == "shipped"){%>
+                        <p class="text-warning mt-1">
+                          <strong><%= orderData.orderStatus%> </strong>
+                        </p>
+                        <%}%>
+                </div>
+                <div class="col">
+                  <strong>Payment Status:</strong> <br />
+                  <p class="text-success mt-1">
+                    <%if (orderData.paymentStatus == "paid"){%>
+                      <strong class="text-success"><%=orderData.paymentStatus%></strong>
+                    <%}%>
+                    <%if (orderData.paymentStatus == "Not paid"){%>
+                        <strong class="text-danger"><%=orderData.paymentStatus%></strong>
+                      <%}%> 
+                    
+                  </p>
+                </div>
+                <div class="col">
+                  <strong>Payment Method:</strong> <br />
+                  <p class="text-muted mt-1">
+                    
+                    <strong><%= orderData.paymentMethod%> </strong>
+                  </p>
+                </div>
+                <div class="col">
+                  <button
+                    class="btn btn-white"
+                    data-toggle="modal"
+                    data-target="#details-<%= orderData._id%>"
+                  >
+                    <span
+                      class="fa fa-file-invoice"
+                      style="color: rgba(73, 73, 203, 0.966);"
+                    ></span>
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <hr />
+
+            <ul class="row d-flex">
+              <% orderData.productDetail.forEach((product , index)=>{ %>
+              <li class="col-md-4 justify-content-evenly">
+                <figure class="itemside mb-3">
+                  <div class="aside">
+                    <img
+                      src="<%=product.image[0].url%>"
+                      class="img-sm border"
+                    />
+                  </div>
+                  <figcaption class="info align-self-center">
+                    <p class="title text-muted">
+                      <strong><%= product.productName%></strong><br /><br />
+                    </p>
+                    <p class="title">
+                      <%= orderData.orderItem[index].quantity%><br /><br />
+                      <span class="fa fa-indian-rupee-sign"
+                        ><%= product.price%></span
+                      >
+                    </p>
+                  </figcaption>
+                </figure>
+              </li>
+              <%})%>
+              <div class="d-flex justify-content-end">
+                <p class="mr-5 pr-5 text-muted">
+                  Total: <br /><br />
+                  <strong class="text-success"
+                    ><span class="fa fa-indian-rupee-sign ml-5"
+                      ><%= orderData.totalAmount%></span
+                    >
+                  </strong>
+                </p>
+              </div>
+            </ul>
+          </div>
         </article>
-        
+        <%})%> <%}else{%>
+        <div class="container-fluid mt-100">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-body cart">
+                  <div class="col-sm-12 empty-cart-cls text-center">
+                    <img
+                      src="https://media.istockphoto.com/id/861576608/vector/empty-shopping-bag-icon-online-business-vector-icon-template.jpg?s=612x612&w=0&k=20&c=I7MbHHcjhRH4Dy0NVpf4ZN4gn8FVDnwn99YdRW2x5k0="
+                      class="img-fluid mb-4 mr-3"
+                      style="height: 50%; width: 50%;"
+                    />
+
+                    <h4>Buy something to make me happy :)</h4>
+                    <a
+                      href="/product"
+                      class="btn btn-primary cart-btn-transform m-3"
+                      data-abc="true"
+                      >Go to shopping</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <%}%>
+      </div>
+    </section>
+
+    <!-- Modal HTML Markup -->
+    <% orderData.forEach((orderData)=>{ %>
+    <div id="details-<%= orderData._id%>" class="modal fade">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="text-muted mb-0">
+              Thanks for your Order,
+              <span style="color: #a8729a;"><%=userData.username %></span>!
+            </h5>
+          </div>
+          <div class="modal-body">
+            <div class="d-flex justify-content-end align-items-center mb-4">
+              <p class="small text-muted mb-0">
+                Order Id : <%= orderData._id%>
+              </p>
+            </div>
+            <% orderData.productDetail.forEach((product , index)=>{ %>
+            <div class="card shadow-0 border mb-4">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-2">
+                    <img
+                      src="<%=product.image[0].url%>"
+                      class="img-fluid"
+                      alt=""
+                    />
+                  </div>
+                  <div
+                    class="col-md-2 text-center d-flex justify-content-center align-items-center"
+                  >
+                    <p class="text-muted mb-0"><%= product.productName%></p>
+                  </div>
+                  <div
+                    class="col-md-2 text-center d-flex justify-content-center align-items-center"
+                  >
+                    <p class="text-muted mb-0 small"><%= product.Category%></p>
+                  </div>
+
+                  <div
+                    class="col-md-2 text-center d-flex justify-content-center align-items-center"
+                  >
+                    <p class="text-muted mb-0 small">
+                      Qty: <%= orderData.orderItem[index].quantity%>
+                    </p>
+                  </div>
+                  <% var totalPrice=
+                  product.price*orderData.orderItem[index].quantity%>
+                  <div
+                    class="col-md-2 text-center d-flex justify-content-center align-items-center"
+                  >
+                    <p class="text-muted mb-0 small">
+                      <span class="text-muted fa fa-indian-rupee-sign"
+                        ><%= totalPrice%></span
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <%})%>
+
+            <div class="d-flex justify-content-between pt-2">
+              <p class="fw-bold mb-0">Shipping Address :</p>
+              <p class="text-muted mb-0">
+                <span class="fw-bold me-4">Total</span>
+                <span class="fa fa-indian-rupee-sign"></span>
+                <%= orderData.totalAmount%>
+              </p>
+            </div>
+
+            <div class="d-flex justify-content-between pt-2">
+              <!-- <p class="text-muted mb-0"></p>
+            <p class="text-muted mb-0"><span class="fw-bold me-4">Discount</span> $19.00</p> -->
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <p class="text-muted mb-0">
+                <strong><%= orderData.address.fullname%></strong>
+                <br />
+                <%= orderData.address.address%>
+                <br />
+                <%= orderData.address.locality%>
+                <br />
+                <%= orderData.address.pincode%>
+                <br />
+                <%= orderData.address.district%>
+                <br />
+                <%= orderData.address.state%>
+                <br />
+                <%= orderData.address.landmark%>
+                <br />
+                <%if(orderData.address.phonenumber){%> <%=
+                orderData.address.phonenumber%> <%}else{%> <%=
+                orderData.mobileNumber%> <%}%>
+              </p>
+              <p class="text-muted mb-0">
+                <span class="fw-bold me-4">Delivery Charges</span> Free
+              </p>
+            </div>
+
+            <div class="d-flex justify-content-between mb-5">
+              <p class="text-muted mb-0"></p>
+              <p class="text-muted mb-0"></p>
+            </div>
+            <div
+              class="modal-footer border-0"
+              style="
+                background-color: #a8729a;
+                border-bottom-left-radius: 10px;
+                border-bottom-right-radius: 10px;
+              "
+            >
+              <h5
+                class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0"
+              >
+                Total paid:
+                <span class="fa fa-indian-rupee-sign ml-2">
+                  <%= orderData.totalAmount%></span
+                >
+              </h5>
+            </div>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
     </div>
-</section>
 
-
-
-
-
-
-
-
-
-
-      <%- include ('../partials/userFooter.ejs') %> <%- include
-      ('../partials/footerLink.ejs') %>
-    </body>
+    <%})%> <%- include ('../partials/userFooter.ejs') %> <%- include
+    ('../partials/footerLink.ejs') %>
+  </body>
 </html>
-
-
-
-

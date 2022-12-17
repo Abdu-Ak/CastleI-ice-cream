@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <%- include ('../partials/head.ejs') %>
+    
+      
+    <link href="../../public/css/ordersuccess.css" rel="stylesheet">
+  </head>
+    <style>
+    
+    </style>
+    <body>
+        <%- include ('../partials/userNav.ejs') %>
+      <section>
+       <div class="container">
+        <div class="box"> 
+            <div class="error alert  " style="height:25rem ; width:20rem ;" >
+              <div class="alert-body">
+                <h4>
+                     SORRY..PAYMENT FAILED.. !
+                </h4>
+                <div class="mt-5">
+                   <a href="/product"> <button class="btn  btn-outline-info mt-5"><span class="fa fa-cart-shopping"></span> continue shopping</button></a>
+                   </div>
+               </div>
+            </div>
+           
+             
+          </div>
+       </div>
+      </section>
+      <%- include ('../partials/userFooter.ejs') %> <%- include
+      ('../partials/footerLink.ejs') %>
+    </body>
+</html>

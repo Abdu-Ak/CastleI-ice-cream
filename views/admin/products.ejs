@@ -15,7 +15,7 @@
               <hr />
             </li>
             <li>
-              <a href="#" class="text-white"
+              <a href="/admin/orders" class="text-white"
                 ><i class="fa fa-list mr-2"></i>Orders</a
               >
               <hr />
@@ -55,8 +55,8 @@
         </div>
       </nav>
 
-      <section class="mt-5 pt-5 pr-5 ml-5 mr-5 justify-content-between">
-        <table id="Table" class="table mt-5 table-hover ml-5 table-light">
+      <section class="mt-5 pt-5 pr-5  pl-5 justify-content-between">
+        <table id="Table" class="table mt-5 table-hover  table-light">
             <thead>
               <tr>
                 
@@ -103,28 +103,32 @@
                   <%= products.stock %>
                 </td>
                 <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center">
+                  <% products.image.forEach((image)=>{%>
                   <img
-                    src="/public/productIMG/<%=products._id%>.jpg"
+                    src="<%=image.url%>"
                     alt="product image"
-                    style="width: 5rem;"
+                    style="width: 20% ; height: 20%"
                   />
+                  <%})%>
                 </td>
                 <td class="col-3 col-md-3 col-lg-3 col-xl-2 text-center  ">
-                  <button type="button" class="btn btn-danger d-flex " data-bs-toggle="modal"
+                  <div class="d-flex">
+                    <button type="button" class="btn btn-outline-danger mt-2 mr-1   " data-bs-toggle="modal" 
                   data-bs-target="#exampleModal-<%= products._id %>">
-                   <span class="fa fa-trash mt-1 mr-1"></span>Delete
+                   <span class="fa fa-trash mt-1 "></span>
                  </button>
-                 <a href="/admin/editProduct/<%=products._id%>"> <button class="btn btn-primary  align-items-center mt-3"
-                   style="height:80% ; background-color: blue ;"><span class="fa fa-pen-to-square"></span>  Edit</button></a>
+                 <a href="/admin/editProduct/<%=products._id%>"> <button class="btn btn-outline-info  mt-2"
+                   ><span class="fa fa-pen-to-square "></span></button></a>
+                  </div>
                 </td>
 
-                <div
+              <div
                 class="modal fade"
                 id="exampleModal-<%= products._id %>"
                 tabindex="-1"
                 aria-labelledby="exampleModalLabel"
                 aria-hidden="true"
-              >
+                >
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">

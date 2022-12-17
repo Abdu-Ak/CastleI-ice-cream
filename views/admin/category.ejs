@@ -14,7 +14,7 @@
               <hr />
             </li>
             <li>
-              <a href="#" class="text-white"
+              <a href="/admin/orders" class="text-white"
                 ><i class="fa fa-list mr-2"></i>Orders</a
               >
               <hr />
@@ -58,11 +58,11 @@
        <div class="d-flex justify-content-end">
         <button
         type="button"
-        class="btn btn-success mt-5 mb-5"
+        class="btn btn-outline-success mt-5 mb-5"
         data-bs-toggle="modal"
         data-bs-target="#staticBackdrop"
       >
-        Add Categories
+      Add<span class="fa fa-plus ml-1"></span> 
       </button>
        </div>
       <div class="d-flex justify-content-center">
@@ -109,12 +109,12 @@
                 <div class="d-flex ml-5">
                     <button
                     type="button"
-                    class="btn btn-primary d-flex"
+                    class="btn btn-outline-info d-flex"
                     data-bs-toggle="modal"
                     data-bs-target="#staticBackdrop-<%= allCategory._id %>  "
-                    style="background-color: blue;"
+                    
                   >
-                  <span class="fa fa-pen-to-square mt-1 mr-1"></span>Edit
+                  <span class="fa fa-pen-to-square mt-1 mr-1"></span>
                   </button>
                   <div
                     class="modal fade"
@@ -173,9 +173,9 @@
                   </div>
                   <!-- edit moda end -->
                        <!-- delete modal -->
-                       <button type="button" class="btn btn-danger d-flex  ml-3" data-bs-toggle="modal"
+                       <button type="button" class="btn btn-outline-danger d-flex  ml-3" data-bs-toggle="modal"
                        data-bs-target="#exampleModal-<%= allCategory._id %>">
-                        <span class="fa fa-trash mt-1 mr-1"></span>Delete
+                        <span class="fa fa-trash mt-1 mr-1"></span>
                       </button>
 
                       <div

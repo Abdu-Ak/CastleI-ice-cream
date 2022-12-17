@@ -76,6 +76,11 @@ const signupSchema = new schema(
         type : Number,
       }
     },
+    image: 
+      {
+        url : String,
+        filename : String,
+      }
   },
   { timestamps: true }
 );

@@ -9,8 +9,31 @@ const orderSchema = new Schema (
             required : true
         },
         address : {
-            type : String,
-            required : true
+            fullname: {
+                type: String,
+              },
+        
+              pincode: {
+                type: Number,
+              },
+              locality: {
+                type: String,
+              },
+              address: {
+                type: String,
+              },
+              district: {
+                type: String,
+              },
+              state: {
+                type: String,
+              },
+              landmark: {
+                type: String,
+              },
+              phonenumber :{
+                type : Number,
+              }
         },
         mobileNumber : {
             type : Number,
@@ -34,6 +57,10 @@ const orderSchema = new Schema (
         orderStatus : {
             type : String,
             required : true
+        },
+        paymentStatus : {
+            type : String,
+            default:"not paid"
         },
         paymentMethod: {
             type : String,

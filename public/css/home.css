@@ -1,0 +1,54 @@
+
+.card-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative
+}
+
+.card-carousel .my-card {
+ 
+  position: relative;
+  
+  -webkit-transform: scale(0.6) translateY(-2rem);
+  transform: scale(0.6) translateY(-2rem);
+  opacity: 0;
+  cursor: pointer;
+  pointer-events: none;
+  width: 100%;
+
+  transition: 1s;
+}
+
+
+
+.card-carousel .my-card:nth-child(0):before {
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  
+  
+  
+  
+}
+
+
+
+.card-carousel .my-card.active {
+
+  -webkit-transform: scale(1) translateY(0) translateX(0);
+  transform: scale(1) translateY(0) translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+  transition: 1s;
+}
+
+.card-carousel .my-card.prev, .card-carousel .my-card.next {
+
+  -webkit-transform: scale(0.8) translateY(-1rem) translateX(0);
+  transform: scale(0.8) translateY(-1rem) translateX(0);
+  opacity: 0.6;
+  pointer-events: auto;
+  transition: 1s;
+}

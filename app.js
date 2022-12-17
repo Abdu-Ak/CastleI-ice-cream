@@ -1,22 +1,20 @@
 // required modules //
 
 const express = require("express");
-const cookieParser = require("cookie-parser");
 const sessions = require("express-session");
 const userRouter = require("./routes/user");
 const adminRouter = require("./routes/admin");
 const app = express();
-const db = require("./config/connection")
-const fileUpload = require("express-fileupload");
+const db = require("./config/connection");
 require("dotenv").config();
 const { preventCache } = require("./middleware/cache");
-
 
 //setting view engine//
 app.set("view engine", "ejs");
 
-// file upllod //
-app.use(fileUpload());
+//serving public file
+app.use(express.static(__dirname));
+
 
 // session and cookie
 const oneDay = 1000 * 60 * 60 * 24;
@@ -37,23 +35,24 @@ app.use(preventCache);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
 // router setting
-app.use("/", userRouter);
 app.use("/admin", adminRouter);
+app.use("/", userRouter);
 
-//serving public file
-app.use(express.static(__dirname));
+app.use((req, res) => {
+  res.status(404).render('404');
+});
 
 
 
-//  db 
+
+//  db
 db.dbConnect();
 
- //server creating//
- app.listen(3000)
-  console.log("server running");
- 
- 
+//server creating//
+app.listen(3000), ()=>{
+  console.log('serving running');
+}
+
 
 module.exports = app;

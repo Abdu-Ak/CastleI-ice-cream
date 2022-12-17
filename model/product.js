@@ -23,10 +23,12 @@ const productSchema = new schema(
       type: Number,
       require: true,
     },
-    image: {
-      type: String,
-      require: true,
-    },
+    image: [
+      {
+        url : String,
+        filename : String,
+      }
+    ],
   },
   { timestamps: true }
 );

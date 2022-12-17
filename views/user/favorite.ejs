@@ -45,9 +45,10 @@
                 data-mdb-ripple-color="light"
               >
                 <img
-                  class="img-fluid w-100"
-                  src="/public/productIMG/<%=productData.productDetail._id%>.jpg"
+                  class="img-fluid w-100 "
+                  src="<%=productData.productDetail.image[0].url%>"
                   alt="Card image cap"
+                  style="height: 20rem;"
                 />
                 <a href="#!">
                   <div

@@ -2,6 +2,10 @@ const admindetails = require("../../model/adminLogin");
 const productdetails = require("../../model/product");
 const userdetails = require("../../model/signUp");
 const category = require("../../model/category");
+const order = require("../../model/order");
+const { default: mongoose } = require("mongoose");
+const cart = require("../../model/cart");
+const favorite = require("../../model/favorite");
 
 
 
@@ -81,7 +85,7 @@ module.exports = {
 
   addProduct: async (req, res) => {
    try {
-    const image = req.files.image;
+   
     const Product = new productdetails({
       productName: req.body.productname,
       Category: req.body.category,
@@ -89,19 +93,15 @@ module.exports = {
       stock: req.body.stock,
       price: req.body.price,
     });
+    Product.image = req.files.map((f)=>({url:f.path, filename:f.filename}))
        await Product.save().then((result) => {
       if (result) {
         console.log(Product);
-        let imageName = result._id;
-        image.mv( "./public/productIMG/"+imageName+ ".jpg",
-          (err) => {
-            if (!err) {
-              console.log(Product);
+        
+      
+       
               res.redirect("/admin/products");
-            } else {
-              console.log(err);
-            }
-          } )
+            
         
       } else {
         console.error();
@@ -121,9 +121,23 @@ module.exports = {
 
   deleteProduct : (req,res)=>{
     const id = req.params.id;
-    
+    const objId = mongoose.Types.ObjectId(id)
     productdetails.deleteOne({_id :id}).then(()=>{
-      res.redirect('/admin/products');
+
+        cart.updateMany(
+          {"product.productId" : objId},
+          {$pull : {product : { productId : objId}}},
+          ).then(()=>{
+
+            favorite.updateMany(
+              {"product.productId" : objId},
+              {$pull : {product : { productId : objId}}},
+            ).then(()=>{
+              
+              res.redirect('/admin/products');
+            })
+          })
+     
     })
   },
 
@@ -148,9 +162,13 @@ module.exports = {
 
   doEditproduct : async(req,res)=>{
     const id = req.params.id;
-    console.log(id);
+      
+    const photos = req.files.map((f)=>({
+      url:f.path,
+      filename: f.filename,
+    }));
    
-    await productdetails.updateOne(
+   const product = await productdetails.updateOne(
       {_id : id},
       {
         $set: {
@@ -163,13 +181,16 @@ module.exports = {
         },
       }
     );
-    if(req?.files?.image){
-      const image = req.files.image;
-      image.mv("./public/productIMG/" + id + ".jpg");
-      res.redirect('/admin/products')
+    
+    if(!photos){
+     res.redirect('/admin/products')
 
     }else{
+   
+     product.image.push(photos)
+     product.save().then(()=>{
       res.redirect('/admin/products')
+     })
     }
 
       
@@ -279,6 +300,44 @@ module.exports = {
     }
   },
 
+   getOrders :  (req,res)=> {
+    try {
+      order.aggregate([
+       
+        {
+          $lookup : {
+            from : "productdetails",
+            localField : "orderItem.productId",
+            foreignField : "_id",
+            as : "productDetail",
+          },
+        },
+        
+  
+      ]).then((orders)=>{
+        res.render('admin/orders',{ orders })
+        
+      })
+   
+       
+    } catch (error) {
+      
+    }
 
+   },
+
+   changeStatus : (req,res)=>{
+      try {
+        const id = req.params.id;
+        const data = req.body;
+
+        order.updateOne({_id : id},{$set : {orderStatus: data.orderStatus , paymentStatus : data.paymentStatus}}).then(()=>{
+          res.redirect('/admin/orders')
+         })
+        
+      } catch (error) {
+        
+      }
+   },
 
 };

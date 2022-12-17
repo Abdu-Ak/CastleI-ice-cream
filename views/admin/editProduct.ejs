@@ -32,7 +32,7 @@
               <hr />
             </li>
             <li>
-              <a href="#" class="text-white"
+              <a href="/admin/orders" class="text-white"
                 ><i class="fa fa-list mr-2"></i>Orders</a
               >
               <hr />
@@ -157,31 +157,32 @@
                       <div class="justify-content-center">
                         <div class="btn btn-primary btn-rounded">
                           <label
-                            class="form-label text-white m-1"
-                            for="customFile1"
-                            >Choose file</label
+                            class="form-label  text-white m-1"
+                            for="image"
+                            >image</label
                           >
                           <input
                             type="file"
                             class="form-control d-none"
-                        
+                            multiple
                             name="image"
-                            id="customFile1"
+                            id="image"
                             onchange="readURL(this);"
                           />
                         </div>
                       </div>
 
-                      <div class="mb-4 justify-content-center">
+                      <div class="mb-4 d-flex justify-content-center">
+                        <% productData.image.forEach((image)=>{%>
                         <img
-                          src="/public/productIMG/<%=productData._id%>.jpg"
+                          src="<%=image.url%>"
                           id="addproduct"
-                          class="ml-5"
+                          class="ml-5 "
                           alt=""
-                          style="background-image: url(); width: 10rem;"
+                          style="background-image: url(); width: 20%; height: 50%;"
                         />
                        
-                        
+                        <%})%>
                        
                       </div>
                     </div>

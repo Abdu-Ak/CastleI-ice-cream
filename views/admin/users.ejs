@@ -15,7 +15,7 @@
               <hr />
             </li>
             <li>
-              <a href="#" class="text-white"
+              <a href="/admin/orders" class="text-white"
                 ><i class="fa fa-list mr-2"></i>Orders</a
               >
               <hr />
@@ -91,11 +91,11 @@
 
                   <button
                     type="button"
-                    class="btn btn-danger"
+                    class="btn btn-outline-danger"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal-<%= user._id %>"
                   >
-                    <span class="fa fa-lock m-1"></span> Block
+                    <span class="fa fa-lock m-1"></span> 
                   </button>
 
                   <% }%>
@@ -146,11 +146,11 @@
                   <% if (user.Status == false){%>
                   <a href="/admin/unblockUser/<%= user._id %>"
                     ><button
-                      class="btn btn-primary m-3 d-flex"
+                      class="btn btn-outline-primary m-3 d-flex"
                       style="background-color: rgba(0, 0, 0, 0.696);"
                       type="submit"
                     >
-                      <span class="fa fa-lock-open m-1"></span>unblock
+                      <span class="fa fa-lock-open m-1"></span>
                     </button></a
                   >
 
