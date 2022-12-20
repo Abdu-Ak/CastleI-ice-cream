@@ -14,20 +14,19 @@ const { instance } = require("../../middleware/razorPay");
 const crypto = require("crypto");
 const otp = require("../../model/otp");
 const { invalid } = require("moment");
+const coupon = require("../../model/coupon");
 
 
-var favCount;
-var cartCount;
-var totalAmount;
+
 
 
 module.exports = {
   landing: async (req, res) => {
      try {
       user = req.session.user;
-    let products = await productdetails.find();
+    let products = await productdetails.find().limit(4);
     
-    res.render("user/index", { user, products , cartCount , favCount});
+    res.render("user/index", { user, products ,});
      } catch (error) {
       console.log(error);
       res.render('500')
@@ -37,7 +36,7 @@ module.exports = {
   home: async (req, res) => {
     try {
       let user = req.session.user;
-    let products = await productdetails.find();
+    let products = await productdetails.find().limit(4);
     if (user) {
       let userData = await userdetails.findOne({  $or: [{ username: user }, { email: user }, { phonenumber: user }], })
       let cartData = await cart.find({userId : userData._id})
@@ -357,7 +356,28 @@ module.exports = {
     let user = req.session.user;
     const id = req.params.id;
     let product = await productdetails.findOne({ _id: id });
-    
+    if (user) {
+      let userData = await userdetails.findOne({  $or: [{ username: user }, { email: user }, { phonenumber: user }], })
+      let cartData = await cart.find({userId : userData._id})
+      if (cartData.length) {
+
+      cartCount = cartData[0].product.length
+      
+      } else {
+
+          cartCount=0;
+         
+      }
+      let favData = await favorite.find({userId : userData._id })
+      
+      if (favData.length) {
+        favCount = favData[0].product.length
+      } else {
+        favCount =0;
+      }
+      
+     
+    }
     res.render("user/productView", { user, product ,cartCount , favCount});
    } catch (error) {
     console.log(error);
@@ -367,17 +387,194 @@ module.exports = {
 
   product: async (req, res) => {
    try {
+    const pageNum = req.query.page;
+    const perpage = 8;
+    let docCount;
     let user = req.session.user;
-    let products = await productdetails.find();
     let categories = await category.find()
+    if (user) {
+      let userData = await userdetails.findOne({  $or: [{ username: user }, { email: user }, { phonenumber: user }], })
+      let cartData = await cart.find({userId : userData._id})
+      if (cartData.length) {
+
+      cartCount = cartData[0].product.length
+      
+      } else {
+
+          cartCount=0;
+         
+      }
+      let favData = await favorite.find({userId : userData._id })
+      
+      if (favData.length) {
+        favCount = favData[0].product.length
+      } else {
+        favCount =0;
+      }
+      
+    }
+
+    await productdetails
+    .find()
+    .countDocuments()
+    .then((docs)=>{
+      docCount =docs;
+
+      return productdetails
+         .find()
+         .skip((pageNum - 1)* perpage)
+         .limit(perpage)
+    })
+    .then((products)=>{
+      console.log();
+      res.render("user/product", {
+         user,
+         products ,
+          cartCount ,
+          favCount ,
+          categories,
+          pageNum,
+          docCount,
+          pages : Math.ceil(docCount / perpage),
+         });
+    });
     
-    res.render("user/product", { user, products , cartCount ,favCount ,categories });
+   
    } catch (error) {
     console.log(error);
     res.render('500');
    }
   },
+  filterPro : async (req,res)=>{
+    try {
+      const pageNum = req.query.page;
+      const perpage = 8;
+      let user = req.session.user;
+      let id =  req.params.id; 
+      let categories = await category.find();
+      let catData = await category.findOne({_id:id});
+       if (user) {
+      let userData = await userdetails.findOne({  $or: [{ username: user }, { email: user }, { phonenumber: user }], })
+      let cartData = await cart.find({userId : userData._id})
+      if (cartData.length) {
 
+      cartCount = cartData[0].product.length
+      
+      } else {
+
+          cartCount=0;
+         
+      }
+      let favData = await favorite.find({userId : userData._id })
+      
+      if (favData.length) {
+        favCount = favData[0].product.length
+      } else {
+        favCount =0;
+      }
+      
+    }
+      await productdetails
+    .find({ Category : catData.Category })
+    .countDocuments()
+    .then((docs)=>{
+      docCount =docs;
+        console.log(docs);
+      return productdetails
+         .find({ Category : catData.Category })
+         .skip((pageNum - 1)* perpage)
+         .limit(perpage)
+    })
+    .then((products)=>{
+      console.log(products);
+      res.render("user/product", {
+         user,
+         products ,
+          cartCount ,
+          favCount ,
+          categories,
+          pageNum,
+          docCount,
+          pages : Math.ceil(docCount / perpage),
+         });
+    });
+    
+     
+    } catch (error) {
+      console.log(error);
+      res.render('500');
+    }
+        
+   },
+  search : async (req,res)=>{
+    const pageNum = req.query.page;
+    const perpage = 8;
+    let user = req.session.user;
+    let key = req.body.search
+    let categories = await category.find();
+    if (user) {
+      let userData = await userdetails.findOne({  $or: [{ username: user }, { email: user }, { phonenumber: user }], })
+      let cartData = await cart.find({userId : userData._id})
+      if (cartData.length) {
+
+      cartCount = cartData[0].product.length
+      
+      } else {
+
+          cartCount=0;
+         
+      }
+      let favData = await favorite.find({userId : userData._id })
+      
+      if (favData.length) {
+        favCount = favData[0].product.length
+      } else {
+        favCount =0;
+      }
+      
+    }
+    await productdetails
+    .find({  $or: [{  productName  : new RegExp(key,"i") }, {   Category : new RegExp(key,"i") }], })
+    .countDocuments()
+    .then((docs)=>{
+      docCount =docs;
+        
+      return productdetails
+         .find({  $or: [{  productName  : new RegExp(key,"i") }, {   Category : new RegExp(key,"i") }], })
+         .skip((pageNum - 1)* perpage)
+         .limit(perpage)
+    })
+    .then((products)=>{
+      console.log(products);
+     if (products.length) {
+      res.render("user/product", {
+        user,
+        products ,
+         cartCount ,
+         favCount ,
+         categories,
+         pageNum,
+         docCount,
+         pages : Math.ceil(docCount / perpage),
+        });
+     } else {
+      res.render("user/product", {
+        user,
+        products ,
+         cartCount ,
+         favCount ,
+         categories,
+         pageNum,
+         docCount,
+         pages : Math.ceil(docCount / perpage),
+          err_msg: "Ooops ...! No Match"
+         
+        });
+     }
+    });
+    
+    
+  },
   getFavorite: async (req, res) => {
     try {
       const user = req.session.user;
@@ -417,6 +614,21 @@ module.exports = {
       .exec();
       favCount = productData.length
       
+  
+        let cartData = await cart.find({userId : userData._id})
+        if (cartData.length) {
+  
+        cartCount = cartData[0].product.length
+        
+        } else {
+  
+            cartCount=0;
+           
+        }
+        
+        
+       
+      
       res.render("user/favorite", { user , productData , cartCount , favCount })
 
 
@@ -449,16 +661,7 @@ module.exports = {
         console.log(productEx);
         if (productEx != -1) {
         
-          // await cart.aggregate([
-          //   {
-          //     $unwind : "$product"
-          //   },
-          // ]);
           
-          // await cart.updateOne(
-          //   {userId : userData._id, "product.productId": objId},
-          //   {$inc : {"product.$.quantity" : 1 }}
-          // )
           res.json({productEx : true})
           
         }else{
@@ -540,19 +743,95 @@ module.exports = {
           },
         ])
         .exec();
-        console.log(productData);
+       
         const sum = productData.reduce((accumulator, object) => {
           return accumulator + object.productPrice;
         }, 0);
         
        cartCount = productData.length;
+      
+        let favData = await favorite.find({userId : userData._id })
+        
+        if (favData.length) {
+          favCount = favData[0].product.length
+        } else {
+          favCount =0;
+        }
+        
+      
       res.render("user/cart", { user, productData  ,sum, cartCount ,favCount});
-      console.log(cartCount);
+     
     } catch (error) {
       console.log(error);
       res.render('500');
     }
   },
+  
+applyCoupon : async (req,res)=>{
+  try {
+   let data = req.body ;
+   const couponData = await coupon.findOne({ couponName : data.coupon })
+   if (couponData) {
+     let user =req.session.user;
+     const userData = await userdetails.findOne({
+      $or: [{ username: user }, { email: user }, { phonenumber: user }],
+    });
+    const productData = await cart
+    .aggregate([
+      {
+        $match: { userId: userData.id },
+      },
+      {
+        $unwind: "$product",
+      },
+      {
+        $project: {
+          productItem: "$product.productId",
+          productQuantity: "$product.quantity",
+        },
+      },
+      {
+        $lookup: {
+          from: "productdetails",
+          localField: "productItem",
+          foreignField: "_id",
+          as: "productDetail",
+        },
+      },
+      {
+        $project: {
+          productItem: 1,
+          productQuantity: 1,
+          productDetail: { $arrayElemAt: ["$productDetail", 0] },
+        },
+      },
+      {
+        $addFields: {
+          productPrice: {
+            $sum: { $multiply: ["$productQuantity", "$productDetail.price"] },
+          },
+        },
+      },
+    ])
+    .exec();
+   
+    let sum = productData.reduce((accumulator, object) => {
+      return accumulator + object.productPrice;
+    }, 0);
+     if (sum > 500) {
+      sum = sum * couponData.discount
+      res.json({sum , discount : couponData.discount})
+     } else {
+      
+     }
+   } else {
+     
+   }
+  } catch (error) {
+   
+  }
+},
+
   changeQuantity : async (req,res)=>{
    try {
     const data = req.body;
@@ -606,7 +885,25 @@ module.exports = {
    try {
     let user =req.session.user
     let userData = await userdetails.findOne({$or: [{ username: user }, { email: user }, { phonenumber: user }]})
-    console.log(userData);
+      
+      let cartData = await cart.find({userId : userData._id})
+      if (cartData.length) {
+
+      cartCount = cartData[0].product.length
+      
+      } else {
+
+          cartCount=0;
+         
+      }
+      let favData = await favorite.find({userId : userData._id })
+      
+      if (favData.length) {
+        favCount = favData[0].product.length
+      } else {
+        favCount =0;
+      }
+    
     res.render('user/profile',{ user , cartCount,userData , favCount} )
    } catch (error) {
     console.log(error);
@@ -809,21 +1106,7 @@ module.exports = {
   }
  },
 
- filterPro : async (req,res)=>{
-  try {
-    let user = req.session.user;
-    let id =  req.params.id; 
-    let categories = await category.find();
-    let catData = await category.findOne({_id:id});
-    let products = await productdetails.find({ Category : catData.Category });
-    res.render("user/product", { user, products , cartCount ,favCount ,categories });
-  } catch (error) {
-    console.log(error);
-    res.render('500');
-  }
-      
- },
-
+ 
  getCheckout : async (req,res)=>{
   try {
     let user = req.session.user;
@@ -1095,8 +1378,27 @@ paymentFail : (req,res)=>{
       
 
     ])
- 
-   console.log(orderData);
+   
+    
+      let cartData = await cart.find({userId : userData._id})
+      if (cartData.length) {
+
+      cartCount = cartData[0].product.length
+      
+      } else {
+
+          cartCount=0;
+         
+      }
+      let favData = await favorite.find({userId : userData._id })
+      
+      if (favData.length) {
+        favCount = favData[0].product.length
+      } else {
+        favCount =0;
+      }
+     
+
     
     res.render('user/orderList',{ favCount , cartCount , user , orderData, userData })
    } catch (error) {
@@ -1137,8 +1439,6 @@ paymentFail : (req,res)=>{
           res.render('500');
         }
   },
-
-
 
 
   logout: (req, res) => {

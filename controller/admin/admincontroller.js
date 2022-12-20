@@ -6,6 +6,7 @@ const order = require("../../model/order");
 const { default: mongoose } = require("mongoose");
 const cart = require("../../model/cart");
 const favorite = require("../../model/favorite");
+const coupon = require("../../model/coupon");
 
 
 
@@ -181,16 +182,19 @@ module.exports = {
         },
       }
     );
-    
-    if(!photos){
-     res.redirect('/admin/products')
-
-    }else{
-   
-     product.image.push(photos)
-     product.save().then(()=>{
+    console.log(photos);
+    if(photos.length){
+      const product = await productdetails.updateOne(
+        {_id : id},
+        {
+          $set : {image : photos },
+        }
+     ).then(()=>{
       res.redirect('/admin/products')
      })
+
+    }else{
+      res.redirect('/admin/products')
     }
 
       
@@ -339,5 +343,74 @@ module.exports = {
         
       }
    },
+   getCoupon : (req,res)=>{
+     try {
+      coupon.find().then((coupons)=>{
+         console.log(coupons);
+        res.render('admin/coupon',{
+          coupons
+        });
 
+      })
+     } catch (error) {
+      
+     }
+    
+   },
+   addCoupon : (req,res)=>{
+    try {
+      const data = req.body;
+      const dis = parseInt(data.discount);
+      const max = parseInt(data.maxlimit);
+      const discount = dis / 100;
+      
+      coupon.create({
+        couponName : data.coupon,
+        discount : discount,
+        maxLimit : max,
+        expiryDate : data.expirydate
+      }).then(()=>{
+        res.redirect("/admin/coupon")
+      })
+     
+
+    } catch (error) {
+      
+    }
+      
+   },
+   deleteCoupon  : (req,res)=>{
+        try {
+          let id = req.params.id
+          coupon.deleteOne({_id : id }).then(()=>{
+            res.redirect("/admin/coupon")
+          })
+        } catch (error) {
+          
+        }
+
+
+   },
+   editCoupon : (req,res)=>{
+     try {
+      const id = req.params.id;
+      const data = req.body;
+      console.log(data);
+      coupon
+        .updateOne(
+          { _id: id },
+          {
+            couponName: data.coupon,
+            discount: data.discount,
+            maxLimit: data.maxlimit,
+            expiryDate: data.expirydate,
+          }
+        )
+        .then(() => {
+          res.redirect("/admin/coupon");
+        });
+     } catch (error) {
+      
+     }
+   },
 };

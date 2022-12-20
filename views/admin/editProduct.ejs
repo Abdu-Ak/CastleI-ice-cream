@@ -44,6 +44,12 @@
               <hr />
             </li>
             <li>
+              <a href="/admin/coupon" class="text-white"
+                ><i class="fa fa-list mr-2"></i>coupen</a
+              >
+              <hr />
+            </li>
+            <li>
               <a href="/admin/products" class="text-white"
                 ><span class="fa fa-cart-shopping mr-2"></span> products</a
               >
@@ -168,6 +174,7 @@
                             name="image"
                             id="image"
                             onchange="readURL(this);"
+                            
                           />
                         </div>
                       </div>
@@ -181,7 +188,15 @@
                           alt=""
                           style="background-image: url(); width: 20%; height: 50%;"
                         />
-                       
+                        <input
+                        type="file"
+                        class="form-control d-none"
+                        multiple
+                        name="oldImage"
+                        id="oldImage"
+                        value="<%=image.url%>"
+                        
+                      />
                         <%})%>
                        
                       </div>

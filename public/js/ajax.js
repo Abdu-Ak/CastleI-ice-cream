@@ -1,3 +1,4 @@
+const { post } = require("../../app");
 
 
 function addCart(productId) {
@@ -95,6 +96,8 @@ function changeQuantity (cartId,proId,count){
  })
 }
 
+
+
 function removeProduct(cartId, productId) {
   $.ajax({
     url: "/removeProduct",
@@ -123,29 +126,12 @@ function removeFavorite(favId,productId) {
   });
 }
 
+
+
 // $('#adcard').on('click',function (){
 //   $(this).toggleClass('selected');
 // });
 
-$("#checkout").submit((e)=>{
-  e.preventDefault();
-  $.ajax({
-    url:'/checkout',
-    method:'post',
-    data:$('#checkout').serialize(),
-    success:(response)=>{
-      if(response.success){
-       location.href ='/orderSuccess'
-      }else{
-        
-        
-          razorPay(response)
-        
-      }
-      
-    }
-  })
-})
 
 // razorPay
 
@@ -190,7 +176,7 @@ function razorPay(order) {
 }
 
 function verifyPayment(payment, order) {
-  console.log("win");
+  
   $.ajax({
     url: "/verifyPayment",
     data: {

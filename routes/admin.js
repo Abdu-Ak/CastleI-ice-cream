@@ -43,7 +43,12 @@ router.get('/orders',verifyAdmin,adminController.getOrders)
 
 router.post('/changeStatus/:id',verifyAdmin,adminController.changeStatus)
 
+router.get('/coupon',verifyAdmin,adminController.getCoupon)
 
+router.post('/addCoupon',adminController.addCoupon)
 
+router.get('/deleteCoupon/:id',adminController.deleteCoupon);
+
+router.post('/editCoupon/:id',adminController.editCoupon);
 
 module.exports = router;

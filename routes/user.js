@@ -61,7 +61,9 @@ router.post('/changePass',verifyUser,userController.postChangepass)
 
 router.post("/removeFavorite",verifyUser,userController.removeFavorite)
 
-router.get("/filter/:id",verifyUser,userController.filterPro);
+router.get("/filter/:id",userController.filterPro);
+
+router.post("/search",userController.search)
 
 router.get("/checkOut",verifyUser,userController.getCheckout)
 
@@ -81,6 +83,7 @@ router.get("/cancelOrder/:id",verifyUser,userController.cancelOrder)
 
 router.post('/submitDp',verifyUser,upload.single('image'),usercontroller.addDp)
 
+router.post('/applyCoupon',verifyUser,userController.applyCoupon)
 
 
 module.exports = router;
