@@ -17,7 +17,8 @@ const { invalid } = require("moment");
 const coupon = require("../../model/coupon");
 
 
-
+let cartCount;
+let favCount;
 
 
 module.exports = {
@@ -26,7 +27,7 @@ module.exports = {
       user = req.session.user;
     let products = await productdetails.find().limit(4);
     
-    res.render("user/index", { user, products ,});
+    res.render("user/index", { user, products , favCount , cartCount});
      } catch (error) {
       console.log(error);
       res.render('500')
@@ -404,10 +405,10 @@ module.exports = {
           cartCount=0;
          
       }
-      let favData = await favorite.find({userId : userData._id })
+     favData = await favorite.find({userId : userData._id })
       
       if (favData.length) {
-        favCount = favData[0].product.length
+      favCount = favData[0].product.length
       } else {
         favCount =0;
       }
@@ -1109,6 +1110,9 @@ applyCoupon : async (req,res)=>{
  
  getCheckout : async (req,res)=>{
   try {
+    
+    
+    
     let user = req.session.user;
   const userData = await userdetails.findOne({
     $or: [{ username: user }, { email: user }, { phonenumber: user }],

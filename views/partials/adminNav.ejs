@@ -1,40 +1,81 @@
-<!-- Topbar Start -->
-<div class="container-fluid bg-primary py-3 ">
-
-</div>
-<!-- Topbar End -->
 
 
-<!-- Navbar Start -->
-<div class="container-fluid position-relative nav-bar p-0 ">
-    <div class="container-lg position-absolute  px-lg-5  " style="z-index: 9; ">
-        <nav class="navbar navbar-expand-lg bg-white navbar-light shadow p-lg-0   justify-content-center mx-5  "  style="width: 125%;" >
-            <style>
-                .navbar{
-                    top: -1rem;
-                }
-            </style>
-
-            <div class="logo ">
-                <a href="/" class="navbar-brand mx-5 ">
-                    <img class="logo mb-3" src="../../public/img/Black_Ice_Cream_Cone_Logo__2_-removebg-preview.png" height="50"
-                        alt="castle logo">
-                    <img class="logo" src="../../public/img/Black_Ice_Cream_Cone_Logo__1_-removebg-preview.png " height="50"
-                        alt="castle logo"> 
-                        <img class="logo mb-2 ml-2" src="../../../public/img/admin panel.png" height="50"
-                        alt="castle logo">
-                </a>
-
-            </div>
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
 
 
-
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href="/">Admin</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+          <a class="nav-link" href="/admin">
+            <i class="fa fa-fw fa-dashboard"></i>
+            <span class="nav-link-text">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+          <a class="nav-link" href="/admin/orders">
+            <i class="fa fa-fw fa-list"></i>
+            <span class="nav-link-text">Order</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="/admin/category">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">Category</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+            <a class="nav-link" href="/admin/coupon">
+              <i class="fa fa-fw fa-table"></i>
+              <span class="nav-link-text">Coupons</span>
+            </a>
+          </li>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+            <a class="nav-link" href="/admin/products">
+              <i class="fa fa-fw fa-cart-shopping"></i>
+              <span class="nav-link-text">products</span>
+            </a>
+          </li>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+            <a class="nav-link" href="/admin/getAddproduct">
+              <i class="fa fa-fw fa-cart-plus"></i>
+              <span class="nav-link-text">Add Product</span>
+            </a>
+          </li>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+            <a class="nav-link" href="/admin/getusers">
+              <i class="fa fa-fw fa-user"></i>
+              <span class="nav-link-text">Users</span>
+            </a>
+          </li>
+          
+       
+       
+       
+       
+      </ul>
+      <ul class="navbar-nav sidenav-toggler">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler">
+            <i class="fa fa-fw fa-angle-left"></i>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        
+       
+        
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/adminlogout">
+            <i class="fa fa-fw fa-sign-out"></i>Logout</a>
+        </li>
+      </ul>
     </div>
-</div>
-</nav>
-</div>
-</div>
-<!-- Navbar End -->
-
-    
+  </nav>
    
+ 

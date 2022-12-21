@@ -23,7 +23,7 @@
         <div class="container py-5">
           <% if (productData.length !=0 ){%>
           <div class="row d-flex justify-content-center my-4">
-            <div class="col-md-8">
+            <div class="col-md-8 ">
               
               <div class="card mb-4">
                 
@@ -36,7 +36,7 @@
                   
                       <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
                         <img src="<%=productData.productDetail.image[0].url%>"
-                          class="w-100 " alt="" style="height: 8rem;" />
+                           alt="" style="height: 8rem; width: 8rem;" />
                           
                       </div>
                       <!-- Image -->
@@ -168,7 +168,7 @@
                   </div>
                   <hr>
                  <div class="d-flex justify-content-center ">
-                   <a href="/checkOut"> <button class="btn btn-success" type="submit">Checkout</button></a>
+                  <a href="/checkOut"> <button class="btn btn-success" type="submit"  >Checkout</button></a> 
                  </div>
                 </div>
                 </div>
@@ -228,6 +228,7 @@
       })
     })
     
+  
        </script>
    
 

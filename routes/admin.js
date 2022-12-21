@@ -7,7 +7,7 @@ const { storage , cloudinary } = require('../middleware/cloudinary');
 const upload = multer({storage});
 
 
-router.get("/", adminController.getAdmin);
+router.get("/",verifyAdmin, adminController.getAdmin);
 
 router.post("/adminlogin", adminController.postAdminLogin);
 

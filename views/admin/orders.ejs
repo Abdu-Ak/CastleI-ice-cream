@@ -4,129 +4,94 @@
     <%- include ('../partials/head.ejs') %> <%- include
     ('../partials/adminNav.ejs') %>
 
-    <div class="wrapper d-flex justify-content-between">
-      <nav id="sidebar" class="bg-primary vh-100 justify-content-start">
-        <div class="p-4">
-          <ul class="list-unstyled components mt-5">
-            <li class="active">
-              <a href="#" class="text-white"
-                ><i class="fa fa-dashboard mr-2"></i> Dashboard</a
+    <div class="content-wrapper">
+      <div class="container-fluid">
+        <div class="card mb-3">
+          <div class="card-header">
+            <i class="fa fa-table"></i> ORDERS DETAILS 
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table
+                class="table table-bordered"
+                id="Table"
+                width="100%"
+                cellspacing="0"
               >
-              <hr />
-            </li>
-            <li>
-              <a href="#" class="text-white"
-                ><i class="fa fa-list mr-2"></i>Orders</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/category" class="text-white"
-                ><i class="fa fa-list mr-2"></i>Category</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/coupon" class="text-white"
-                ><i class="fa fa-list mr-2"></i>coupen</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/products" class="text-white"
-                ><span class="fa fa-cart-shopping mr-2"></span> products</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/getAddproduct" class="text-white"
-                ><span class="fa fa-cart-plus mr-2"></span> Add Product</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/getusers" class="text-white"
-                ><span class="fa fa-user mr-2"></span> Users</a
-              >
-              <hr />
-            </li>
-
-            <li>
-              <a href="/admin/adminlogout" class="text-white"
-                ><span class="fa fa-right-from-bracket mr-2"></span> Logout</a
-              >
-              <hr />
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      <section class="my-5 mx-5 py-5 px-5">
-        <table
-          id="Table"
-          class="table table-secondary table-hover my-5 mx-5  table-bordered border-dark"
-        >
-          <thead>
-            <tr>
-              <th scope="col">ORDER DATE</th>
+                <thead>
+                  <tr>
+                    <th scope="col">ORDER DATE</th>
               <th scope="col">CUSTOMER</th>
               <th scope="col">PAYMENT METHOD</th>
               <th scope="col">ORDER STATUS</th>
               <th scope="col">PAYMENT STATUS</th>
               <th scope="col">OPTION</th>
-            </tr>
-          </thead>
+                  </tr>
+                </thead>
 
-          <tbody>
-            <% orders.forEach((order)=>{ %>
-            <tr>
-              <td>
-               <%=order.orderdate%>
-              </td>
-              <td>
-                <%=order.address.fullname%>
-              </td>
-              <td>
-                <%=order.paymentMethod%>
-              </td>
-              <td>
-                <%if (order.orderStatus == "placed"){%>
-                    <strong class="text-info"><%=order.orderStatus%></strong>
-                  <%}%>
-                  <%if (order.orderStatus == "Cancelled"){%>
-                    <strong class="text-danger"><%=order.orderStatus%></strong>
-                  <%}%>
-                  <%if (order.orderStatus == "shipped"){%>
-                    <strong class="text-warning"><%=order.orderStatus%></strong>
-                  <%}%>
-                  <%if (order.orderStatus == "delivered"){%>
-                    <strong class="text-success"><%=order.orderStatus%></strong>
-                  <%}%>
-              </td>
-              <td >
-                <%if (order.paymentStatus == "paid"){%>
-                      <strong class="text-success"><%=order.paymentStatus%></strong>
-                    <%}%>
-                    <%if (order.paymentStatus == "Not paid"){%>
-                        <strong class="text-danger"><%=order.paymentStatus%></strong>
-                      <%}%> 
-              </td>
-              <td style="width: 20%;">
-                <button class="btn btn-outline-primary  mt-2"
-                data-toggle="modal"
-                data-target="#details-<%= order._id %>"
-                   ><span class="fa fa-file-invoice "></span></button>
-                <button class="btn btn-outline-info  mt-2"
-                data-toggle="modal"
-                data-target="#edit-<%= order._id %>"
-                   ><span class="fa fa-pen-to-square "></span></button>
-              </td>
-            </tr>
-            <%})%>
-          </tbody>
-        </table>
-      </section>
+                <tbody>
+                 
+                  
+
+                  <% orders.forEach((order)=>{ %>
+                    <tr>
+                      <td>
+                       <%=order.orderdate%>
+                      </td>
+                      <td>
+                        <%=order.address.fullname%>
+                      </td>
+                      <td>
+                        <%=order.paymentMethod%>
+                      </td>
+                      <td>
+                        <%if (order.orderStatus == "placed"){%>
+                            <strong class="text-info"><%=order.orderStatus%></strong>
+                          <%}%>
+                          <%if (order.orderStatus == "Cancelled"){%>
+                            <strong class="text-danger"><%=order.orderStatus%></strong>
+                          <%}%>
+                          <%if (order.orderStatus == "shipped"){%>
+                            <strong class="text-warning"><%=order.orderStatus%></strong>
+                          <%}%>
+                          <%if (order.orderStatus == "delivered"){%>
+                            <strong class="text-success"><%=order.orderStatus%></strong>
+                          <%}%>
+                      </td>
+                      <td >
+                        <%if (order.paymentStatus == "paid"){%>
+                              <strong class="text-success"><%=order.paymentStatus%></strong>
+                            <%}%>
+                            <%if (order.paymentStatus == "Not paid"){%>
+                                <strong class="text-danger"><%=order.paymentStatus%></strong>
+                              <%}%> 
+                      </td>
+                      <td style="width: 20%;">
+                        <button class="btn btn-outline-primary  mt-2"
+                        data-toggle="modal"
+                        data-target="#details-<%= order._id %>"
+                           ><span class="fa fa-file-invoice "></span></button>
+                        <button class="btn btn-outline-info  mt-2"
+                        data-toggle="modal"
+                        data-target="#edit-<%= order._id %>"
+                           ><span class="fa fa-pen-to-square "></span></button>
+                      </td>
+                    </tr>
+                    <%})%>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+
+
+
+
+
+
             <!-- order modal -->
     <% orders.forEach((order)=>{ %>
         <div id="details-<%= order._id%>" class="modal fade">

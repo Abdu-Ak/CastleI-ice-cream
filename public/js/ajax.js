@@ -37,7 +37,8 @@ function addCart(productId) {
   
 }
 
-function addFavorite(proId, btn){
+function addFavorite(proId){
+  
 $.ajax({
   url : "/addFavorite/" + proId,
   method : "get",

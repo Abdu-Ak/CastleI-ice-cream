@@ -1,66 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-  <body>
-    <%- include ('../partials/head.ejs') %> <%- include ('../partials/adminNav.ejs') %>
+  <%- include ('../partials/head.ejs') %> <%- include
+  ('../partials/adminNav.ejs') %>
 
-    <div class="wrapper d-flex align-item-center">
-      <nav id="sidebar" class="bg-primary vh-100 justify-content-start">
-        <div class="p-4">
-          <ul class="list-unstyled components mt-5">
-            <li class="active">
-              <a href="#" class="text-white"
-                ><i class="fa fa-dashboard mr-2"></i> Dashboard</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/orders" class="text-white"
-                ><i class="fa fa-list mr-2"></i>Orders</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/category" class="text-white"
-                ><i class="fa fa-list mr-2"></i>Category</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/coupon" class="text-white"
-                ><i class="fa fa-list mr-2"></i>coupen</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/products" class="text-white"
-                ><span class="fa fa-cart-shopping mr-2"></span> products</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/getAddproduct" class="text-white"
-                ><span class="fa fa-cart-plus mr-2"></span> Add Product</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/getusers" class="text-white"
-                ><span class="fa fa-user mr-2"></span> Users</a
-              >
-              <hr />
-            </li>
-
-            <li>
-              <a href="/admin/adminlogout" class="text-white"
-                ><span class="fa fa-right-from-bracket mr-2"></span> Logout</a
-              >
-              <hr />
-            </li>
-          </ul>
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">My Dashboard</li>
+      </ol>
+      <!-- revenue Cards-->
+      <div class="row justify-content-evenly">
+        <div class="col-xl-4 col-sm-6 col-md-4 mb-3">
+          <div class="card text-white  o-hidden h-100" style="background-color: #868e95;  "  > 
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fa fa-fw fa-money-check"></i>
+              </div>
+              <div class="mr-5">
+                <p class="small mb-1">Today's Revenue</p>
+                <h3><strong>RS.<%= todayRevenue%></strong></h3>
+              </div>
+            </div>
+          
+          </div>
         </div>
-      </nav>
-    </div>
+        <div class="col-xl-4 col-sm-6  col-md-4 mb-3">
+          <div class="card text-white  o-hidden h-100" style="background-color: #868e95;">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fa fa-fw fa-calendar"></i>
+              </div>
+              <div class="mr-5">
+                <p class="small mb-1">Monthly Revenue</p>
+                <h3><strong>RS.<%=monthRevenue%></strong></h3>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        <div class="col-xl-4 col-sm-6 col-md-4 mb-3">
+          <div class="card text-white o-hidden h-100" style="background-color: #868e95;">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fa fa-fw fa-clock"></i>
+              </div>
+              <div class="mr-5">
+                <p class="small mb-1">Total Revenue</p>
+                <h3><strong>RS.<%= totalRevenue%></strong></h3>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+       
+      </div>
+      
+      
+      <div class="d-flex ">
+        <div class="col-lg-8">
+          <!-- Example Bar Chart Card-->
+          <input type="number"  id="placed" value="<%=placedOrder%>" hidden>
+          <input type="number" id="shipped" value="<%=shippedOrder%>" hidden>
+          <input type="number" id="delivered" value="<%=deliveredOrder%>" hidden>
+          <input type="number" id="cancelled" value="<%=cancelledOrder%>" hidden>
 
-    <%- include ('../partials/footerLink.ejs') %>
-  </body>
+        <div class="card h-100">
+          <div class="card-header">
+            <i class="fa fa-bar-chart"></i> Orders Chart 
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-8  col-lg-12">
+                <canvas id="myBarChart" width="100" height="50"></canvas>
+              </div>
+              
+            </div>
+          </div>
+          <div class="card-footer small text-muted">
+            Updated yesterday at 11:59 PM
+          </div>
+        </div>
+        </div>
+
+        <div class="col-lg-4">
+          <!-- Example Pie Chart Card-->
+          <input type="number" id="cod" value="<%=codOrder%>" hidden>
+          <input type="number" id="online" value="<%=onlineOrder%>" hidden>
+
+          <div class="card h-100">
+            <div class="card-header">
+              <i class="fa fa-pie-chart"></i> Payment Chart 
+            </div>
+            <div class="card-body">
+              <canvas id="myPieChart" width="100%" height="100"></canvas>
+            </div>
+            <div class="card-footer small text-muted">
+              Updated yesterday at 11:59 PM
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include ('../partials/footerLink.ejs') %>
+  
 </html>

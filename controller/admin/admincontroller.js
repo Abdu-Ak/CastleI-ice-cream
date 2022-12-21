@@ -5,18 +5,99 @@ const category = require("../../model/category");
 const order = require("../../model/order");
 const { default: mongoose } = require("mongoose");
 const cart = require("../../model/cart");
+const moment = require("moment");
 const favorite = require("../../model/favorite");
 const coupon = require("../../model/coupon");
 
 
 
 module.exports = {
-  getAdmin: (req, res) => {
-    if (req.session.admin) {
-      res.render("admin/dash");
-    } else {
-      res.render("admin/adminLogin");
+  getAdmin: async (req, res) => {
+    try {
+      const orderData = await order.find({ orderStatus : {$ne : "Cancelled"} })
+
+      const totalRevenue = orderData.reduce((accumulator, object) => {
+        return (accumulator += object.totalAmount);
+      }, 0);
+
+      
+   
+      const todayOrder = await order.find({
+        orderStatus : {$ne : "Cancelled"},
+        orderdate : moment().format("MMM Do YY"),
+      })
+     
+    
+      
+      const todayRevenue = todayOrder.reduce((accumulator, object) => {
+        return (accumulator += object.totalAmount);
+      }, 0);
+      
+      const start = moment().startOf("month");
+      const end = moment().endOf("month");
+      const monthOrder = await order.find({
+        orderStatus : {$ne : "Cancelled"},
+        createdAt: {
+          $gte: start,
+          $lte: end,
+        },
+      })
+
+      const monthRevenue = monthOrder.reduce((accumulator, object) => {
+        return (accumulator += object.totalAmount);
+      }, 0);
+ 
+
+      const placed = await order.find({
+        orderStatus : "placed",
+       
+      })
+      const shipped = await order.find({
+        orderStatus : "shipped",
+       
+      })
+      const delivered = await order.find({
+        orderStatus : "delivered",
+       
+      })
+      const cancelled = await order.find({
+        orderStatus : "Cancelled",
+       
+      })
+
+      const placedOrder = placed.length
+      const shippedOrder = shipped.length
+      const deliveredOrder = delivered.length
+      const cancelledOrder = cancelled.length
+      
+      const cod = await order.find({
+        paymentMethod : "COD",
+       
+      })
+      const online = await order.find({
+        paymentMethod : "online",
+       
+      })
+     
+      const codOrder = cod.length;
+      const onlineOrder = online.length;
+    
+      res.render("admin/dash",{
+        totalRevenue,
+        todayRevenue,
+        monthRevenue,
+        placedOrder,
+        shippedOrder,
+        deliveredOrder,
+        cancelledOrder,
+        onlineOrder,
+        codOrder,
+      });
+    } catch (error) {
+      
     }
+     
+    
   },
 
   postAdminLogin: async (req, res) => {

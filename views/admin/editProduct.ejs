@@ -18,209 +18,169 @@
       }
     </script>
 
-<%- include ('../partials/head.ejs') %> <%- include ('../partials/adminNav.ejs') %>
+    <%- include ('../partials/head.ejs') %> <%- include
+    ('../partials/adminNav.ejs') %>
+    <div class="content-wrapper">
+      <div class="container-fluid">
+        <section class="vh-100" style="width: 80% !important;">
+          <div class="container py-5 h-100 ">
+            <div
+              class="row d-flex justify-content-center mr-5 align-items-center h-100"
+            >
+              <div class="col-12 col-md-8 col-lg-8 col-xl-5 mr-5">
+                <div
+                  class="card shadow-2-strong"
+                  style="border-radius: 1rem; width: 40rem;"
+                >
+                  <div class="card-body p-5 text-center">
+                    <h3 class="mb-5">Edit Product</h3>
 
-
-    <div class="wrapper h-100 d-flex align-item-center">
-      <nav id="sidebar" class="bg-primary vh-100 justify-content-start">
-        <div class="p-4">
-          <ul class="list-unstyled components mt-5">
-            <li class="active">
-              <a href="#" class="text-white"
-                ><i class="fa fa-dashboard mr-2"></i> Dashboard</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/orders" class="text-white"
-                ><i class="fa fa-list mr-2"></i>Orders</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/category" class="text-white"
-                ><i class="fa fa-list mr-2"></i>Category</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/coupon" class="text-white"
-                ><i class="fa fa-list mr-2"></i>coupen</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/products" class="text-white"
-                ><span class="fa fa-cart-shopping mr-2"></span> products</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/getAddproduct" class="text-white"
-                ><span class="fa fa-cart-plus mr-2"></span> Add Product</a
-              >
-              <hr />
-            </li>
-            <li>
-              <a href="/admin/getusers" class="text-white"
-                ><span class="fa fa-user mr-2"></span> Users</a
-              >
-              <hr />
-            </li>
-
-            <li>
-              <a href="/admin/adminlogout" class="text-white"
-                ><span class="fa fa-right-from-bracket mr-2"></span> Logout</a
-              >
-              <hr />
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      <section class="vh-100" style="width: 80% !important;">
-        <div class="container py-5 h-100 mt-5">
-          <div
-            class="row d-flex justify-content-center mr-5 align-items-center h-100"
-          >
-            <div class="col-12 col-md-8 col-lg-8 col-xl-5 mr-5">
-              <div
-                class="card shadow-2-strong"
-                style="border-radius: 1rem; width: 40rem;"
-              >
-                <div class="card-body p-5 text-center">
-                  <h3 class="mb-5">Edit Product</h3>
-
-                  <form
-                    action="/admin/doEditproduct/<%= productData._id%>"
-                    method="post"
-                    role="form"
-                    enctype="multipart/form-data"
-                    onsubmit=";"
-                  >
-                    <div class="d-flex justify-content-between">
-                      <label for="productname" class= "ml-5 pl-3"><strong>Product Name</strong></label>
-                      <label for="category" class="mr-5 pr-5"><strong>Category</strong> </label>
-                    </div>
-                    <div class="form-outline mb-4 d-flex">
-                      <input
-                        type="text"
-                        id="productname"
-                        name="productname"
-                        value="<%= productData.productName %>"
-                        class="form-control form-control-lg text-center mr-2"
-                        placeholder="Product Name"
-                      />
-                      <select class="form-select  form-select-lg mb-3 text-muted rounded-pill" id="category" aria-label=".form-select-lg example " name="category">
-                        <option  disabled selected> <%= productData.Category %></option>
-                        <% category.forEach((category)=>{ %>
-                        <option ><%= category.Category %></option>
-                        
-                      
-                        <% }) %>
-                      </select>
-                    </div>
-           
-                    <div class="form-outline mb-4">
-                      <div>
-                        <label for="details"><strong>Details</strong></label>
+                    <form
+                      action="/admin/doEditproduct/<%= productData._id%>"
+                      method="post"
+                      role="form"
+                      enctype="multipart/form-data"
+                      onsubmit=";"
+                    >
+                      <div class="d-flex justify-content-between">
+                        <label for="productname" class="ml-5 pl-3"
+                          ><strong>Product Name</strong></label
+                        >
+                        <label for="category" class="mr-5 pr-5"
+                          ><strong>Category</strong>
+                        </label>
                       </div>
-                      <textarea
-                        name="details"
-                        id="details"
-                        placeholder="Details"
-                        class="form-control form-control-lg text-center"
-                        cols="10"
-                        rows="3"
-                      ><%= productData.details %></textarea>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                      <label for="stock" class= "ml-5 pl-5"><strong>Stock</strong></label>
-                      <label for="price" class="mr-5 pr-5"><strong>Price</strong> </label>
-                    </div>
-                    <div class="form-outline mb-4 d-flex">
-                      <input
-                      value="<%= productData.stock %>"
-                        type="number"
-                        id="stock"
-                        name="stock"
-                        class="form-control form-control-lg mr-2 text-center"
-                        placeholder="Stock"
-                      />
-                      <input
-                        type="number"
-                        id="price"
-                        value="<%= productData.price %>"
-                        name="price"
-                        class="form-control form-control-lg text-center"
-                        placeholder="Price"
-                      />
-                    </div>
-                    <div>
-                      <label for=""><strong>Images</strong></label>
-                    </div>
-                    <div class="d-flex">
-                      <div class="justify-content-center">
-                        <div class="btn btn-primary btn-rounded">
-                          <label
-                            class="form-label  text-white m-1"
-                            for="image"
-                            >image</label
+                      <div class="form-outline mb-4 d-flex">
+                        <input
+                          type="text"
+                          id="productname"
+                          name="productname"
+                          value="<%= productData.productName %>"
+                          class="form-control form-control-lg text-center mr-2"
+                          placeholder="Product Name"
+                        />
+                        <select
+                          class="form-select form-select-lg mb-3 text-muted rounded-pill"
+                          id="category"
+                          aria-label=".form-select-lg example "
+                          name="category"
+                        >
+                          <option disabled selected>
+                            <%= productData.Category %></option
                           >
+                          <% category.forEach((category)=>{ %>
+                          <option><%= category.Category %></option>
+
+                          <% }) %>
+                        </select>
+                      </div>
+
+                      <div class="form-outline mb-4">
+                        <div>
+                          <label for="details"><strong>Details</strong></label>
+                        </div>
+                        <textarea
+                          name="details"
+                          id="details"
+                          placeholder="Details"
+                          class="form-control form-control-lg text-center"
+                          cols="10"
+                          rows="3"
+                        >
+<%= productData.details %></textarea
+                        >
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <label for="stock" class="ml-5 pl-5"
+                          ><strong>Stock</strong></label
+                        >
+                        <label for="price" class="mr-5 pr-5"
+                          ><strong>Price</strong>
+                        </label>
+                      </div>
+                      <div class="form-outline mb-4 d-flex">
+                        <input
+                          value="<%= productData.stock %>"
+                          type="number"
+                          id="stock"
+                          name="stock"
+                          class="form-control form-control-lg mr-2 text-center"
+                          placeholder="Stock"
+                        />
+                        <input
+                          type="number"
+                          id="price"
+                          value="<%= productData.price %>"
+                          name="price"
+                          class="form-control form-control-lg text-center"
+                          placeholder="Price"
+                        />
+                      </div>
+                      <div>
+                        <label for=""><strong>Images</strong></label>
+                      </div>
+                      <div class="d-flex">
+                        <div class="justify-content-center">
+                          <div class="btn btn-primary btn-rounded">
+                            <label class="form-label text-white m-1" for="image"
+                              >image</label
+                            >
+                            <input
+                              type="file"
+                              class="form-control d-none"
+                              multiple
+                              name="image"
+                              id="image"
+                              onchange="readURL(this);"
+                            />
+                          </div>
+                        </div>
+
+                        <div class="mb-4 d-flex justify-content-center">
+                          <% productData.image.forEach((image)=>{%>
+                          <img
+                            src="<%=image.url%>"
+                            id="addproduct"
+                            class="ml-5"
+                            alt=""
+                            style="
+                              background-image: url();
+                              width: 20%;
+                              height: 50%;
+                            "
+                          />
                           <input
                             type="file"
                             class="form-control d-none"
                             multiple
-                            name="image"
-                            id="image"
-                            onchange="readURL(this);"
-                            
+                            name="oldImage"
+                            id="oldImage"
+                            value="<%=image.url%>"
                           />
+                          <%})%>
                         </div>
                       </div>
 
-                      <div class="mb-4 d-flex justify-content-center">
-                        <% productData.image.forEach((image)=>{%>
-                        <img
-                          src="<%=image.url%>"
-                          id="addproduct"
-                          class="ml-5 "
-                          alt=""
-                          style="background-image: url(); width: 20%; height: 50%;"
-                        />
-                        <input
-                        type="file"
-                        class="form-control d-none"
-                        multiple
-                        name="oldImage"
-                        id="oldImage"
-                        value="<%=image.url%>"
-                        
-                      />
-                        <%})%>
-                       
-                      </div>
-                    </div>
-
-                    <hr />
-                    <p id="Error" class="text-danger mt-3"></p>
-                    <div class="add product">
-                      <a href="/" class="d-flex justify-content-center mt-3"
-                        ><button
-                          class="btn btn-primary btn-lg btn-block w-50"
-                          type="submit"
+                      <hr />
+                      <p id="Error" class="text-danger mt-3"></p>
+                      <div class="add product">
+                        <a href="/" class="d-flex justify-content-center mt-3"
+                          ><button
+                            class="btn btn-primary btn-lg btn-block w-50"
+                            type="submit"
+                          >
+                            Edit product
+                          </button></a
                         >
-                          Edit product
-                        </button></a
-                      >
-                    </div>
-                  </form>
+                      </div>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
 
     <%- include ('../partials/footerLink.ejs') %>
