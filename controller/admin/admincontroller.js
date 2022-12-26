@@ -8,7 +8,9 @@ const cart = require("../../model/cart");
 const moment = require("moment");
 const favorite = require("../../model/favorite");
 const coupon = require("../../model/coupon");
-
+const excelJs = require("exceljs");
+require("fs");
+const path = require('path') 
 
 
 module.exports = {
@@ -493,5 +495,107 @@ module.exports = {
      } catch (error) {
       
      }
+   },
+   sales :  (req,res)=>{
+   try {
+      let  date = 0
+  order.find({ orderStatus : "delivered" }).then((orderData)=>{
+    res.render('admin/sales',{ orderData , date })
+   
+  })
+    
+   } catch (error) {
+    
+   }
+   },
+   salesfilter : (req,res)=>{
+    
+   try {
+    let date = req.body;
+
+
+
+   order.find({ orderStatus : "delivered", 
+      createdAt : { $gte : date.from , $lte : date.to }
+  }).then((orderData)=>{
+    if (orderData) {
+      res.render('admin/sales',{ orderData ,date })
+    } else {
+      res.redirect('/sales')
+    }
+   
+  })
+  
+   } catch (error) {
+    
+   }
+   },
+   downsales : async (req,res)=>{
+    
+  
+      try {
+        let date = req.body;
+        
+        if (date.from ) {
+        
+      let orderData = await    order.find({ orderStatus : "delivered",
+        createdAt  : { $gte : date.from , $lte : date.to }
+        });
+        
+        const workbook = new excelJs.Workbook();
+        const worksheet = workbook.addWorksheet("My Sheet");
+
+        worksheet.columns = [
+          { header: "OrderId", key: "OrderId", width: 30 },
+          { header: "Customer", key: "Customer", width: 15 },
+          { header: "Amount", key: "Amount", width: 15 },
+          { header: "Status", key: "Status", width: 15 },
+        ]
+         
+        orderData.forEach((orderData)=>{
+         worksheet.addRow({
+         OrderId : orderData._id,
+         Customer : orderData.address.fullname,
+         Amount : orderData.totalAmount,
+         Status : orderData.orderStatus,
+         })
+        })
+         await workbook.xlsx.writeFile("order.xlsx").then((data) => {
+          const location = path.join(__dirname+"../../../order.xlsx");
+         res.download(location)
+        });
+       
+
+        } else {
+          let orderData = await order.find({ orderStatus : "delivered"});
+        
+        const workbook = new excelJs.Workbook();
+        const worksheet = workbook.addWorksheet("My Sheet");
+        
+        worksheet.columns = [
+          { header: "OrderId", key: "OrderId", width: 30 },
+          { header: "Customer", key: "Customer", width: 15},
+          { header: "Amount", key: "Amount", width: 15 },
+          { header: "Status", key: "Status", width: 15 },
+        ]
+         
+        orderData.forEach((order)=>{
+         worksheet.addRow({
+         OrderId : order._id,
+         Customer : order.address.fullname,
+         Amount : order.totalAmount,
+         Status : order.orderStatus,
+         })
+        })
+          
+         await workbook.xlsx.writeFile("order.xlsx").then((data) => {
+          const location = path.join(__dirname+"../../../order.xlsx");
+         res.download(location)
+        });
+       
+        }
+      } catch (error) {
+        
+      }
    },
 };

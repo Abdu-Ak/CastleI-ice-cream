@@ -23,6 +23,12 @@
             <span class="nav-link-text">Order</span>
           </a>
         </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+          <a class="nav-link" href="/admin/sales">
+            <i class="fa fa-fw fa-file"></i>
+            <span class="nav-link-text">Sales Report</span>
+          </a>
+        </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
           <a class="nav-link" href="/admin/category">
             <i class="fa fa-fw fa-table"></i>
@@ -31,7 +37,7 @@
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
             <a class="nav-link" href="/admin/coupon">
-              <i class="fa fa-fw fa-table"></i>
+              <i class="fa fa-fw fa-gift"></i>
               <span class="nav-link-text">Coupons</span>
             </a>
           </li>
@@ -78,4 +84,14 @@
     </div>
   </nav>
    
- 
+ <script>
+   // Toggle the side navigation
+   $("#sidenavToggler").click(function(e) {
+    e.preventDefault();
+    console.log("i am clicke")
+    $("body").toggleClass("sidenav-toggled");
+    $(".navbar-sidenav .nav-link-collapse").addClass("collapsed");
+    $(".navbar-sidenav .sidenav-second-level, .navbar-sidenav .sidenav-third-level").removeClass("show");
+  });
+
+ </script>

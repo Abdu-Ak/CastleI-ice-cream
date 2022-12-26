@@ -45,10 +45,16 @@ router.post('/changeStatus/:id',verifyAdmin,adminController.changeStatus)
 
 router.get('/coupon',verifyAdmin,adminController.getCoupon)
 
-router.post('/addCoupon',adminController.addCoupon)
+router.post('/addCoupon',verifyAdmin,adminController.addCoupon)
 
-router.get('/deleteCoupon/:id',adminController.deleteCoupon);
+router.get('/deleteCoupon/:id',verifyAdmin,adminController.deleteCoupon);
 
-router.post('/editCoupon/:id',adminController.editCoupon);
+router.post('/editCoupon/:id',verifyAdmin,adminController.editCoupon);
+
+router.get('/sales',verifyAdmin,adminController.sales)
+
+router.post('/salesFilter',verifyAdmin,adminController.salesfilter)
+
+router.post('/downSales',verifyAdmin,adminController.downsales)
 
 module.exports = router;

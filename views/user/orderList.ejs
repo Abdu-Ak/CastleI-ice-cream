@@ -16,12 +16,12 @@
                 Order ID:
                 <strong class="text-mute ml-1"> <%= orderData._id%> </strong>
               </h6>
-            
+              <% if (orderData.orderStatus !== "Cancelled" ) {  %>
               <button class="btn btn-outline-danger mb-2"  data-bs-toggle="modal" 
               data-bs-target="#exampleModal-<%=orderData._id %>">
                 <span class="fa fa-times mr-1"></span>Cancel
               </button>
-           
+               <%}%>
              <!--confirm modal -->
              <div
                 class="modal fade"
@@ -196,6 +196,35 @@
           </div>
         </div>
         <%}%>
+      </div>
+      <div class="container mb-5">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+              <a class="page-link" href="/orderList?page= 1" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <% for (let i = 1; i<= pages ; i++){ %> <% if( i == pageNum){ %>
+            <li class="page-item active">
+              <a class="page-link" href="/orderList?page=<%= i %>"><%= i %></a>
+            </li>
+            <% }else{ %>
+            <li class="page-item">
+              <a class="page-link" href="/orderList?page=<%= i %>"><%= i %></a>
+            </li>
+            <% } %> <% } %>
+            <li class="page-item">
+              <a
+                class="page-link"
+                href="/orderList?page <%= pages %>"
+                aria-label="Next"
+              >
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </section>
 

@@ -65,11 +65,11 @@ router.get("/filter/:id",userController.filterPro);
 
 router.post("/search",userController.search)
 
-router.get("/checkOut",verifyUser,userController.getCheckout)
+router.post("/checkOut",verifyUser,userController.getCheckout)
 
 router.post("/secAddress",verifyUser,usercontroller.postSecAddress);
 
-router.post("/checkout",verifyUser,userController.postCheckout);
+router.post("/checkOrder",userController.postCheckout);
 
 router.get("/orderSuccess",verifyUser,userController.getSuccess);
 

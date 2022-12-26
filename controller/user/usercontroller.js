@@ -670,7 +670,8 @@ module.exports = {
           
            
                 cart.updateOne({userId : userData._id},{$push : {product : productOb }}).then(()=>{
-                  favorite.updateOne({userId : userData._id}, { $pull: { product: { productId: objId } } }).then(()=>{
+                  favorite.updateOne({ userId : userData._id}, { $pull: { product: { productId: objId } } }).then(()=>{
+
                     res.json({ status: true });
                   })
                  
@@ -770,63 +771,24 @@ module.exports = {
   
 applyCoupon : async (req,res)=>{
   try {
+  let user = req.session.user;
    let data = req.body ;
-   const couponData = await coupon.findOne({ couponName : data.coupon })
-   if (couponData) {
-     let user =req.session.user;
-     const userData = await userdetails.findOne({
-      $or: [{ username: user }, { email: user }, { phonenumber: user }],
-    });
-    const productData = await cart
-    .aggregate([
-      {
-        $match: { userId: userData.id },
-      },
-      {
-        $unwind: "$product",
-      },
-      {
-        $project: {
-          productItem: "$product.productId",
-          productQuantity: "$product.quantity",
-        },
-      },
-      {
-        $lookup: {
-          from: "productdetails",
-          localField: "productItem",
-          foreignField: "_id",
-          as: "productDetail",
-        },
-      },
-      {
-        $project: {
-          productItem: 1,
-          productQuantity: 1,
-          productDetail: { $arrayElemAt: ["$productDetail", 0] },
-        },
-      },
-      {
-        $addFields: {
-          productPrice: {
-            $sum: { $multiply: ["$productQuantity", "$productDetail.price"] },
-          },
-        },
-      },
-    ])
-    .exec();
-   
-    let sum = productData.reduce((accumulator, object) => {
-      return accumulator + object.productPrice;
-    }, 0);
-     if (sum > 500) {
-      sum = sum * couponData.discount
-      res.json({sum , discount : couponData.discount})
-     } else {
+   const couponData = await coupon.findOne({couponName : data.coupon})
+   const userData = await userdetails.findOne({
+    $or: [{ username: user }, { email: user }, { phonenumber: user }],
+   })
+
+   if (couponData && couponData.users.userId !== userData._id && data.amount > 500 ) {
+  
+    
+        sum = data.amount * couponData.discount
+        let discount =  couponData.discount
+         let coupon = data.coupon
+        res.json({sum , discount ,coupon  })
       
-     }
+   
    } else {
-     
+    res.json({ failed : true })
    }
   } catch (error) {
    
@@ -1110,14 +1072,17 @@ applyCoupon : async (req,res)=>{
  
  getCheckout : async (req,res)=>{
   try {
-    
-    
-    
+    let data = req.body
+   
+   
     let user = req.session.user;
   const userData = await userdetails.findOne({
     $or: [{ username: user }, { email: user }, { phonenumber: user }],
   });
-
+  
+  const couponData = await coupon.findOne({couponName : data.coupname})
+  
+  
   const productData = await cart
   .aggregate([
     {
@@ -1156,27 +1121,31 @@ applyCoupon : async (req,res)=>{
     },
   ])
   .exec();
-
-  const sum = productData.reduce((accumulator, object) => {
+ let sum = productData.reduce((accumulator, object) => {
     return accumulator + object.productPrice;
   },0);
+  if(data.lastamount){
+    sum = Math.ceil(data.lastamount)
+  }
+  
   if(productData.length){
     
-    res.render("user/checkOut",{user , favCount , cartCount , productData , userData , sum})
+    res.render("user/checkOut",{user , favCount , cartCount , productData , userData , couponData ,sum})
   }else{
     res.redirect('/cart')
   }
       
   } catch (error) {
     console.log(error);
-    res.render('500');
+    // res.render('500');
   }
  },
 
- postSecAddress : (req,res)=>{
+ postSecAddress : async (req,res)=>{
  try {
+
   let user = req.session.user;
-  data = req.body;
+  let data = req.body;
    addressObj = { 
     fullname   : data.fullname,
     phonenumber : data.phonenumber,
@@ -1190,11 +1159,11 @@ applyCoupon : async (req,res)=>{
 
    }
   
-   userdetails.updateOne({ $or: [{ username: user }, { email: user }, { phonenumber: user }],},{$set:
-    { shippingAddress : addressObj}}).then((data)=>{
+    let Data = await userdetails.updateOne({ $or: [{ username: user }, { email: user }, { phonenumber: user }],},{$set:
+    { shippingAddress : addressObj}})
+
+    res.json({success : true})
   
-    res.redirect('/checkOut')
-   })
 
  } catch (error) {
   console.log(error);
@@ -1204,8 +1173,9 @@ applyCoupon : async (req,res)=>{
  
  postCheckout : async (req,res)=>{
  try {
+ 
   let data = req.body
-
+  console.log(data);
   let user = req.session.user;
   let userData = await userdetails.findOne({ $or: [{ username: user }, { email: user }, { phonenumber: user }]});
   let cartData = await cart.findOne({userId : userData._id});
@@ -1258,11 +1228,24 @@ applyCoupon : async (req,res)=>{
       },
     ])
     .exec();
+  let sum;
+ if(data.amount){
+  sum = data.amount
+ }else{
   
-    const sum = productData.reduce((accumulator, object) => {
-      return accumulator + object.productPrice;
-    }, 0);
-    
+  sum = productData.reduce((accumulator, object) => {
+    return accumulator + object.productPrice;
+  }, 0);
+
+ }
+ 
+    if(data.coupname){
+      
+      await coupon.updateOne({couponName : data.coupname},{$push : {users :{userId : userData._id } }}).then((data)=>{
+       console.log(data);
+      })
+      
+    }
     cartCount = productData.length;
    
     const orderData = await order.create({
@@ -1365,49 +1348,70 @@ paymentFail : (req,res)=>{
 
   getOrderlist :async (req,res)=>{
    try {
+    const pageNum = req.query.page;
+    console.log(pageNum);
+    const perpage = 8;
+    let docCount;
     let user= req.session.user;
-    const userData = await userdetails.findOne({ $or: [{ username: user }, { email: user }, { phonenumber: user }]}); 
-    const orderData = await order.aggregate([
-      {
-        $match : { userId : userData._id},
-      },
-      {
-        $lookup : {
-          from : "productdetails",
-          localField : "orderItem.productId",
-          foreignField : "_id",
-          as : "productDetail",
-        },
-      },
-      
+    const userData = await userdetails.findOne({ $or: [{ username: user }, { email: user }, { phonenumber: user }]});
+    let cartData = await cart.find({userId : userData._id})
+    if (cartData.length) {
 
-    ])
-   
+    cartCount = cartData[0].product.length
     
-      let cartData = await cart.find({userId : userData._id})
-      if (cartData.length) {
+    } else {
 
-      cartCount = cartData[0].product.length
-      
-      } else {
-
-          cartCount=0;
-         
-      }
-      let favData = await favorite.find({userId : userData._id })
-      
-      if (favData.length) {
-        favCount = favData[0].product.length
-      } else {
-        favCount =0;
-      }
+        cartCount=0;
+       
+    }
+    let favData = await favorite.find({userId : userData._id })
+    
+    if (favData.length) {
+      favCount = favData[0].product.length
+    } else {
+      favCount =0;
+    }
      
+    await order.find({ userId : userData._id})
+    .countDocuments()
+    .then((docs)=>{
+      docCount =docs;
 
-    
-    res.render('user/orderList',{ favCount , cartCount , user , orderData, userData })
+     return order.aggregate([
+        {
+          $match : { userId : userData._id},
+        },
+        {
+          $lookup : {
+            from : "productdetails",
+            localField : "orderItem.productId",
+            foreignField : "_id",
+            as : "productDetail",
+          },
+        },
+        { $sort : { orderdate : -1, } }
+        
+  
+      ])
+      // .skip((pageNum-1)* perpage)
+      .limit(perpage)
+
+    }).then((orderData)=>{
+      res.render('user/orderList',{ 
+        favCount ,
+         cartCount , 
+         user , 
+         orderData, 
+         userData ,
+         pageNum,
+         docCount,
+         pages : Math.ceil(docCount / perpage),
+        })
+    })
+   
    } catch (error) {
     console.log(error);
-    res.render('500');
+    // res.render('500');
    }
   },
 
