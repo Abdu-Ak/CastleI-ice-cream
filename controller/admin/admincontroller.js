@@ -92,13 +92,13 @@ module.exports = {
   postAdminLogin: async (req, res) => {
     try {
       let admin = {
-        username: admin,
+        username: "admin",
         password: 5378,
       };
       let user = req.body.username;
       let password = req.body.password;
-      if (admin.username === user) {
-        if (admin.password === password) {
+      if (admin.username == user) {
+        if (admin.password == password) {
           req.session.admin = user;
           res.redirect("/admin");
         } else {
@@ -112,7 +112,7 @@ module.exports = {
         });
       }
     } catch (error) {
-      res.render("500");
+      // res.render("500");
       console.log(error);
     }
   },
