@@ -1,5 +1,3 @@
-const { response } = require("../../app");
-const { $where } = require("../../model/signUp");
 
 function validatingForm(form){
     userName =document.getElementById("username");

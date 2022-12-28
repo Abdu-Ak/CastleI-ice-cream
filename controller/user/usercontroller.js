@@ -267,7 +267,7 @@ module.exports = {
               });
               newOtp.save().then(()=>{
                 
-                res.render('user/forgotPassOtp' , {data})
+                res.render('user/forgotpassOtp' , {data})
               
               })
              
