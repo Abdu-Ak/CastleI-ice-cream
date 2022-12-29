@@ -148,7 +148,7 @@ module.exports = {
           .find({  $or: [{ username: data.username }, { email: data.email }, { phonenumber: data.phonenumber }], })
           .then((result) => {
             if (result.length) {
-              res.render("user/signup", {
+              res.render("user/Signup", {
                 err_msg: "Details already existed...!",
               });
             } else {
@@ -1137,7 +1137,7 @@ applyCoupon : async (req,res)=>{
       
   } catch (error) {
     console.log(error);
-    // res.render('500');
+    res.render('500');
   }
  },
 
@@ -1175,7 +1175,7 @@ applyCoupon : async (req,res)=>{
  try {
  
   let data = req.body
-  console.log(data);
+  
   let user = req.session.user;
   let userData = await userdetails.findOne({ $or: [{ username: user }, { email: user }, { phonenumber: user }]});
   let cartData = await cart.findOne({userId : userData._id});

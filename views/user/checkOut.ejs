@@ -138,161 +138,170 @@
             </div>
           </div>
         </div>
-        <div class="row  px-md-4 px-2 pt-4">
-          <div class="col-lg-8 delivery px-md-3 px-1">
-            <p class="pt-4 fw-bold pb-3 ps-2">Address</p>
-            <div class="card p-3 mb-2" id="adcard">
-              <div class="d-flex align-items-center justify-content-between">
-                <div id="address ">
-                  <p class="fw-bold"><%= userData.primaryaddress.fullname%></p>
-                  <small class="text-muted">
-                    <%=userData.primaryaddress.address %>
-                    <br />
-                    <%=userData.primaryaddress.locality %>
-                    <br />
-                    <%=userData.primaryaddress.pincode %>
-                    <br />
-                    <%=userData.primaryaddress.district %>
-                    <br />
-                    <%=userData.primaryaddress.state %>
-                    <br />
-                    <%=userData.primaryaddress.landmark %>
-                    <br />
-                    <%=userData.phonenumber %>
-                  </small>
+        <%if (userData.primaryaddress.address){%>
+          <div class="row  px-md-4 px-2 pt-4">
+            <div class="col-lg-8 delivery px-md-3 px-1">
+              <p class="pt-4 fw-bold pb-3 ps-2">Address</p>
+              <div class="card p-3 mb-2" id="adcard">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div id="address ">
+                    <p class="fw-bold"><%= userData.primaryaddress.fullname%></p>
+                    <small class="text-muted">
+                      <%=userData.primaryaddress.address %>
+                      <br />
+                      <%=userData.primaryaddress.locality %>
+                      <br />
+                      <%=userData.primaryaddress.pincode %>
+                      <br />
+                      <%=userData.primaryaddress.district %>
+                      <br />
+                      <%=userData.primaryaddress.state %>
+                      <br />
+                      <%=userData.primaryaddress.landmark %>
+                      <br />
+                      <%=userData.phonenumber %>
+                    </small>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input address"
+                        name="address"
+                        type="radio"
+                        id="SwitchCheck"
+                        value="primaryaddress"
+                        checked
+                        
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div class="d-flex align-items-center">
-                  <div class="form-check">
+              </div>
+              <% if (!userData.shippingAddress.fullname){%>
+              <button
+                class="btn btn-outline-success"
+                style="border-radius: 10px;"
+                type="button"
+                data-toggle="modal"
+                data-target="#ModalAddress"
+              >
+                Add<span class="ml-1 fa fa-plus"></span>
+              </button>
+              <%}%> <% if (userData.shippingAddress.fullname){%>
+              <div class="card p-3 mb-2" id="shippingAd">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div>
+                    <p class="fw-bold"><%= userData.shippingAddress.fullname%></p>
+                    <small class="text-muted">
+                      <%=userData.shippingAddress.address %>
+                      <br />
+                      <%=userData.shippingAddress.locality %>
+                      <br />
+                      <%=userData.shippingAddress.pincode %>
+                      <br />
+                      <%=userData.shippingAddress.district %>
+                      <br />
+                      <%=userData.shippingAddress.state %>
+                      <br />
+                      <%=userData.shippingAddress.landmark %>
+                      <br />
+                      <%=userData.shippingAddress.phonenumber %>
+                    </small>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input address"
+                        type="radio"
+                        name="address"
+                        id="shipping"
+                        value="shippingAddress"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button
+                class="btn btn-outline-success"
+                style="border-radius: 10px;"
+                type="button"
+                data-toggle="modal"
+                data-target="#editModaladdress"
+              >
+                Edit<span class="ml-1 fa fa-edit"></span>
+              </button>
+            </div>
+            <% }%>
+            <div class="col-lg-4">
+              <p class="pt-4 fw-bold pb-3">Payment Method</p>
+              <div class="flex-column align-items-center pb-4">
+                <div class="size d-flex ps-4" id="paymentMethod">
+                  <label class="option d-flex align-items-center">
                     <input
-                      class="form-check-input address"
-                      name="address"
+                      class="form-check-input"
                       type="radio"
-                      id="SwitchCheck"
-                      value="primaryaddress"
+                      name="paymentMethod"
+                      id="paymentMethod"
+                      value="online"
                       checked
                     />
-                  </div>
+                    <div class="card">
+                      <div class="d-flex align-items-center">
+                        <div
+                          class="d-flex align-items-center justify-content-center"
+                        >
+                          <img
+                            class="del ml-2"
+                            src="https://images.news18.com/ibnlive/uploads/2020/02/UPI.jpg?impolicy=website&width=510&height=356"
+                            alt=""
+                          />
+                        </div>
+                        <div class="d-flex flex-column px-3">
+                          <p class="fw-bold pb-1">UPI OR NETBANK</p>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="checkmark"></span>
+                  </label>
                 </div>
-              </div>
-            </div>
-            <% if (!userData.shippingAddress.fullname){%>
-            <button
-              class="btn btn-outline-success"
-              style="border-radius: 10px;"
-              type="button"
-              data-toggle="modal"
-              data-target="#ModalAddress"
-            >
-              Add<span class="ml-1 fa fa-plus"></span>
-            </button>
-            <%}%> <% if (userData.shippingAddress.fullname){%>
-            <div class="card p-3 mb-2" id="shippingAd">
-              <div class="d-flex align-items-center justify-content-between">
-                <div>
-                  <p class="fw-bold"><%= userData.shippingAddress.fullname%></p>
-                  <small class="text-muted">
-                    <%=userData.shippingAddress.address %>
-                    <br />
-                    <%=userData.shippingAddress.locality %>
-                    <br />
-                    <%=userData.shippingAddress.pincode %>
-                    <br />
-                    <%=userData.shippingAddress.district %>
-                    <br />
-                    <%=userData.shippingAddress.state %>
-                    <br />
-                    <%=userData.shippingAddress.landmark %>
-                    <br />
-                    <%=userData.shippingAddress.phonenumber %>
-                  </small>
-                </div>
-                <div class="d-flex align-items-center">
-                  <div class="form-check">
+                <div class="size d-flex ps-4">
+                  <label class="option d-flex align-items-center">
                     <input
-                      class="form-check-input address"
+                      class="form-check-input"
                       type="radio"
-                      name="address"
-                      id="shipping"
-                      value="shippingAddress"
+                      name="paymentMethod"
+                      id="paymentMethod"
+                      value="COD"
+                      
                     />
-                  </div>
+                    <div class="card">
+                      <div class="d-flex align-items-center">
+                        <div
+                          class="d-flex align-items-center justify-content-center"
+                        >
+                          <img
+                            class="del ml-2"
+                            src="https://thumbs.dreamstime.com/b/fedex-express-logo-editorial-vector-illustration-fedex-logo-editorial-vector-illustration-fed-ex-express-136584531.jpg"
+                            alt=""
+                          />
+                        </div>
+                        <div class="d-flex flex-column px-3">
+                          <p class="fw-bold pb-1">COD</p>
+                        </div>
+                      </div>
+                    </div>
+                    <span class="checkmark"></span>
+                  </label>
                 </div>
               </div>
             </div>
-            <button
-              class="btn btn-outline-success"
-              style="border-radius: 10px;"
-              type="button"
-              data-toggle="modal"
-              data-target="#editModaladdress"
-            >
-              Edit<span class="ml-1 fa fa-edit"></span>
-            </button>
           </div>
-          <% }%>
-          <div class="col-lg-4">
-            <p class="pt-4 fw-bold pb-3">Payment Method</p>
-            <div class="flex-column align-items-center pb-4">
-              <div class="size d-flex ps-4" id="paymentMethod">
-                <label class="option d-flex align-items-center">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="paymentMethod"
-                    id="paymentMethod"
-                    value="online"
-                    checked
-                  />
-                  <div class="card">
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="d-flex align-items-center justify-content-center"
-                      >
-                        <img
-                          class="del ml-2"
-                          src="https://images.news18.com/ibnlive/uploads/2020/02/UPI.jpg?impolicy=website&width=510&height=356"
-                          alt=""
-                        />
-                      </div>
-                      <div class="d-flex flex-column px-3">
-                        <p class="fw-bold pb-1">UPI OR NETBANK</p>
-                      </div>
-                    </div>
-                  </div>
-                  <span class="checkmark"></span>
-                </label>
-              </div>
-              <div class="size d-flex ps-4">
-                <label class="option d-flex align-items-center">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="paymentMethod"
-                    id="paymentMethod"
-                    value="COD"
-                  />
-                  <div class="card">
-                    <div class="d-flex align-items-center">
-                      <div
-                        class="d-flex align-items-center justify-content-center"
-                      >
-                        <img
-                          class="del ml-2"
-                          src="https://thumbs.dreamstime.com/b/fedex-express-logo-editorial-vector-illustration-fedex-logo-editorial-vector-illustration-fed-ex-express-136584531.jpg"
-                          alt=""
-                        />
-                      </div>
-                      <div class="d-flex flex-column px-3">
-                        <p class="fw-bold pb-1">COD</p>
-                      </div>
-                    </div>
-                  </div>
-                  <span class="checkmark"></span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
+          <%}%>
+          <%if(!userData.primaryaddress.address){%>
+           <a href="/profile">
+            <button class="btn btn-outline-danger" id="toprofile" type="button">Add Adress</button>
+           </a>
+            <%}%>
       </form>
     </div>
 
