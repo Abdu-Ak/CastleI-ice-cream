@@ -56,9 +56,9 @@ function validatingForm(form){
         return false;
     }
 
-   var regexpass =  /(?=(.*?[a-zA-Z|0-9]){4})/;
+   var regexpass =  /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
    if(regexpass.test(password.value)=== false){
-    document.getElementById('passwordError').innerHTML="password should have atleast 4 digits..! "
+    document.getElementById('passwordError').innerHTML="password should have min 8 letter password, with at least a symbol, upper and lower case letters and a number..! "
     password.focus();
     return false;
    }
