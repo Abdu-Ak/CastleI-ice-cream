@@ -69,13 +69,7 @@
                       </button>
                     </a>
                   </li>
-                  <!-- <li
-                    class="list-group-item d-flex justify-content-between align-items-center p-3"
-                   >
-                    <button type="button" class="btn btn-outline-primary ms-1">
-                      <span class="fa fa-gift mr-1"></span>Gift card
-                    </button>
-                  </li> -->
+                 
                   <li
                     class="list-group-item d-flex justify-content-between align-items-center p-3"
                   >
@@ -189,29 +183,10 @@
               </div>
             </div>
         
-            <!-- <div class="row d-flex">
-              <div class="col-md-6">
-                <div class="card mb-4 mb-md-0">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-sm-3 d-flex ml-5">
-                        <p class="mb-0"><strong>NOTIFICATION:</strong></p>
-                      </div>
-                      <div class="col-sm-9 ml-5 d-flex">
-                        <p class="text-danger Damb-0">
-                          Delivery within <strong>ONE HOUR</strong> ...!
-                        </p>
-                      </div>
-                    </div>
-
-                   
-                  </div>
-                </div>
-              </div>
-            </div> -->
+           
           </div>
         </div>
-        <% if  (userData.primaryaddress){%>
+     
         <!--- Add modal-->
         <!-- Modal HTML Markup -->
         <div id="ModalAddress" class="modal fade">
@@ -229,7 +204,8 @@
                         type="text"
                         class="form-control input-lg"
                         name="fullname"
-                        value=""
+                        required
+
                       />
                     </div>
                     <label class="control-label m-2 ml-5">Pincode</label>
@@ -238,6 +214,7 @@
                         type="number"
                         class="form-control input-lg"
                         name="pincode"
+                        required
                       />
                     </div>
                   </div>
@@ -252,6 +229,7 @@
                         class="form-control input-lg ml-2"
                         cols="65"
                         rows="5"
+                        required
                       ></textarea>
                     </div>
                   </div>
@@ -262,7 +240,7 @@
                         type="text"
                         class="form-control input-lg ml-2"
                         name="locality"
-                        value=""
+                        required
                       />
                     </div>
                     <label class="control-label m-2 ml-5">District</label>
@@ -271,6 +249,7 @@
                         type="text"
                         class="form-control input-lg ml-3"
                         name="district"
+                        required
                       />
                     </div>
                     
@@ -282,7 +261,7 @@
                         type="text"
                         class="form-control input-lg ml-2"
                         name="state"
-                        value=""
+                        required
                       />
                     </div>
                     <label class="control-label m-2 ml-5 pl-3">Landmark</label>
@@ -291,6 +270,7 @@
                         type="text"
                         class="form-control input-lg ml-3"
                         name="landmark"
+                        required
                       />
                     </div>
                     
@@ -389,7 +369,7 @@
 
 
 
-
+        <% if  (userData.primaryaddress){%>
         <!--change modal-->
          <!-- Modal HTML Markup -->
          <div id="changeAddress" class="modal fade">
@@ -408,6 +388,7 @@
                         class="form-control input-lg"
                         name="fullname"
                         value=" <%=userData.primaryaddress.fullname  %>"
+                        required
                       />
                     </div>
                     <label class="control-label m-2 ml-5">Pincode</label>
@@ -417,6 +398,7 @@
                       class="form-control input-lg"
                       name="pincode"
                       value="<%=userData.primaryaddress.pincode %>"
+                      required
                     />
                     </div>
                     
@@ -428,11 +410,12 @@
                     <div>
                       <textarea
                         name="address"
-                        
+                        required
                         class="form-control input-lg ml-2"
                         cols="65"
                         rows="5"
                       >  <%=userData.primaryaddress.address %></textarea>
+                      
                     </div>
                   </div>
                   <div class="form-group d-flex">
@@ -443,6 +426,7 @@
                         class="form-control input-lg ml-2"
                         name="locality"
                         value="<%=userData.primaryaddress.locality %>"
+                        required
                       />
                     </div>
                     <label class="control-label m-2 ml-5">District</label>
@@ -452,6 +436,7 @@
                         class="form-control input-lg ml-3"
                         name="district"
                         value="<%=userData.primaryaddress.district %>"
+                        required
                       />
                     </div>
                     
@@ -464,6 +449,7 @@
                         class="form-control input-lg ml-2"
                         name="state"
                         value=" <%=userData.primaryaddress.state %>"
+                        required
                       />
                     </div>
                     <label class="control-label m-2 ml-5 pl-3">Landmark</label>
@@ -473,6 +459,7 @@
                         class="form-control input-lg ml-3"
                         name="landmark"
                         value=" <%=userData.primaryaddress.landmark %>"
+                        required
                       />
                     </div>
                     

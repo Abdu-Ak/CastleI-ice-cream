@@ -908,8 +908,6 @@ applyCoupon : async (req,res)=>{
    let user = req.session.user
    addressObj = {
     fullname   : data.fullname,
-    phonenumber : data.phonenumber,
-    email : data.email,
     pincode : data.pincode,
     locality : data.locality,
     address : data.address,
@@ -918,22 +916,23 @@ applyCoupon : async (req,res)=>{
     landmark : data.landmark,
    }
   
-  console.log(data.fullname);
-  await userdetails.updateOne( { email: user },
+ console.log(data);
+  await userdetails.updateOne( { $or: [{ username: user }, { email: user }, { phonenumber: user }], },
     {
       $set:{
         primaryaddress : addressObj
       }
     }
-    ).then((hi)=>{
-      console.log(hi);
+    ).then(()=>{
+    
+      res.redirect('/profile')
     })
     
-    res.redirect('/profile')
+   
     
    } catch (error) {
     console.log(error);
-    res.render('500');
+    // res.render('500');
    }
   },
  getChangepass : (req,res)=>{

@@ -1,4 +1,4 @@
-function validatingForm(form){
+function validatingPro(form){
     productname =document.getElementById("productname");
     category =document.getElementById("category");
     details =document.getElementById("details");

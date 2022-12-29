@@ -322,7 +322,7 @@
                     class="form-control input-lg"
                     name="fullname"
                     id="fullname"
-                    value=""
+                    required
                   />
                 </div>
                 <label class="control-label m-2 ml-5">Pincode</label>
@@ -331,6 +331,7 @@
                     type="number"
                     class="form-control input-lg"
                     name="pincode"
+                    required
                   />
                 </div>
               </div>
@@ -344,6 +345,7 @@
                     class="form-control input-lg ml-2"
                     cols="65"
                     rows="5"
+                    required
                   ></textarea>
                 </div>
               </div>
@@ -354,7 +356,7 @@
                     type="text"
                     class="form-control input-lg ml-2"
                     name="locality"
-                    value=""
+                    required
                   />
                 </div>
                 <label class="control-label m-2 ml-5">District</label>
@@ -363,6 +365,7 @@
                     type="text"
                     class="form-control input-lg ml-3"
                     name="district"
+                    required
                   />
                 </div>
               </div>
@@ -373,7 +376,7 @@
                     type="text"
                     class="form-control input-lg ml-2"
                     name="state"
-                    value=""
+                  required
                   />
                 </div>
                 <label class="control-label m-2 ml-5 pl-3">Landmark</label>
@@ -382,6 +385,7 @@
                     type="text"
                     class="form-control input-lg ml-3"
                     name="landmark"
+                    required
                   />
                 </div>
               </div>
@@ -392,7 +396,7 @@
                     type="number"
                     class="form-control input-lg ml-2"
                     name="phonenumber"
-                    value=""
+                    required
                   />
                 </div>
               </div>
@@ -430,6 +434,7 @@
                     name="fullname"
                     id="fullname"
                     value="<%= userData.shippingAddress.fullname%>"
+                    required
                   />
                 </div>
                 <label class="control-label m-2 ml-5">Pincode</label>
@@ -439,6 +444,7 @@
                     class="form-control input-lg"
                     name="pincode"
                     value=" <%=userData.shippingAddress.pincode %>"
+                    required
                   />
                 </div>
               </div>
@@ -451,6 +457,7 @@
                     class="form-control input-lg ml-2"
                     cols="65"
                     rows="5"
+                    required
                   >
         <%=userData.shippingAddress.address %></textarea
                   >
@@ -464,6 +471,7 @@
                     class="form-control input-lg ml-2"
                     name="locality"
                     value=" <%=userData.shippingAddress.locality %>"
+                    required
                   />
                 </div>
                 <label class="control-label m-2 ml-5">District</label>
@@ -473,6 +481,7 @@
                     class="form-control input-lg ml-3"
                     name="district"
                     value=" <%=userData.shippingAddress.district %>"
+                    required
                   />
                 </div>
               </div>
@@ -484,6 +493,7 @@
                     class="form-control input-lg ml-2"
                     name="state"
                     value="<%=userData.shippingAddress.state %>"
+                    required
                   />
                 </div>
                 <label class="control-label m-2 ml-5 pl-3">Landmark</label>
@@ -493,6 +503,7 @@
                     class="form-control input-lg ml-3"
                     name="landmark"
                     value=" <%=userData.shippingAddress.landmark %>"
+                    required
                   />
                 </div>
               </div>
@@ -504,6 +515,7 @@
                     class="form-control input-lg ml-2"
                     name="phonenumber"
                     value=" <%=userData.shippingAddress.phonenumber %>"
+                    required
                   />
                 </div>
               </div>
