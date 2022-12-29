@@ -16,7 +16,7 @@
                 Order ID:
                 <strong class="text-mute ml-1"> <%= orderData._id%> </strong>
               </h6>
-              <% if (orderData.orderStatus !== "Cancelled" ) {  %>
+              <% if (orderData.orderStatus !== "Cancelled" && orderData.orderStatus !== "delivered" && orderData.paymentStatus !== "paid"  ) {  %>
               <button class="btn btn-outline-danger mb-2"  data-bs-toggle="modal" 
               data-bs-target="#exampleModal-<%=orderData._id %>">
                 <span class="fa fa-times mr-1"></span>Cancel
