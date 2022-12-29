@@ -88,7 +88,6 @@ module.exports = {
       console.log(error);
     }
   },
-
   postAdminLogin: async (req, res) => {
     try {
       let admin = {
@@ -102,17 +101,17 @@ module.exports = {
           req.session.admin = user;
           res.redirect("/admin");
         } else {
-          res.render("admin/adminlogin", {
+          res.render("admin/adminLogin", {
             err_msg: "invalid  password....!",
           });
         }
       } else {
-        res.render("admin/adminlogin", {
+        res.render("admin/adminLogin", {
           err_msg: "invalid admin....!",
         });
       }
     } catch (error) {
-      // res.render("500");
+      res.render("500");
       console.log(error);
     }
   },
